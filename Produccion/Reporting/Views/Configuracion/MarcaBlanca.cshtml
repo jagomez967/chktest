@@ -1,0 +1,218 @@
+﻿@using Reporting.ViewModels
+@model MarcaBlancaViewModel
+
+@{
+    ViewBag.Title = Reporting.Resources.Configuracion.lblMarcaBlancaTitulo;
+}
+
+@section styles{
+    <style>
+        .infoFoto, .eliminarFoto {
+            cursor: pointer;
+        }
+    </style>
+}
+
+@Html.Partial("_SideMenu")
+
+<div class="titulo-pagina-fotos">
+    <a class="ecualiza-fotos always-visible animated slideInLeft" id="tabShowHide" href="#"></a>
+</div>
+
+<div class="container-fluid panel panel-default configurarTablero">
+    <h1>@Reporting.Resources.Configuracion.lblMarcaBlancaTitulo2</h1>
+    <h5>@Reporting.Resources.Configuracion.lblMarcaBlancaSubTitulo</h5>
+    <hr />
+
+    @using (Html.BeginForm("MarcaBlanca", "Configuracion", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="form-horizontal">
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.FlgMarcaBlanca, htmlAttributes: new { @class = "control-label col-xs-12 col-md-5", @style = "margin-right:5px;" })
+                <div class="col-xs-12 col-md-1">
+                    <div class="checkbox" style="margin-left:5px;">
+                        @Html.EditorFor(model => model.FlgMarcaBlanca)
+                        @Html.ValidationMessageFor(model => model.FlgMarcaBlanca, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+            <hr />
+            <div class="form-group">
+                <div class="row row-imagenes">
+                    <div class="col-md-4 img-mb">
+                        @Html.HiddenFor(m => m.ImgUrl, htmlAttributes: new { @class = "hddnImg" })
+
+                        <p>
+                            <strong>@Reporting.Resources.Configuracion.imgMarcaBlancaLabel</strong>
+                            <i class="fa fa-info-circle pull-right infoFoto" aria-hidden="true"></i>
+                            <i class="fa fa-eraser pull-right eliminarFoto" data-toggle="tooltip" title="@Reporting.Resources.Configuracion.tooltipBorrarFoto" aria-hidden="true"></i>
+                        </p>
+
+                        <input type="file" class="input-foto" style="display:none;" name="Fondo" accept=".gif,.jpeg,.jpg,.pjpeg,.png" />
+
+                        @if (Model.ImgUrl != null && Model.ImgUrl != "")
+                        {
+                            <figure>
+                                <img src="~/@Model.ImgUrl?dummy=@DateTime.Now" onerror="this.src = '@Url.Content("~/images/imgPlaceholderOn.png")';" class="imgPreviewMarcaBlanca" />
+                                <figcaption>@Reporting.Resources.Configuracion.lblMarcaBlancaResolucionRecomendada</figcaption>
+                            </figure>
+                        }
+                        else
+                        {
+                            <figure>
+                                <img src="@Url.Content("~/images/imgPlaceholderOn.png")" class="imgPreviewMarcaBlanca" />
+                                <figcaption>@Reporting.Resources.Configuracion.lblMarcaBlancaResolucionRecomendada</figcaption>
+                            </figure>
+                        }
+
+                        <p>@Html.ValidationMessage("Err_Fondo_FileType")</p>
+                        <p>@Html.ValidationMessage("Err_Fondo_FileSize")</p>
+                    </div>
+                    <div class="col-md-4 img-mb">
+                        @Html.HiddenFor(m => m.ImgLogo, htmlAttributes: new { @class = "hddnImg" })
+
+                        <p>
+                            <strong>@Reporting.Resources.Configuracion.logoMarcaBlancaLabel</strong>
+                            <i class="fa fa-info-circle pull-right infoFoto" aria-hidden="true"></i>
+                            <i class="fa fa-eraser pull-right eliminarFoto" data-toggle="tooltip" title="@Reporting.Resources.Configuracion.tooltipBorrarFoto" aria-hidden="true"></i>
+                        </p>
+
+                        <input type="file" class="input-foto" style="display:none;" name="Logo" accept=".gif,.jpeg,.jpg,.pjpeg,.png" />
+
+                        @if (Model.ImgLogo != null && Model.ImgLogo != "")
+                        {
+                            <figure>
+                                <img src="~/@Model.ImgLogo?dummy=@DateTime.Now" onerror="this.src = '@Url.Content("~/images/imgPlaceholderOn.png")';" class="imgPreviewMarcaBlanca" />
+                                <figcaption>@Reporting.Resources.Configuracion.lblMarcaBlancaResolucionRecomendada2</figcaption>
+                            </figure>
+                        }
+                        else
+                        {
+                            <figure>
+                                <img src="@Url.Content("~/images/imgPlaceholderOn.png")" class="imgPreviewMarcaBlanca" />
+                                <figcaption>@Reporting.Resources.Configuracion.lblMarcaBlancaResolucionRecomendada2</figcaption>
+                            </figure>
+                        }
+
+                        <p>@Html.ValidationMessage("Err_Logo_FileType")</p>
+                        <p>@Html.ValidationMessage("Err_Logo_FileSize")</p>
+                    </div>
+                    <div class="col-md-4 img-mb">
+                        @Html.HiddenFor(m => m.ImgFooter, htmlAttributes: new { @class = "hddnImg" })
+
+                        <p>
+                            <strong>@Reporting.Resources.Configuracion.footerMarcaBlancaLabel</strong>
+                            <i class="fa fa-info-circle pull-right infoFoto" aria-hidden="true"></i>
+                            <i class="fa fa-eraser pull-right eliminarFoto" data-toggle="tooltip" title="@Reporting.Resources.Configuracion.tooltipBorrarFoto" aria-hidden="true"></i>
+                        </p>
+                        <input type="file" class="input-foto" style="display:none;" name="Footer" accept=".gif,.jpeg,.jpg,.pjpeg,.png" />
+
+                        @if (Model.ImgFooter != null && Model.ImgFooter != "")
+                        {
+                            <figure>
+                                <img src="~/@Model.ImgFooter?dummy=@DateTime.Now" onerror="this.src = '@Url.Content("~/images/imgPlaceholderOn.png")';" class="imgPreviewMarcaBlanca" />
+                                <figcaption>@Reporting.Resources.Configuracion.lblMarcaBlancaResolucionRecomendada3</figcaption>
+                            </figure>
+                        }
+                        else
+                        {
+                            <figure>
+                                <img src="@Url.Content("~/images/imgPlaceholderOn.png")" class="imgPreviewMarcaBlanca" />
+                                <figcaption>@Reporting.Resources.Configuracion.lblMarcaBlancaResolucionRecomendada3</figcaption>
+                            </figure>
+                        }
+
+                        <p>@Html.ValidationMessage("Err_Footer_FileType")</p>
+                        <p>@Html.ValidationMessage("Err_Footer_FileSize")</p>
+                    </div>
+                </div>
+            </div>
+            <hr>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Link, htmlAttributes: new { @class = "control-label col-md-3" })
+                <div class="col-md-9">
+                    @Html.EditorFor(model => model.Link, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Link, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <hr />
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <input type="submit" value="@Reporting.Resources.Configuracion.btnMarcaBlancaGuardarCambios" class="btn btn-accion" />
+                    <span class="label label-success">@ViewBag.successMessage</span>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+
+@section scripts{
+    <script>
+        $(document).ready(function () {
+
+            $('.infoFoto').on('click', function () {
+                alert('@Reporting.Resources.Configuracion.errMarcaBlancaImagenSize')
+            })
+            $('body').on('click', '#tabShowHide', function () {
+                var val = $('body, .slide-menu').css('left') === '200px' ? '0px' : '200px';
+                var _padding = $('body, .slide-menu').css('left') != '200px' ? '200px' : '0px';
+                $('body, .slide-menu').css('left', val);
+                $("body").css('padding-right', _padding);
+            });
+
+            $('.eliminarFoto').on('click', function () {
+                var inputfoto = $(this).parents('.img-mb').find('.input-foto');
+                BlanquearFoto(inputfoto);
+                $(this).parents('.img-mb').find('.imgPreviewMarcaBlanca').attr('src', '@Url.Content("~/images/imgPlaceholderOn.png")');
+            });
+
+            $('.imgPreviewMarcaBlanca').on('click', function () {
+                $(this).parents('.img-mb').find('.input-foto').click();
+            });
+
+            $(".input-foto").change(function () {
+                var val = $(this).val().toLowerCase();
+                var regex = new RegExp("(.*?)\.(jpeg|jpg|png|gif|pjpeg)$");
+                if (!(regex.test(val))) {
+                    $(this).val('');
+                    alert('@Reporting.Resources.Configuracion.errMarcaBlancaImagenFormato');
+                    return false;
+                }
+
+                var file = this.files[0];
+                if (file.size > 512000) {
+                    alert('@Reporting.Resources.Configuracion.errMarcaBlancaImagenSize');
+                    return false;
+                }
+
+                readURLFoto(this);
+            });
+
+            function readURLFoto(input) {
+                console.log('readURLFoto');
+                if (input.files && input.files[0]) {
+                    var reader = new FileReader();
+
+                    reader.onload = function (e) {
+                        $(input).parents('.img-mb').find('.imgPreviewMarcaBlanca').attr('src', e.target.result);
+                    }
+
+                    reader.readAsDataURL(input.files[0]);
+                }
+            }
+
+            function BlanquearFoto(input) {
+                var name = $(input).name;
+                $(input).parents('.img-mb').find('.hddnImg').val(null);
+                $(input).replaceWith('<input type="file" class="input-foto" style="display:none;" name="' + name + '" />');
+
+            }
+        })
+    </script>
+}

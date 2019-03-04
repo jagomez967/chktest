@@ -1,0 +1,59 @@
+﻿@model IEnumerable<Reporting.ViewModels.AlertaItemList>
+
+@{
+    ViewBag.Title = Reporting.Resources.Alertas.lblTituloAlertasIndex;
+}
+
+@section styles{
+    <style>
+        .day-active {
+            font-weight: 600;
+            color: darkorange;
+        }
+    </style>
+}
+
+<div class="container-fluid panel panel-default configurarTablero">
+    <h1>@Reporting.Resources.Alertas.lblAlertasIndexTitulo2</h1>
+    <h5>@Reporting.Resources.Alertas.lblAlertasIndexSubTitulo</h5>
+    <hr />
+
+    <div class="form-group">
+        <p>
+            @if (MyHelpers.IsInRole("crearAlertas"))
+            {
+                @Html.ActionLink(Reporting.Resources.Alertas.btnCrearAlertaLabel, "Crear", null, new { @class = "btn btn-primary" })
+            }
+            else
+            {
+                @Html.ActionLink(Reporting.Resources.Alertas.btnCrearAlertaLabel, "Crear", null, new { @class = "btn btn-primary disabled" })
+            }
+        </p>
+    </div>
+
+    <hr />
+
+    @using (Ajax.BeginForm("GetAlertasBySearch", "Alertas", new AjaxOptions() { HttpMethod = "POST", LoadingElementId = "loading-search-alertas", InsertionMode = InsertionMode.Replace, UpdateTargetId = "tabla-alertas" }, htmlAttributes: new { id = "form-search-alertas" }))
+    {
+        <p>
+            @Html.TextBox("searchtext", string.Empty, htmlAttributes: new { @id = "search-alertas", @placeholder = Reporting.Resources.Alertas.placeholderSearchTextAlertas, @class = "form-control pull-left", @style = "width:400px;" })
+            <input type="submit" id="btn-search-alertas" class="btn btn-accion-outline" style="margin-left:15px;" value="@Reporting.Resources.Alertas.btnBuscarAlertaLabel" />
+        </p>
+        <p id="loading-search-alertas" style="display:none;">
+            @Reporting.Resources.Alertas.lblBuscandoAlertas
+        </p>
+    }
+
+    <div id="tabla-alertas">
+        @Html.Partial("_Alertas_Tabla", Model)
+    </div>
+</div>
+
+@section scripts{
+    @Scripts.Render("~/bundles/unobstrusive")
+    <script>
+        $(document).ready(function () {
+            $('#search-alertas').focus();
+        });
+    </script>
+}

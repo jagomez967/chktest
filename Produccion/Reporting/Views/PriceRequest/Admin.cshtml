@@ -1,0 +1,186 @@
+﻿@using Reporting.ViewModels
+@model PriceRequestPolicies
+@{
+    ViewBag.Title = "AdminPriceRequest";
+}
+
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
+    <input type="hidden" id="admin-pr-is-admin" value="@(Model.IsAdmin ? "true":"false")" />
+    <input type="hidden" id="admin-pr-is-pm" value="@(Model.IsPm? "true" : "false")"/>
+
+
+<div class="col-sm-12" id="OptionsMenu" style="padding-right:15px;color: black;display:none">
+    <div class="container-fluid panel panel-default" style="z-index: 0;">
+        @*ARACA: SI SE ROMPE TODO FIJATE ACA "z-index";*@
+        <div id="AdminPriceRequestPage" style="font-family: avenir next medium;margin-top: 2.2vw;">
+            <h1>@Reporting.Resources.PriceRequest.ListPriceRequestTitle</h1>
+            <br />
+            <br />
+
+            <div class="row searchdiv" style="display:block">
+                <div class="col-sm-4">
+                    <input id="searchtext" type="text" class="form-control" placeholder="@Reporting.Resources.PriceRequest.SearchInTable" style="padding-bottom:10px;">
+                </div>
+            </div>
+
+            <hr />
+
+            <div id="priceRequestTableList"></div>
+
+        </div>
+        <div id="GapRetailDetails" style="font-family:'AVENIR NEXT MEDIUM';"></div>
+    </div>
+</div>
+
+<div class="modal fade" id="modalHistoryPR" tabindex="-1" role="dialog" aria-labelledby="modalPriceRequestHistory-label" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="modalPriceRequestHistory-label"><strong><span id="modaltitle-cuenta"></span></strong></h4>
+            </div>
+            <div class="modal-body">
+                <div class="table-responsive" id="PRHistoryData"></div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">@Reporting.Resources.PriceRequest.Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="modalDeletePR" tabindex="-1" role="dialog" aria-labelledby="modalDeletePR-label" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="modalDeletePR-label"><strong><span id="modaltitle-cuenta"></span></strong></h4>
+            </div>
+            <div class="modal-body">
+                <div class="table-responsive" id="DeletePRBody">@Reporting.Resources.PriceRequest.DeletePriceRequestConfirm</div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default bg-success" data-dismiss="modal" id="delete-pr-btn-confirm">@Reporting.Resources.PriceRequest.Confirm</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">@Reporting.Resources.PriceRequest.NO</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="newPageloading">
+    <img src="@Url.Content("~/images/ajax-loader.gif")" />
+</div>
+
+
+<input type="hidden" id="selected-pr-to-delete" value="" />
+
+
+<div class="modal fade" id="modalCommentaryRejectSecPR" tabindex="-1" role="dialog" aria-labelledby="modalComentaryRejectSecPR-label" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="modalComentaryRejectSecTitle"><strong><span id="modalTitleReject-pr">@Reporting.Resources.PriceRequest.RejectRequestSecTitle</span></strong></h4>
+                <h6><span><i>@Reporting.Resources.PriceRequest.RejectRequestSubtitle</i></span></h6>
+            </div>
+            <div class="modal-body">
+                <textarea name="Text1" cols="40" rows="5" id="txt-input-pricerequest-sec-reject"></textarea>
+            </div>
+            <div class="modal-footer">
+                <input type="hidden" id="pr-hd-sec-reject" value="" />
+                <button type="button" class="btn btn-default" id="PRRejectSecbButton"> @Reporting.Resources.PriceRequest.Confirm</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal"> @Reporting.Resources.PriceRequest.Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script>
+    const urlAd = '@Url.Action("Admintable", "PriceRequest")';
+    const UserIsAdmin = $('#admin-pr-is-admin').val();
+    const UserIsPm = $('#admin-pr-is-pm').val();
+
+    let IsMultiClient = "@(Model.IsMultiClient)";
+    let searchtext = $('searchtext').text();
+        $('#priceRequestTableList').load(urlAd, {
+            UserAdmin: UserIsAdmin,
+            UserPm : UserIsPm
+        });
+
+    hideLoadingWheel = () => $('.newPageloading').hide();
+    showLoadingWheel = () => $('.newPageloading').show();
+
+    $(document).ready( () => {
+        hideLoadingWheel();
+        $('#OptionsMenu').show();
+
+        if (IsMultiClient != "True") {
+            setInterval(() => {         
+                console.log(searchtext);
+                $('#priceRequestTableList').load(urlAd, {
+                    UserAdmin: UserIsAdmin,
+                    UserPm: UserIsPm,
+                    Search: searchtext
+                });
+            }, 3000);
+        } else {
+            $('#priceRequestTableList').load(urlAd, {
+                UserAdmin: UserIsAdmin,
+                UserPm: UserIsPm
+            });
+        }        
+    });
+
+    $("#delete-pr-btn-confirm").on('click', () => {
+        id = $("#selected-pr-to-delete").val();
+
+        DeletePriceRequest(id);
+    });
+
+        $('#searchtext').on('input', (e) => {
+            searchtext = e.target.value;
+
+            $('#priceRequestTableList').load(urlAd, {
+                UserAdmin: UserIsAdmin,
+                UserPm: UserIsPm,
+                Search: searchtext
+            });
+        });
+
+     const DeletePriceRequest =(id) => 
+         $.ajax({
+             url: '@Url.Action("DeletePR","PriceRequest")',
+             dataType: 'html',
+             method: 'POST',
+             data: { GUID: id },
+             beforeSend: () => 
+                swal({
+                    title: "@Reporting.Resources.PriceRequest.Deleting",
+                    text: "@Reporting.Resources.PriceRequest.PleaseWait",
+                    showConfirmButton: false,
+                    allowOutsideClick: false,
+                    button: false
+                })
+             ,
+             success: (response) => {
+                 if (response) {
+                    swal("@Reporting.Resources.PriceRequest.AdminPriceRequest_",
+                        "@Reporting.Resources.PriceRequest.RequestDeleted",
+                        "success");
+                 } else {
+                    swal("@Reporting.Resources.PriceRequest.AdminPriceRequest_",
+                        "@Reporting.Resources.PriceRequest.ErrorOnDeleteRequest",
+                         "success");
+                 }
+             },
+             error: (err) => {
+                 swal("@Reporting.Resources.PriceRequest.PriceRequest_",
+                     "@Reporting.Resources.PriceRequest.ErrorOnDeleteRequest",
+                     "error");
+                 console.log("Price Request delete err:" + err);
+             }
+         });
+
+    </script>
+}

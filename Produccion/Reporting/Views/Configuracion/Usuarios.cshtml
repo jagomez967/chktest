@@ -1,0 +1,128 @@
+﻿@using Reporting.ViewModels
+@model List<ConfUsuarioVM>
+
+@{
+    ViewBag.Title = Reporting.Resources.Configuracion.lblUsuariosTitulo;
+}
+
+@section styles
+{
+    <style>
+        .btn-table-row {
+            padding: 5px;
+        }
+
+            .btn-table-row i {
+                padding: 0;
+            }
+    </style>
+}
+
+@Html.Partial("_SideMenu")
+
+<div class="titulo-pagina-fotos">
+    <a class="ecualiza-fotos always-visible animated slideInLeft" id="tabShowHide" href="#"></a>
+</div>
+
+<div class="container-fluid panel panel-default configurarTablero">
+    <h1>@Reporting.Resources.Configuracion.lblUsuariosTitulo2</h1>
+    <h5>@Reporting.Resources.Configuracion.lblUsuariosSubtitulo</h5>
+    <hr />
+
+    <div class="form-group">
+        @Html.TextBox("search-usuario", string.Empty, htmlAttributes: new { @id = "search-usuario", @placeholder = Reporting.Resources.Configuracion.placeholderUsuariosBuscar, @class = "form-control", @style = "width:400px;" })
+    </div>
+
+    <hr />
+    <div id="div-tabla-usuarios">
+        <table class="table table-responsive table-hover table-bordered">
+            <thead>
+                <tr>
+                    <th style="width:42px;"></th>
+                    <th class="hidden-xs">@Reporting.Resources.Configuracion.lblUsuariosTablaColNombre</th>
+                    <th>@Reporting.Resources.Configuracion.lblUsuariosTablaColApellido</th>
+                    <th class="hidden-xs">@Reporting.Resources.Configuracion.lblUsuariosTablaColEmail</th>
+                    <th style="width:30px;"></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var u in Model)
+                {
+                    <tr data-userid="@u.Id">
+                        <td>
+                            <div class="imgperfil-small">
+                                <img src="data:image/png;base64,@u.Imagenb64" onerror="this.src = '@Url.Content("~/images/perfil.jpg")';" />
+                            </div>
+                        </td>
+                        <td class="hidden-xs">@u.Nombre</td>
+                        <td>@u.Apellido</td>
+                        <td class="hidden-xs">@u.Email</td>
+                        <td>
+                            @if (User.IsInRole("Administrador") && !u.TieneUsuarioReporting)
+                            {
+                                <a href="@Url.Action("EditarUsuario", "Configuracion", new { Id=u.Id})" style="display:none;" class="btn btn-info pull-right btn-table-row btnEditarUsuario"><i class="fa fa-pencil fa-2x"></i></a>
+                                <input type="button" style="width:100%!important;max-width:100%!important" class="btn btn-danger pull-right btn-table-row btnActivarReporting" value="@Reporting.Resources.Configuracion.btnUsuariosActivarReporting" />
+                                <p class="activar-loading" style="display:none;">@Reporting.Resources.Configuracion.lblUsuariosActivando</p>
+                            }
+                            else
+                            {
+                                <a href="@Url.Action("EditarUsuario", "Configuracion", new { Id=u.Id})" class="btn btn-info pull-right btn-table-row"><i class="fa fa-pencil fa-2x"></i></a>
+                            }
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+@section scripts{
+    <script>
+        $(document).ready(function () {
+            $('body').on('click', '#tabShowHide', function () {
+                var val = $('body, .slide-menu').css('left') === '200px' ? '0px' : '200px';
+                var _padding = $('body, .slide-menu').css('left') != '200px' ? '200px' : '0px';
+                $('body, .slide-menu').css('left', val);
+                $("body").css('padding-right', _padding);
+            });
+
+            $('#search-usuario').on('keyup', function () {
+                var str = $(this).val();
+                $('#div-tabla-usuarios tbody tr').hide();
+                $('#div-tabla-usuarios tbody tr:icontains("' + str + '")').show();
+            });
+
+            $('.btnActivarReporting').on('click', function () {
+                var userid = $(this).closest('tr').attr('data-userid');
+                var self = $(this);
+                $.ajax({
+                    url: '@Url.Action("ActivarUsuarioReporting", "Configuracion")',
+                    method: 'POST',
+                    data: { IdUsuario: userid },
+                    dataType: 'json',
+                    beforeSend: function () {
+                        console.log(self);
+                        self.next().show();
+                        self.prop("disabled", true);
+                    },
+                    success: function (result) {
+                        if (result && result !== '') {
+                            alert(result);
+                        } else {
+                            self.prev().show();
+                            self.hide();
+                        }
+                    },
+                    error: function (error) {
+                        console.log(error);
+                    },
+                    complete: function () {
+                        self.prop("disabled", false);
+                        self.next().hide();
+                    }
+                });
+            });
+        });
+    </script>
+}
+

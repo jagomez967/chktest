@@ -1,0 +1,32 @@
+﻿@model List<Reporting.ViewModels.ForecastingConfirmado>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>@Reporting.Resources.Forecasting.cuenta</th>
+            <th>@Reporting.Resources.Forecasting.producto</th>
+            <th>@Reporting.Resources.Forecasting.fecha_confirmacion</th>
+            <th>@Reporting.Resources.Forecasting.usuario</th>
+            <th></th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var f in Model)
+        {
+            <tr>
+                <td>@f.Cadena</td>
+                <td>@f.Producto</td>
+                <td>@f.Fecha</td>
+                <td>@f.UsuarioApellido, @f.UsuarioNombre</td>
+                <td>
+                    @*<button class="btn btn-primary">Desbloquear</button>*@
+                    <a href="#" class="verforecasting" data-id="@f.Id"><span style="display:block;">@Reporting.Resources.Forecasting.ver</span></a>
+                </td>
+                <td>
+                    <a href="#" class="desbloquear" data-id="@f.Id"><span style="display:block;">@Reporting.Resources.Forecasting.desbloquear</span></a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

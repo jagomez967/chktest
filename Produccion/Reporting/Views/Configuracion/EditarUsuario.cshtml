@@ -1,0 +1,273 @@
+﻿@using Reporting.ViewModels
+@model ConfUsuarioVM
+
+@{
+    ViewBag.Title = Reporting.Resources.Configuracion.lblEditarUsuarioTitulo;
+}
+
+@section styles
+{
+    <style>
+        .btn-table-row {
+            padding: 5px;
+        }
+
+            .btn-table-row i {
+                padding: 0;
+            }
+    </style>
+}
+
+@Html.Partial("_SideMenu")
+
+<div class="titulo-pagina-fotos">
+    <a class="ecualiza-fotos always-visible animated slideInLeft" id="tabShowHide" href="#"></a>
+</div>
+
+<div class="container-fluid panel panel-default formulario-abm">
+
+    @if (ViewBag.Success != null)
+    {
+        <div class="alert alert-success" role="alert">
+            <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
+            @Reporting.Resources.Configuracion.lblEditarUsuarioGuardadoExitoso
+        </div>
+    }
+
+    @if (ViewBag.Error != null)
+    {
+        <div class="alert alert-danger" role="alert">
+            <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+            @Reporting.Resources.Configuracion.errEditarUsuarioGuardar
+            @if (ViewBag.ErrorMessage != null)
+            {
+                <p>@ViewBag.ErrorMessage</p>
+            }
+            <p>@Html.ValidationMessage("Err_Imagen_FileType")</p>
+            <p>@Html.ValidationMessage("Err_Imagen_FileSize")</p>
+        </div>
+    }
+
+    <h1>@Reporting.Resources.Configuracion.lblEditarUsuarioTitulo2</h1>
+    <hr />
+    @using (Html.BeginForm("EditarUsuario", "Configuracion", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {
+        @Html.AntiForgeryToken()
+        @Html.HiddenFor(m => m.Id)
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Imagen, htmlAttributes: new { @class = "control-label" })
+            <table>
+                <tbody>
+                    <tr>
+                        <td style="padding:10px 20px 10px 10px">
+                            <div class="imgperfil">
+                                @Html.HiddenFor(m => m.Imagenb64)
+                                <img src="data:image/png;base64,@Model.Imagenb64" onerror="this.src = '@Url.Content("~/images/perfil.jpg")';" />
+                            </div>
+                        </td>
+                        <td>
+                            <input type="file" class="form-control file-profile-img" name="Imagen" accept=".gif,.jpeg,.jpg,.pjpeg,.png" />
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <hr />
+
+        <div class="row">
+            <div class="col-xs-12 col-sm-6">
+                <div class="form-group">
+                    @Html.LabelFor(m => m.Nombre, htmlAttributes: new { @class = "control-label" })
+                    @Html.EditorFor(model => model.Nombre, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Nombre, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-xs-12 col-sm-6">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Apellido, htmlAttributes: new { @class = "control-label" })
+                    @Html.EditorFor(model => model.Apellido, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Apellido, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-xs-12 col-sm-6">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Telefono, htmlAttributes: new { @class = "control-label" })
+                    @Html.EditorFor(model => model.Telefono, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Telefono, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-xs-12 col-sm-6">
+                <div class="form-group">
+                    @Html.HiddenFor(m => m.Email)
+                    @Html.LabelFor(model => model.Email, htmlAttributes: new { @class = "control-label" })
+                    <p>@Html.DisplayFor(model => model.Email, new { htmlAttributes = new { @class = "form-control" } })</p>
+                </div>
+            </div>
+        </div>
+
+        if (User.IsInRole("Administrador"))
+        {
+            <div class="form-group">
+                <label style="margin-right:10px;">@Reporting.Resources.Configuracion.lblEditarUsuarioEsCheckpos</label>
+                @Html.CheckBox("EsCheckPos", Model.EsCheckPos, htmlAttributes: new { @class = "chkEsCheckPos" })
+            </div>
+        }
+
+        <div class="form-group">
+            <label style="margin-right:10px;">@Reporting.Resources.Configuracion.lblEditarUsuarioModificarCalendario</label>
+            @Html.CheckBox("PermiteModificarCalendario", Model.PermiteModificarCalendario, htmlAttributes: new { @class = "chkEsCheckPos" })
+        </div>
+
+
+        <div class="row">
+            <div class="col-xs-12 col-sm-6">
+                <input type="button" value="@Reporting.Resources.Configuracion.lblRegenerarUsuario" class="btn btn-primary" onclick="regeneraruser()" />
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-xs-12 col-sm-6">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.RolId, htmlAttributes: new { @class = "control-label" })
+                    @Html.DropDownListFor(model => model.RolId, Model.RoleList)
+                </div>
+            </div>
+        </div>
+
+        <hr />
+        <div class="form-group">
+            <input type="submit" value="@Reporting.Resources.Configuracion.lblEditarUsuarioGuardarCambios" class="btn btn-primary" />
+        </div>
+    }
+</div>
+
+
+<div class="modal fade" id="modalResetUser" tabindex="-1" role="dialog" aria-labelledby="modalResetUser-label" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="modalResetUser-label"><strong><span id="modaltitle-cuenta"></span></strong></h4>
+            </div>
+            <div class="modal-body">
+                <div class="table-responsive">
+                    <div class="col-lg-12" style="overflow:hidden">
+                        <div class="row">
+                            <label for="UserPassword" class="col-lg-4 control-label">Nueva Contraseña</label>
+                            <input type="password" id="UserPassword" name="password" placeholder="Contraseña" />
+                        </div>
+                        <div class="row">
+                            <label for="UserPasswordValidation" class="col-lg-4 control-label">Confirme Contraseña</label>
+                            <input type="password" id="UserPasswordValidation" name="passwordVal" placeholder="Confirme Contraseña" />
+                        </div>
+                        <div class="row" id="errPasswordVal" style="display:none">
+                            <span class="bg-danger text-danger">Las contraseñas no coinciden</span> 
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">@Reporting.Resources.Configuracion.lblCancelar</button>
+                <button type="button" class="btn btn-success" onclick="confirmNewPassword(@Model.Id)">@Reporting.Resources.Configuracion.lblConfirmar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section scripts{
+    <script>
+        function regeneraruser() {
+            $('#errPasswordVal').hide();
+            $('#UserPasswordValidation').val('');
+            $('#UserPassword').val('');
+            $('#modalResetUser').modal('show');
+        }
+        function confirmNewPassword(UserId) {
+            let newPassword = $('#UserPassword').val();
+            let valPassword = $('#UserPasswordValidation').val();
+            if (newPassword != valPassword) {
+                $('#errPasswordVal').show();
+                $('#errPasswordVal').addClass('animated flash');
+                $('#UserPasswordValidation').val('');
+                return;
+            }
+
+            $.ajax({
+                    url: '@Url.Action("RegenerarUsuario", "Configuracion")',
+                    method: 'POST',
+                    data: { UserId: UserId, Password: newPassword},
+                    dataType: 'json',
+                    success: function (result) {
+                        if (result != 'OK') {
+                            alert(result);
+                        }
+                    },
+                    error: function (error) {
+                        alert('error' + error);
+                    },
+                    complete: function () {
+                        $('#modalResetUser').modal('hide');
+                    }
+             });
+        }
+
+        $('#UserPassword, #UserPasswordValidation').keyup(function () {
+            $('#errPasswordVal').hide();            
+        });
+
+    $(document).ready(function () {
+        $('body').on('click', '#tabShowHide', function () {
+            var val = $('body, .slide-menu').css('left') === '200px' ? '0px' : '200px';
+            var _padding = $('body, .slide-menu').css('left') != '200px' ? '200px' : '0px';
+            $('body, .slide-menu').css('left', val);
+            $("body").css('padding-right', _padding);
+        });
+
+        $('.chkEsCheckPos').bootstrapSwitch({
+            size: 'mini',
+            onText: "@Reporting.Resources.Configuracion.lblOnOffLabelYes",
+                offText: "@Reporting.Resources.Configuracion.lblOnOffLabelNo"
+            });
+
+            $(".file-profile-img").change(function () {
+                var val = $(this).val().toLowerCase();
+                var regex = new RegExp("(.*?)\.(jpeg|jpg|png|gif|pjpeg)$");
+                if (!(regex.test(val))) {
+                    $(this).val('');
+                    alert('@Reporting.Resources.Configuracion.errImagenFormato');
+                    return false;
+                }
+
+                var file = this.files[0];
+                if (file.size > 512000) {
+                    alert('@Reporting.Resources.Configuracion.errImagenSize500kb');
+                    return false;
+                }
+
+                readURLFoto(this);
+            });
+
+            function readURLFoto(input) {
+                if (input.files && input.files[0]) {
+                    var reader = new FileReader();
+                    reader.onload = function (e) {
+                        $(input).parents('tr').find('.imgperfil img').attr('src', e.target.result);
+                    }
+                    reader.readAsDataURL(input.files[0]);
+                }
+            }
+        });
+    </script>
+}
+

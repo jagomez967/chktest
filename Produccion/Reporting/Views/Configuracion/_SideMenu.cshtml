@@ -1,0 +1,92 @@
+﻿<div class="filtroReporting">
+    <div id="filtrostablero" class="filtroitems">
+        <ul class="filtros scrollable-menu filtros-configuracion">
+            @if (User.IsInRole("Administrador"))
+            {
+                <li class="filtroitem filtrocheck collapsed expanded">
+                    <div class="filtroitemtitulo">
+                        <span>@Reporting.Resources.Configuracion.lblAdministracion</span>
+                        <span class="text-danger">
+                            <i class="fa fa-warning pull-right"></i>
+                        </span>
+                    </div>
+                    <div class="filtrochecks filtrochecks-configuracion">
+                        <ul class="listfiltrochecks scrollable-menu single">
+                            <li>
+                                <div class="itmcheckbox">
+                                    <span><a href="@Url.Action("AdministrarFiltros", "Configuracion")">@Reporting.Resources.Configuracion.lblAsignacionFiltros</a></span>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="itmcheckbox">
+                                    <span><a href="@Url.Action("AdministrarObjetos", "Configuracion")">@Reporting.Resources.Configuracion.lblAsignacionObjetos</a></span>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="clearfix"></div>
+                </li>
+            }
+
+            <li class="filtroitem filtrocheck collapsed expanded">
+                <div class="filtroitemtitulo">
+                    <span>@Reporting.Resources.Configuracion.lblEmpresa</span>
+                </div>
+                <div class="filtrochecks filtrochecks-configuracion">
+                    <ul class="listfiltrochecks scrollable-menu single ">
+                        <li>
+                            <div class="itmcheckbox">
+                                <span><a href="@Url.Action("MarcaBlanca","Configuracion")">@Reporting.Resources.Configuracion.lblMarcaBlanca</a></span>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="clearfix"></div>
+            </li>
+            <li class="filtroitem filtrocheck collapsed expanded">
+                <div class="filtroitemtitulo">
+                    <span>@Reporting.Resources.Configuracion.lblUsuariosRoles</span>
+                </div>
+                <div class="filtrochecks filtrochecks-configuracion">
+                    <ul class="listfiltrochecks scrollable-menu single ">
+                        <li>
+                            <div class="itmcheckbox">
+                                <span><a href="@Url.Action("Usuarios","Configuracion")">@Reporting.Resources.Configuracion.lblUsuarios</a></span>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="itmcheckbox">
+                                <span><a href="@Url.Action("Roles","Configuracion")">@Reporting.Resources.Configuracion.lblRoles</a></span>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="clearfix"></div>
+            </li>
+            <li class="filtroitem filtrocheck collapsed expanded">
+                <div class="filtroitemtitulo">
+                    <span>@Reporting.Resources.Configuracion.lblReporting</span>
+                </div>
+                <div class="filtrochecks filtrochecks-configuracion">
+                    <ul class="listfiltrochecks scrollable-menu single ">
+                        <li>
+                            <div class="itmcheckbox">
+                                <span><a href="@Url.Action("Filtros","Configuracion")">@Reporting.Resources.Configuracion.lblFiltros</a></span>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="itmcheckbox">
+                                <span><a href="@Url.Action("Objetos","Configuracion")">@Reporting.Resources.Configuracion.lblObjetos</a></span>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="clearfix"></div>
+            </li>
+        </ul>
+    </div>
+
+</div>

@@ -1,0 +1,14 @@
+﻿@model System.Web.Mvc.HandleErrorInfo
+
+@{
+    ViewBag.Title = "Error";
+}
+
+<div class="container-fluid panel panel-default formulario-abm">
+    <div class="error-generico">
+        <h1>@Reporting.Resources.Shared.lblErrorTitulo</h1>
+        <p>@Reporting.Resources.Shared.lblErrorMensaje1</p>
+        <p>@Reporting.Resources.Shared.lblErrorMensaje2 <a href="mailto:soporte@checkpos.com">@Reporting.Resources.Shared.lblSoporteCheckPOS</a> @Reporting.Resources.Shared.lblErrorMensaje3</p>
+    </div>
+</div>
+

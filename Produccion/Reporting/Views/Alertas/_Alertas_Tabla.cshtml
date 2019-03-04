@@ -1,0 +1,56 @@
+﻿@model IEnumerable<Reporting.ViewModels.AlertaItemList>
+
+<table class="table table-bordered tablerosTabla">
+    <tr>
+        <th style="width:auto;">
+            @Reporting.Resources.Alertas.lblTableColNombre
+        </th>
+        <th style="width:150px;">
+            @Reporting.Resources.Alertas.lblTableColTipoReporte
+        </th>
+        <th style="width:auto;">
+            @Reporting.Resources.Alertas.lblTableColDestinatarios
+        </th>
+        <th style="width:60px;">
+            @Reporting.Resources.Alertas.lblTableColActivo
+        </th>
+        <th style="width:150px;"></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Descripcion)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TipoReporte)
+            </td>
+            <td>
+                @foreach (string s in item.Destinatarios.Replace(";", "").Split(','))
+                {
+                    <span class="label label-warning">@s</span>
+                }
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Activo)
+            </td>
+            <td>
+                @if (MyHelpers.IsInRole("editarAlertas"))
+                {
+                    @Html.ActionLink(Reporting.Resources.Alertas.btnEditarLabel, "Editar", new { id = item.Id }) 
+                }
+                @if (MyHelpers.IsInRole("verAlertas"))
+                {
+                    @Html.ActionLink(Reporting.Resources.Alertas.btnVerLabel, "Ver", new { id = item.Id }) 
+                }
+                 @if (MyHelpers.IsInRole("eliminarAlertas"))
+                 {
+                    @Html.ActionLink(Reporting.Resources.Alertas.btnEliminarLabel, "Eliminar", new { id = item.Id })
+                 }
+
+                
+            </td>
+        </tr>
+    }
+</table>

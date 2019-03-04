@@ -1,0 +1,26 @@
+﻿@using Reporting.ViewModels
+@model List<ConfFiltroVM>
+
+@if (Model!=null && Model.Count > 0)
+{
+    <table class="table table-responsive table-hover table-bordered">
+        <thead>
+            <tr>
+                <th>@Reporting.Resources.Configuracion.lblTablaColNombreDefecto</th>
+                <th>@Reporting.Resources.Configuracion.lblTablaColVisible</th>
+                <th colspan="2">@Reporting.Resources.Configuracion.lblTablaColNombreAsignadoPorUsuario</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var f in Model)
+            {
+                <tr data-filtro-id="@f.Id">
+                    <td>@f.Nombre</td>
+                    <td>@Html.CheckBox(string.Format("filtro_{0}", f.Id), f.Visible, htmlAttributes: new { @class="filtroactivo"})</td>
+                    <td>@f.NombreAsignadoPorUsuario</td>
+                    <td style="width:50px;"><a style="width:50px;" href="#" class="btn btn-info pull-right btn-editar-nombre"><i class="fa fa-pencil fa-2x"></i></a></td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}

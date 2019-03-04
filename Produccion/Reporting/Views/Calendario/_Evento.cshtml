@@ -1,0 +1,34 @@
+﻿@model Reporting.ViewModels.EventoCalendarioVM
+
+<table class="table">
+    <tbody>
+        <tr>
+            <td><strong>@Reporting.Resources.Calendario.lblEventoTableColIdEvento</strong></td>
+            <td>@Model.Id</td>
+        </tr>
+        <tr>
+            <td><strong>@Reporting.Resources.Calendario.lblEventoTableColFecha</strong></td>
+            <td>@Model.Date</td>
+        </tr>
+        <tr>
+            <td><strong>@Reporting.Resources.Calendario.lblEventoTableColUsuario</strong></td>
+            <td>@Model.NombreUsuario</td>
+        </tr>
+        <tr>
+            <td><strong>@Reporting.Resources.Calendario.lblEventoTableColPuntoDeVenta</strong></td>
+            <td>@Model.NombrePuntoDeVenta</td>
+        </tr>
+        <tr>
+            <td><strong>@Reporting.Resources.Calendario.lblEventoTableColConcepto</strong></td>
+            <td>@Model.Concepto</td>
+        </tr>
+        <tr>
+            <td><strong>@Reporting.Resources.Calendario.lblEventoTableColObservaciones</strong></td>
+            <td>@Model.Observaciones</td>
+        </tr>
+        <tr>
+            <td><strong>@Reporting.Resources.Calendario.lblEventoTableColCodigoEvento</strong></td>
+            <td>@Model.CodigoEvento</td>
+        </tr>
+    </tbody>
+</table>

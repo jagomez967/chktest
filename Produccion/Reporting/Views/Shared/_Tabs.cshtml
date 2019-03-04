@@ -1,0 +1,43 @@
+﻿@using Reporting.ViewModels
+@model ListTabViewModel
+
+<div class="pull-left" style="width:100%;">
+    <ul class="nav nav-tabs tabs-ReportingTablero droptabs" role="tablist">
+        <a class="ecualiza always-visible animated slideInLeft" id="tabShowHide" href='#'></a>
+        @foreach (var tab in Model.Tabs)
+        {
+            if (tab.Active)
+            {
+                <li data-tabid="@tab.Id" class="active"><a href='#' class="tabItem" data-toggle="tab">@tab.Titulo</a></li>
+            }
+            else
+            {
+                <li data-tabid="@tab.Id"><a href='#' class="tabItem" data-toggle="tab">@tab.Titulo</a></li>
+            }
+        }
+
+        @if (Model.IdModulo == 1)
+        {
+            if (MyHelpers.IsInRole("crearTablero") || MyHelpers.IsInRole("editarTablero") || MyHelpers.IsInRole("administrarTablero"))
+            {
+                <a href="#" class="dropdown-toggle pull-right" data-toggle="dropdown" aria-expanded="false" style="padding-top:8px;">
+                    <i class=" fa fa-cog configcogtab"></i>
+                </a>
+                <ul class="dropdown-menu config pull-right" role="menu">
+                    @if (MyHelpers.IsInRole("crearTablero"))
+                    {
+                        <li><a href="@Url.Action("Crear","Tableros")">@Reporting.Resources.Tableros.linkCrearTablero</a></li>
+                    }
+                    @if (MyHelpers.IsInRole("editarTablero"))
+                    {
+                        <li><a id="linkEditarTablero" href="@Url.Action("Editar", "Tableros")/@Model.Tabs.First(t=>t.Active).Id">@Reporting.Resources.Tableros.linkEditarTablero</a></li>
+                    }
+                    @if (MyHelpers.IsInRole("administrarTablero"))
+                    {
+                        <li><a href="@Url.Action("Administrar","Tableros")">@Reporting.Resources.Tableros.linkAdministrarTablero</a></li>
+                    }
+                </ul>
+            }
+        }
+    </ul>
+</div>

@@ -1,0 +1,163 @@
+﻿@model List<Reporting.ViewModels.ForcesatingConfirmadosViewModel>
+
+@{
+    ViewBag.Title = Reporting.Resources.Forecasting.psi_confirmados;
+}
+
+<div id="optionsmenu" class="row">
+    <div class="col-sm-8 col-sm-offset-2">
+        <div class="container-fluid panel panel-default configurarTablero">
+
+            <h1>@Reporting.Resources.Forecasting.psi_confirmados</h1>
+            <p>@Reporting.Resources.Forecasting.lista_de_psi_confirmados_por_vendedores</p>
+
+            <div id="datos">
+                @foreach (var m in Model)
+                {
+                    <div class="userrow row">
+                        <div class="col-sm-12">
+                            <h3>@m.Canal</h3>
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th style="width:25%">@Reporting.Resources.Forecasting.cadena</th>
+                                        <th>@Reporting.Resources.Forecasting.confirmado</th>
+                                        <th>@Reporting.Resources.Forecasting.usuario</th>
+                                        <th>@Reporting.Resources.Forecasting.fecha</th>
+                                        <th style="width:100px"></th>
+                                        <th style="width:135px"></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var c in m.Items)
+                                    {
+                                        <tr>
+                                            <td>@c.Cadena.ToUpper()</td>
+                                            <td class="confirmado @(c.IdUsuario!=null?"text-success":"")">@(c.IdUsuario!=null ? @Reporting.Resources.Forecasting.si : @Reporting.Resources.Forecasting.no)</td>
+                                            <td class="usuario">@(c.IdUsuario!=null ? string.Format("{0}, {1}", c.Apellido, c.Nombre) : string.Empty )</td>
+                                            <td class="fecha">@c.Fecha</td>
+                                            <td class="history">
+                                                @if (c.IdUsuario!=null)
+                                                {
+                                                    <a class="historyfc btn btn-block btn-xs btn-default" data-idcadena="@c.IdCadena" data-fecha="@c.Fecha"><i class="fa fa-spin fa-spinner" style="display:none;"></i><i class="fa fa-history btnicon"></i> @Reporting.Resources.Forecasting.historial</a>
+                                                }
+                                            </td>
+                                            <td class="desbloquear">
+                                                @if (c.IdUsuario!=null)
+                                                { 
+                                                    <a class="desbloquearfc btn btn-block btn-xs btn-warning" data-idcadena="@c.IdCadena" data-fecha="@c.Fecha"><i class="fa fa-spin fa-spinner" style="display:none;"></i><i class="fa fa-unlock btnicon"></i> @Reporting.Resources.Forecasting.desbloquear</a>
+                                                }
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                }
+            </div>
+
+            <div id="nohaydatos" class="row" style="display:@(Model != null && Model.Count > 0?"none":"block")">
+                <div class="col-sm-8 col-sm-offset-2 text-center">
+                    <h3>No se encontraron datos</h3>
+                    <p>No hay casos de Forecasting confirmados todavía</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modalforecasting" tabindex="-1" role="dialog" aria-labelledby="modalforecasting-label" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="modalforecasting-label"><strong><span id="modaltitle-cuenta"></span></strong></h4>
+            </div>
+            <div class="modal-body">
+                <div class="table-responsive" id="forecastingdata"></div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script>
+        $(document).ready(function () {
+            $('.historyfc').on('click', function () {
+                var idcadena = $(this).attr('data-idcadena');
+
+                if (!idcadena || isNaN(idcadena)) {
+                    return;
+                }
+
+                var self = $(this);
+
+                $.ajax({
+                    url: '@Url.Action("GetFcHistory","Forecasting")',
+                    dataType: 'html',
+                    method: 'POST',
+                    data: { idcadena: idcadena },
+                    beforeSend: function () {
+                        self.prop('disabled', true);
+                        self.find('.fa-spinner').show();
+                        self.find('.btnicon').hide();
+                    },
+                    success: function (html) {
+                        if (html) {
+                            $('#modalforecasting').find('#modaltitle-cuenta').text('');
+                            $('#forecastingdata').html(html);
+                            $('#modalforecasting').modal('show');
+                        }
+                    },
+                    error: function (err) { console.log('Partial PSI err:' + err); },
+                    complete: function () {
+                        self.prop('disabled', false);
+                        self.find('.fa-spinner').hide();
+                        self.find('.btnicon').show();
+                    }
+                })
+            });
+
+            $('.desbloquearfc').on('click', function () {
+                var idcadena = $(this).attr('data-idcadena');
+
+                if (!idcadena || isNaN(idcadena)) {
+                    return;
+                }
+
+                var self = $(this);
+
+                $.ajax({
+                    url: '@Url.Action("DesbloquearFC","Forecasting")',
+                    dataType: 'html',
+                    method: 'POST',
+                    data: { idcadena: idcadena },
+                    beforeSend: function () {
+                        self.prop('disabled', true);
+                        self.find('.fa-spinner').show();
+                        self.find('.btnicon').hide();
+                    },
+                    success: function (html) {
+                        if (html == 'true') {
+                            self.parents('tr').find('td.confirmado').text('NO');
+                            self.parents('tr').find('td.usuario').text('');
+                            self.parents('tr').find('td.fecha').text('');
+                            self.parents('tr').find('td.history').html(null);
+                            self.parents('tr').find('td.desbloquear').html(null);
+                        }
+                    },
+                    error: function (err) { console.log('Desbloquear PSI err:' + err); },
+                    complete: function () {
+                        self.prop('disabled', false);
+                        self.find('.fa-spinner').hide();
+                        self.find('.btnicon').show();
+                    }
+                })
+            });
+        });
+    </script>
+}

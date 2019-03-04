@@ -1,0 +1,2016 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>
+    </ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{65D89980-8BCC-4106-B9AC-10F5E81A21DF}</ProjectGuid>
+    <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Reporting</RootNamespace>
+    <AssemblyName>Reporting</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <MvcBuildViews>false</MvcBuildViews>
+    <UseIISExpress>true</UseIISExpress>
+    <IISExpressSSLPort />
+    <IISExpressAnonymousAuthentication />
+    <IISExpressWindowsAuthentication />
+    <IISExpressUseClassicPipelineMode />
+    <Use64BitIISExpress />
+    <UseGlobalApplicationHostFile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Ninject">
+      <HintPath>..\packages\Ninject.3.0.1.10\lib\net45-full\Ninject.dll</HintPath>
+    </Reference>
+    <Reference Include="Ninject.Web.Common">
+      <HintPath>..\packages\Ninject.Web.Common.3.0.0.7\lib\net45-full\Ninject.Web.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="Ninject.Web.Mvc">
+      <HintPath>..\packages\Ninject.MVC3.3.0.0.6\lib\net45-full\Ninject.Web.Mvc.dll</HintPath>
+    </Reference>
+    <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
+      <HintPath>..\packages\NLog.4.5.10\lib\net45\NLog.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.IO.Compression" />
+    <Reference Include="System.Net.Http.Formatting, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Client.5.2.3\lib\net45\System.Net.Http.Formatting.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Transactions" />
+    <Reference Include="System.Web.DynamicData" />
+    <Reference Include="System.Web.Entity" />
+    <Reference Include="System.Web.ApplicationServices" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Web.Http, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Core.5.2.3\lib\net45\System.Web.Http.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Http.Owin">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Owin.5.2.3\lib\net45\System.Web.Http.Owin.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Web.Abstractions" />
+    <Reference Include="System.Web.Routing" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.EnterpriseServices" />
+    <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http">
+    </Reference>
+    <Reference Include="System.Net.Http.WebRequest">
+    </Reference>
+    <Reference Include="System.Web.Helpers, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.2\lib\net45\System.Web.Helpers.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Mvc, Version=__MvcPagesVersion__, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.Mvc.5.2.2\lib\net45\System.Web.Mvc.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Optimization">
+      <HintPath>..\packages\Microsoft.AspNet.Web.Optimization.1.1.3\lib\net40\System.Web.Optimization.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.Razor.3.2.2\lib\net45\System.Web.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.2\lib\net45\System.Web.WebPages.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Deployment, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.2\lib\net45\System.Web.WebPages.Deployment.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.2\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="WebActivator">
+      <HintPath>..\packages\WebActivator.1.5\lib\net40\WebActivator.dll</HintPath>
+    </Reference>
+    <Reference Include="WebGrease">
+      <Private>True</Private>
+      <HintPath>..\packages\WebGrease.1.5.2\lib\WebGrease.dll</HintPath>
+    </Reference>
+    <Reference Include="Antlr3.Runtime">
+      <Private>True</Private>
+      <HintPath>..\packages\Antlr.3.4.1.9004\lib\Antlr3.Runtime.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\packages\Newtonsoft.Json.6.0.4\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework">
+      <HintPath>..\packages\EntityFramework.6.1.1\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer">
+      <HintPath>..\packages\EntityFramework.6.1.1\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.Identity.Core">
+      <HintPath>..\packages\Microsoft.AspNet.Identity.Core.2.1.0\lib\net45\Microsoft.AspNet.Identity.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.Identity.Owin">
+      <HintPath>..\packages\Microsoft.AspNet.Identity.Owin.2.1.0\lib\net45\Microsoft.AspNet.Identity.Owin.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.Identity.EntityFramework">
+      <HintPath>..\packages\Microsoft.AspNet.Identity.EntityFramework.2.1.0\lib\net45\Microsoft.AspNet.Identity.EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="Owin">
+      <HintPath>..\packages\Owin.1.0\lib\net40\Owin.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin">
+      <HintPath>..\packages\Microsoft.Owin.3.0.0\lib\net45\Microsoft.Owin.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Host.SystemWeb">
+      <HintPath>..\packages\Microsoft.Owin.Host.SystemWeb.3.0.0\lib\net45\Microsoft.Owin.Host.SystemWeb.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security">
+      <HintPath>..\packages\Microsoft.Owin.Security.3.0.0\lib\net45\Microsoft.Owin.Security.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security.Facebook">
+      <HintPath>..\packages\Microsoft.Owin.Security.Facebook.3.0.0\lib\net45\Microsoft.Owin.Security.Facebook.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security.Cookies">
+      <HintPath>..\packages\Microsoft.Owin.Security.Cookies.3.0.0\lib\net45\Microsoft.Owin.Security.Cookies.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security.OAuth">
+      <HintPath>..\packages\Microsoft.Owin.Security.OAuth.3.0.0\lib\net45\Microsoft.Owin.Security.OAuth.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security.Google">
+      <HintPath>..\packages\Microsoft.Owin.Security.Google.3.0.0\lib\net45\Microsoft.Owin.Security.Google.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security.Twitter">
+      <HintPath>..\packages\Microsoft.Owin.Security.Twitter.3.0.0\lib\net45\Microsoft.Owin.Security.Twitter.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security.MicrosoftAccount">
+      <HintPath>..\packages\Microsoft.Owin.Security.MicrosoftAccount.3.0.0\lib\net45\Microsoft.Owin.Security.MicrosoftAccount.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="App_Start\BundleConfig.cs">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Compile>
+    <Compile Include="App_Start\FilterConfig.cs" />
+    <Compile Include="App_Start\IdentityConfig.cs" />
+    <Compile Include="App_Start\NinjectWebCommon.cs" />
+    <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="App_Start\Startup.Auth.cs">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Compile>
+    <Compile Include="Binders\FiltrosModelBinder.cs" />
+    <Compile Include="Controllers\AlertasController.cs" />
+    <Compile Include="Controllers\CalendarioController.cs" />
+    <Compile Include="Controllers\ConfiguracionController.cs" />
+    <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\BaseController.cs" />
+    <Compile Include="Controllers\DatosController.cs" />
+    <Compile Include="Controllers\ForecastingController.cs" />
+    <Compile Include="Controllers\GeoController.cs" />
+    <Compile Include="Controllers\ImagenesController.cs" />
+    <Compile Include="Controllers\ManageController.cs" />
+    <Compile Include="Controllers\PriceRequestController.cs" />
+    <Compile Include="Controllers\TablerosController.cs" />
+    <Compile Include="Global.asax.cs">
+      <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
+    <Compile Include="Helpers\CsvActionResult.cs" />
+    <Compile Include="Filters\CustomActionFilters.cs" />
+    <Compile Include="Helpers\CultureHelper.cs" />
+    <Compile Include="Infrastructure\NinjectDependencyResolver.cs" />
+    <Compile Include="Migrations\201509291316348_Initial.cs" />
+    <Compile Include="Migrations\201509291316348_Initial.Designer.cs">
+      <DependentUpon>201509291316348_Initial.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201511191241185_fotoUsuario.cs" />
+    <Compile Include="Migrations\201511191241185_fotoUsuario.Designer.cs">
+      <DependentUpon>201511191241185_fotoUsuario.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201511260045462_qwerty.cs" />
+    <Compile Include="Migrations\201511260045462_qwerty.Designer.cs">
+      <DependentUpon>201511260045462_qwerty.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\Configuration.cs" />
+    <Compile Include="Models\AccountViewModels.cs" />
+    <Compile Include="Models\IdentityModels.cs" />
+    <Compile Include="Models\ManageViewModels.cs" />
+    <Compile Include="MyHelpers\MyHelpers.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Resources\Account.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Account.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Resources\Account.en.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Account.en.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Resources\Account.fr.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Account.fr.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Resources\Account.de.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Account.de.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Resources\Account.it.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Account.it.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Resources\Account.pt.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Account.pt.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Resources\Alertas.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Alertas.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Resources\Alertas.en.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Alertas.en.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Resources\Alertas.fr.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Alertas.fr.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Resources\Alertas.de.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Alertas.de.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Resources\Alertas.it.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Alertas.it.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Resources\Alertas.pt.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Alertas.pt.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Resources\Calendario.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Calendario.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Resources\Calendario.en.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Calendario.en.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Resources\Calendario.fr.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Calendario.fr.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Resources\Calendario.de.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Calendario.de.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Resources\Calendario.it.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Calendario.it.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Resources\Calendario.pt.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Calendario.pt.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Resources\Configuracion.Designer.cs">
+      <DependentUpon>Configuracion.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
+    <Compile Include="Resources\Configuracion.en.Designer.cs">
+      <DependentUpon>Configuracion.en.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
+    <Compile Include="Resources\Configuracion.fr.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Configuracion.fr.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Resources\Configuracion.de.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Configuracion.de.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Resources\Configuracion.it.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Configuracion.it.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Resources\Configuracion.pt.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Configuracion.pt.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Resources\Datos.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Datos.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Resources\Datos.en.Designer.cs">
+      <DependentUpon>Datos.en.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
+    <Compile Include="Resources\Datos.fr.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Datos.fr.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Resources\Datos.de.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Datos.de.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Resources\Datos.it.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Datos.it.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Resources\Datos.pt.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Datos.pt.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Resources\Filtros.Designer.cs">
+      <DependentUpon>Filtros.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
+    <Compile Include="Resources\Filtros.en.Designer.cs">
+      <DependentUpon>Filtros.en.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
+    <Compile Include="Resources\Filtros.fr.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Filtros.fr.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Resources\Filtros.de.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Filtros.de.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Resources\Filtros.it.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Filtros.it.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Resources\Filtros.pt.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Filtros.pt.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Resources\Forecasting.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Forecasting.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Resources\Graficos.Designer.cs">
+      <DependentUpon>Graficos.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
+    <Compile Include="Resources\Graficos.en.Designer.cs">
+      <DependentUpon>Graficos.en.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
+    <Compile Include="Resources\Graficos.fr.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Graficos.fr.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Resources\Graficos.de.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Graficos.de.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Resources\Graficos.it.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Graficos.it.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Resources\Graficos.pt.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Graficos.pt.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Resources\Imagenes.Designer.cs">
+      <DependentUpon>Imagenes.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
+    <Compile Include="Resources\Imagenes.en.Designer.cs">
+      <DependentUpon>Imagenes.en.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
+    <Compile Include="Resources\Imagenes.fr.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Imagenes.fr.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Resources\Imagenes.de.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Imagenes.de.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Resources\Imagenes.it.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Imagenes.it.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Resources\Imagenes.pt.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Imagenes.pt.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Resources\Mapas.Designer.cs">
+      <DependentUpon>Mapas.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
+    <Compile Include="Resources\Mapas.en.Designer.cs">
+      <DependentUpon>Mapas.en.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
+    <Compile Include="Resources\Mapas.fr.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Mapas.fr.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Resources\Mapas.de.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Mapas.de.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Resources\Mapas.it.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Mapas.it.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Resources\Mapas.pt.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Mapas.pt.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Resources\PriceRequest.pt.Designer.cs">
+      <DependentUpon>PriceRequest.pt.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Resources\PriceRequest.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>PriceRequest.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Resources\Shared.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Shared.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Resources\Shared.en.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Shared.en.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Resources\Shared.fr.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Shared.fr.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Resources\Shared.de.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Shared.de.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Resources\Shared.it.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Shared.it.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Resources\Shared.pt.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Shared.pt.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Resources\Tableros.Designer.cs">
+      <DependentUpon>Tableros.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
+    <Compile Include="Resources\Tableros.en.Designer.cs">
+      <DependentUpon>Tableros.en.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
+    <Compile Include="Resources\Tableros.fr.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Tableros.fr.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Resources\Tableros.de.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Tableros.de.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Resources\Tableros.it.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Tableros.it.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Resources\Tableros.pt.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Tableros.pt.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Startup.cs" />
+    <Compile Include="ViewModels\AccountViewModel.cs" />
+    <Compile Include="ViewModels\AlertasViewModel.cs" />
+    <Compile Include="ViewModels\CalendarioVM.cs" />
+    <Compile Include="ViewModels\CompetitorAccountViewModel.cs" />
+    <Compile Include="ViewModels\CompetitorGapViewModel.cs" />
+    <Compile Include="ViewModels\ConfiguracionViewModels.cs" />
+    <Compile Include="ViewModels\ForecastingViewModels.cs" />
+    <Compile Include="ViewModels\GapProductViewModel.cs" />
+    <Compile Include="ViewModels\GapRetailViewModel.cs" />
+    <Compile Include="ViewModels\GeoInfoPDVVM.cs" />
+    <Compile Include="ViewModels\GeoInfoReport.cs" />
+    <Compile Include="ViewModels\GeoViewModel.cs" />
+    <Compile Include="ViewModels\GraficosViewModel.cs" />
+    <Compile Include="ViewModels\ImagenesViewModel.cs" />
+    <Compile Include="ViewModels\PhotoProductGroupVM.cs" />
+    <Compile Include="ViewModels\PhotoProductViewModel.cs" />
+    <Compile Include="ViewModels\PriceAlertViewModel.cs" />
+    <Compile Include="ViewModels\PriceRequestFormViewModel.cs" />
+    <Compile Include="ViewModels\PriceRequestHistory.cs" />
+    <Compile Include="ViewModels\PriceRequestPolicies.cs" />
+    <Compile Include="ViewModels\PriceRequestSendDetails.cs" />
+    <Compile Include="ViewModels\PriceRequestStatus.cs" />
+    <Compile Include="ViewModels\PriceRequestViewModel.cs" />
+    <Compile Include="ViewModels\ProductGapDetailViewModel.cs" />
+    <Compile Include="ViewModels\ProductPR.cs" />
+    <Compile Include="ViewModels\ProductViewModel.cs" />
+    <Compile Include="ViewModels\ReportDetailVM.cs" />
+    <Compile Include="ViewModels\RequestDownPriceItem.cs" />
+    <Compile Include="ViewModels\RequestDownPriceTable.cs" />
+    <Compile Include="ViewModels\RequestDownPriceTableRegion.cs" />
+    <Compile Include="ViewModels\RequestTableByCountry.cs" />
+    <Compile Include="ViewModels\SeguridadViewModel.cs" />
+    <Compile Include="ViewModels\TableroViewModel.cs" />
+    <Compile Include="ViewModels\ViewModelPasswordUser.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Content\animate.css" />
+    <Content Include="Content\backgroundsize.min.htc" />
+    <Content Include="Content\bootstrap-multiselect.css" />
+    <Content Include="Content\bootstrap-switch.css">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\bootstrap-switch.min.css">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\bootstrap-theme.css" />
+    <Content Include="Content\bootstrap-theme.min.css" />
+    <Content Include="Content\bootstrap.css" />
+    <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\buttons.dataTables.min.css">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\CrearTablero.css" />
+    <Content Include="Content\datepicker.css" />
+    <Content Include="Content\datepicker.min.css" />
+    <Content Include="Content\downloadFotos\logo.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\downloadFotos\lupa.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\downloadFotos\script.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\downloadFotos\style.css">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\font-awesome.css" />
+    <Content Include="Content\font-awesome.min.css" />
+    <Content Include="Content\footable.bootstrap.css" />
+    <Content Include="Content\footable.bootstrap.min.css" />
+    <Content Include="Content\fullcalendar.min.css" />
+    <Content Include="Content\fullcalendar.print.min.css" />
+    <Content Include="Content\gmaps-sidebar.css" />
+    <Content Include="Content\ie8.css" />
+    <Content Include="Content\image-picker.css" />
+    <Content Include="Content\jquery-ui.css" />
+    <Content Include="Content\jquery-ui.min.css" />
+    <Content Include="Content\jquery-ui.structure.css" />
+    <Content Include="Content\jquery-ui.structure.min.css" />
+    <Content Include="Content\jquery-ui.theme.css" />
+    <Content Include="Content\jquery-ui.theme.min.css" />
+    <Content Include="Content\jquery.circliful.css" />
+    <Content Include="Content\map-icons.css" />
+    <Content Include="Content\metisMenu.css" />
+    <Content Include="Content\MisTableros.css" />
+    <Content Include="Content\MonthPicker.css" />
+    <Content Include="Content\select2.css" />
+    <Content Include="Content\select2.min.css" />
+    <Content Include="Content\Site.css" />
+    <Content Include="Content\style.css" />
+    <Content Include="Content\TablerosList.css" />
+    <Content Include="Content\themes\base\accordion.css" />
+    <Content Include="Content\themes\base\all.css" />
+    <Content Include="Content\themes\base\autocomplete.css" />
+    <Content Include="Content\themes\base\base.css" />
+    <Content Include="Content\themes\base\button.css" />
+    <Content Include="Content\themes\base\core.css" />
+    <Content Include="Content\themes\base\datepicker.css" />
+    <Content Include="Content\themes\base\dialog.css" />
+    <Content Include="Content\themes\base\draggable.css" />
+    <Content Include="Content\themes\base\images\ui-bg_flat_0_aaaaaa_40x100.png" />
+    <Content Include="Content\themes\base\images\ui-bg_flat_75_ffffff_40x100.png" />
+    <Content Include="Content\themes\base\images\ui-bg_glass_55_fbf9ee_1x400.png" />
+    <Content Include="Content\themes\base\images\ui-bg_glass_65_ffffff_1x400.png" />
+    <Content Include="Content\themes\base\images\ui-bg_glass_75_dadada_1x400.png" />
+    <Content Include="Content\themes\base\images\ui-bg_glass_75_e6e6e6_1x400.png" />
+    <Content Include="Content\themes\base\images\ui-bg_glass_95_fef1ec_1x400.png" />
+    <Content Include="Content\themes\base\images\ui-bg_highlight-soft_75_cccccc_1x100.png" />
+    <Content Include="Content\themes\base\images\ui-icons_222222_256x240.png" />
+    <Content Include="Content\themes\base\images\ui-icons_2e83ff_256x240.png" />
+    <Content Include="Content\themes\base\images\ui-icons_444444_256x240.png" />
+    <Content Include="Content\themes\base\images\ui-icons_454545_256x240.png" />
+    <Content Include="Content\themes\base\images\ui-icons_555555_256x240.png" />
+    <Content Include="Content\themes\base\images\ui-icons_777620_256x240.png" />
+    <Content Include="Content\themes\base\images\ui-icons_777777_256x240.png" />
+    <Content Include="Content\themes\base\images\ui-icons_888888_256x240.png" />
+    <Content Include="Content\themes\base\images\ui-icons_cc0000_256x240.png" />
+    <Content Include="Content\themes\base\images\ui-icons_cd0a0a_256x240.png" />
+    <Content Include="Content\themes\base\images\ui-icons_ffffff_256x240.png" />
+    <Content Include="Content\themes\base\jquery-ui.css" />
+    <Content Include="Content\themes\base\jquery-ui.min.css" />
+    <Content Include="Content\themes\base\menu.css" />
+    <Content Include="Content\themes\base\progressbar.css" />
+    <Content Include="Content\themes\base\resizable.css" />
+    <Content Include="Content\themes\base\selectable.css" />
+    <Content Include="Content\themes\base\selectmenu.css" />
+    <Content Include="Content\themes\base\slider.css" />
+    <Content Include="Content\themes\base\sortable.css" />
+    <Content Include="Content\themes\base\spinner.css" />
+    <Content Include="Content\themes\base\tabs.css" />
+    <Content Include="Content\themes\base\theme.css" />
+    <Content Include="Content\themes\base\tooltip.css" />
+    <Content Include="Content\timeline-horizontal.css">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\timeline-h\timeline-horizontal-template.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\timeline-vertical.css">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="favicon.ico" />
+    <Content Include="fonts\fontawesome-webfont.svg" />
+    <Content Include="fonts\glyphicons-halflings-regular.svg" />
+    <Content Include="fonts\map-icons.svg" />
+    <Content Include="Global.asax" />
+    <Content Include="fonts\fontawesome-webfont.woff2" />
+    <Content Include="fonts\fontawesome-webfont.woff" />
+    <Content Include="fonts\fontawesome-webfont.ttf" />
+    <Content Include="fonts\fontawesome-webfont.eot" />
+    <Content Include="fonts\FontAwesome.otf" />
+    <Content Include="fonts\glyphicons-halflings-regular.woff2" />
+    <Content Include="fonts\glyphicons-halflings-regular.woff" />
+    <Content Include="fonts\glyphicons-halflings-regular.ttf" />
+    <Content Include="fonts\glyphicons-halflings-regular.eot" />
+    <Content Include="Content\bootstrap-theme.css.map" />
+    <Content Include="Content\bootstrap.css.map" />
+    <Content Include="Content\dataTables.bootstrap.min.css" />
+    <Content Include="Content\AvenirNext-Medium.ttf" />
+    <Content Include="Content\AvenirNext-Regular.ttf" />
+    <Content Include="images\AlertasCAP\background1.jpg" />
+    <Content Include="images\AlertasCAP\background2.jpg" />
+    <Content Include="images\AlertasCAP\background3.jpg" />
+    <Content Include="images\AlertasCAP\background4.jpg" />
+    <Content Include="images\AlertasCAP\et.png" />
+    <Content Include="images\CapBackground.jpg" />
+    <Content Include="images\CapLogo.png" />
+    <Content Include="images\Flags\latam.svg" />
+    <Content Include="images\CapLogoBlue.png" />
+    <Content Include="images\flechaizquierda.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="images\flechaderecha.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="images\PdvPosition.png" />
+    <Content Include="images\m1.png" />
+    <Content Include="images\m2.png" />
+    <Content Include="images\m3.png" />
+    <Content Include="images\m4.png" />
+    <Content Include="images\m5.png" />
+    <Content Include="images\ui-icons_444444_256x240.png" />
+    <Content Include="images\ui-icons_555555_256x240.png" />
+    <Content Include="images\ui-icons_777620_256x240.png" />
+    <Content Include="images\ui-icons_777777_256x240.png" />
+    <Content Include="images\ui-icons_cc0000_256x240.png" />
+    <Content Include="images\ui-icons_ffffff_256x240.png" />
+    <Content Include="NLog.config">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="fonts\map-icons.eot" />
+    <Content Include="fonts\map-icons.ttf" />
+    <Content Include="fonts\map-icons.woff" />
+    <None Include="NLog.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
+    <None Include="Properties\PublishProfiles\Reporting.pubxml">
+      <SubType>Designer</SubType>
+    </None>
+    <Content Include="images\CALENDAR_ICON.svg" />
+    <Content Include="images\circuloGris.png" />
+    <Content Include="images\circuloNaranja.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="images\COVERAGE_ICON.svg" />
+    <Content Include="images\details_close.png" />
+    <Content Include="images\details_open.png" />
+    <Content Include="images\Flags\ad.svg" />
+    <Content Include="images\Flags\ae.svg" />
+    <Content Include="images\Flags\af.svg" />
+    <Content Include="images\Flags\ag.svg" />
+    <Content Include="images\Flags\ai.svg" />
+    <Content Include="images\Flags\al.svg" />
+    <Content Include="images\Flags\am.svg" />
+    <Content Include="images\Flags\ao.svg" />
+    <Content Include="images\Flags\aq.svg" />
+    <Content Include="images\Flags\ar.svg" />
+    <Content Include="images\Flags\as.svg" />
+    <Content Include="images\Flags\at.svg" />
+    <Content Include="images\Flags\au.svg" />
+    <Content Include="images\Flags\aw.svg" />
+    <Content Include="images\Flags\ax.svg" />
+    <Content Include="images\Flags\az.svg" />
+    <Content Include="images\Flags\ba.svg" />
+    <Content Include="images\Flags\bb.svg" />
+    <Content Include="images\Flags\bd.svg" />
+    <Content Include="images\Flags\be.svg" />
+    <Content Include="images\Flags\bf.svg" />
+    <Content Include="images\Flags\bg.svg" />
+    <Content Include="images\Flags\bh.svg" />
+    <Content Include="images\Flags\bi.svg" />
+    <Content Include="images\Flags\bj.svg" />
+    <Content Include="images\Flags\bl.svg" />
+    <Content Include="images\Flags\bm.svg" />
+    <Content Include="images\Flags\bn.svg" />
+    <Content Include="images\Flags\bo.svg" />
+    <Content Include="images\Flags\bq.svg" />
+    <Content Include="images\Flags\br.svg" />
+    <Content Include="images\Flags\bs.svg" />
+    <Content Include="images\Flags\bt.svg" />
+    <Content Include="images\Flags\bv.svg" />
+    <Content Include="images\Flags\bw.svg" />
+    <Content Include="images\Flags\by.svg" />
+    <Content Include="images\Flags\bz.svg" />
+    <Content Include="images\Flags\ca.svg" />
+    <Content Include="images\Flags\cc.svg" />
+    <Content Include="images\Flags\cd.svg" />
+    <Content Include="images\Flags\cf.svg" />
+    <Content Include="images\Flags\cg.svg" />
+    <Content Include="images\Flags\ch.svg" />
+    <Content Include="images\Flags\ci.svg" />
+    <Content Include="images\Flags\ck.svg" />
+    <Content Include="images\Flags\cl.svg" />
+    <Content Include="images\Flags\cm.svg" />
+    <Content Include="images\Flags\cn.svg" />
+    <Content Include="images\Flags\co.svg" />
+    <Content Include="images\Flags\cr.svg" />
+    <Content Include="images\Flags\cu.svg" />
+    <Content Include="images\Flags\cv.svg" />
+    <Content Include="images\Flags\cw.svg" />
+    <Content Include="images\Flags\cx.svg" />
+    <Content Include="images\Flags\cy.svg" />
+    <Content Include="images\Flags\cz.svg" />
+    <Content Include="images\Flags\de.svg" />
+    <Content Include="images\Flags\dj.svg" />
+    <Content Include="images\Flags\dk.svg" />
+    <Content Include="images\Flags\dm.svg" />
+    <Content Include="images\Flags\do.svg" />
+    <Content Include="images\Flags\dz.svg" />
+    <Content Include="images\Flags\ec.svg" />
+    <Content Include="images\Flags\ee.svg" />
+    <Content Include="images\Flags\eg.svg" />
+    <Content Include="images\Flags\eh.svg" />
+    <Content Include="images\Flags\er.svg" />
+    <Content Include="images\Flags\es-ct.svg" />
+    <Content Include="images\Flags\es.svg" />
+    <Content Include="images\Flags\et.svg" />
+    <Content Include="images\Flags\eu.svg" />
+    <Content Include="images\Flags\fi.svg" />
+    <Content Include="images\Flags\fj.svg" />
+    <Content Include="images\Flags\fk.svg" />
+    <Content Include="images\Flags\fm.svg" />
+    <Content Include="images\Flags\fo.svg" />
+    <Content Include="images\Flags\fr.svg" />
+    <Content Include="images\Flags\ga.svg" />
+    <Content Include="images\Flags\gb-eng.svg" />
+    <Content Include="images\Flags\gb-nir.svg" />
+    <Content Include="images\Flags\gb-sct.svg" />
+    <Content Include="images\Flags\gb-wls.svg" />
+    <Content Include="images\Flags\gb.svg" />
+    <Content Include="images\Flags\gd.svg" />
+    <Content Include="images\Flags\ge.svg" />
+    <Content Include="images\Flags\gf.svg" />
+    <Content Include="images\Flags\gg.svg" />
+    <Content Include="images\Flags\gh.svg" />
+    <Content Include="images\Flags\gi.svg" />
+    <Content Include="images\Flags\gl.svg" />
+    <Content Include="images\Flags\gm.svg" />
+    <Content Include="images\Flags\gn.svg" />
+    <Content Include="images\Flags\gp.svg" />
+    <Content Include="images\Flags\gq.svg" />
+    <Content Include="images\Flags\gr.svg" />
+    <Content Include="images\Flags\gs.svg" />
+    <Content Include="images\Flags\gt.svg" />
+    <Content Include="images\Flags\gu.svg" />
+    <Content Include="images\Flags\gw.svg" />
+    <Content Include="images\Flags\gy.svg" />
+    <Content Include="images\Flags\hk.svg" />
+    <Content Include="images\Flags\hm.svg" />
+    <Content Include="images\Flags\hn.svg" />
+    <Content Include="images\Flags\hr.svg" />
+    <Content Include="images\Flags\ht.svg" />
+    <Content Include="images\Flags\hu.svg" />
+    <Content Include="images\Flags\id.svg" />
+    <Content Include="images\Flags\ie.svg" />
+    <Content Include="images\Flags\il.svg" />
+    <Content Include="images\Flags\im.svg" />
+    <Content Include="images\Flags\in.svg" />
+    <Content Include="images\Flags\io.svg" />
+    <Content Include="images\Flags\iq.svg" />
+    <Content Include="images\Flags\ir.svg" />
+    <Content Include="images\Flags\is.svg" />
+    <Content Include="images\Flags\it.svg" />
+    <Content Include="images\Flags\je.svg" />
+    <Content Include="images\Flags\jm.svg" />
+    <Content Include="images\Flags\jo.svg" />
+    <Content Include="images\Flags\jp.svg" />
+    <Content Include="images\Flags\ke.svg" />
+    <Content Include="images\Flags\kg.svg" />
+    <Content Include="images\Flags\kh.svg" />
+    <Content Include="images\Flags\ki.svg" />
+    <Content Include="images\Flags\km.svg" />
+    <Content Include="images\Flags\kn.svg" />
+    <Content Include="images\Flags\kp.svg" />
+    <Content Include="images\Flags\kr.svg" />
+    <Content Include="images\Flags\kw.svg" />
+    <Content Include="images\Flags\ky.svg" />
+    <Content Include="images\Flags\kz.svg" />
+    <Content Include="images\Flags\la.svg" />
+    <Content Include="images\Flags\lb.svg" />
+    <Content Include="images\Flags\lc.svg" />
+    <Content Include="images\Flags\li.svg" />
+    <Content Include="images\Flags\lk.svg" />
+    <Content Include="images\Flags\lr.svg" />
+    <Content Include="images\Flags\ls.svg" />
+    <Content Include="images\Flags\lt.svg" />
+    <Content Include="images\Flags\lu.svg" />
+    <Content Include="images\Flags\lv.svg" />
+    <Content Include="images\Flags\ly.svg" />
+    <Content Include="images\Flags\ma.svg" />
+    <Content Include="images\Flags\mc.svg" />
+    <Content Include="images\Flags\md.svg" />
+    <Content Include="images\Flags\me.svg" />
+    <Content Include="images\Flags\mf.svg" />
+    <Content Include="images\Flags\mg.svg" />
+    <Content Include="images\Flags\mh.svg" />
+    <Content Include="images\Flags\mk.svg" />
+    <Content Include="images\Flags\ml.svg" />
+    <Content Include="images\Flags\mm.svg" />
+    <Content Include="images\Flags\mn.svg" />
+    <Content Include="images\Flags\mo.svg" />
+    <Content Include="images\Flags\mp.svg" />
+    <Content Include="images\Flags\mq.svg" />
+    <Content Include="images\Flags\mr.svg" />
+    <Content Include="images\Flags\ms.svg" />
+    <Content Include="images\Flags\mt.svg" />
+    <Content Include="images\Flags\mu.svg" />
+    <Content Include="images\Flags\mv.svg" />
+    <Content Include="images\Flags\mw.svg" />
+    <Content Include="images\Flags\mx.svg" />
+    <Content Include="images\Flags\my.svg" />
+    <Content Include="images\Flags\mz.svg" />
+    <Content Include="images\Flags\na.svg" />
+    <Content Include="images\Flags\nc.svg" />
+    <Content Include="images\Flags\ne.svg" />
+    <Content Include="images\Flags\nf.svg" />
+    <Content Include="images\Flags\ng.svg" />
+    <Content Include="images\Flags\ni.svg" />
+    <Content Include="images\Flags\nl.svg" />
+    <Content Include="images\Flags\no.svg" />
+    <Content Include="images\Flags\np.svg" />
+    <Content Include="images\Flags\nr.svg" />
+    <Content Include="images\Flags\nu.svg" />
+    <Content Include="images\Flags\nz.svg" />
+    <Content Include="images\Flags\om.svg" />
+    <Content Include="images\Flags\pa.svg" />
+    <Content Include="images\Flags\pe.svg" />
+    <Content Include="images\Flags\pf.svg" />
+    <Content Include="images\Flags\pg.svg" />
+    <Content Include="images\Flags\ph.svg" />
+    <Content Include="images\Flags\pk.svg" />
+    <Content Include="images\Flags\pl.svg" />
+    <Content Include="images\Flags\pm.svg" />
+    <Content Include="images\Flags\pn.svg" />
+    <Content Include="images\Flags\pr.svg" />
+    <Content Include="images\Flags\ps.svg" />
+    <Content Include="images\Flags\pt.svg" />
+    <Content Include="images\Flags\pw.svg" />
+    <Content Include="images\Flags\py.svg" />
+    <Content Include="images\Flags\qa.svg" />
+    <Content Include="images\Flags\re.svg" />
+    <Content Include="images\Flags\ro.svg" />
+    <Content Include="images\Flags\rs.svg" />
+    <Content Include="images\Flags\ru.svg" />
+    <Content Include="images\Flags\rw.svg" />
+    <Content Include="images\Flags\sa.svg" />
+    <Content Include="images\Flags\sb.svg" />
+    <Content Include="images\Flags\sc.svg" />
+    <Content Include="images\Flags\sd.svg" />
+    <Content Include="images\Flags\se.svg" />
+    <Content Include="images\Flags\sg.svg" />
+    <Content Include="images\Flags\sh.svg" />
+    <Content Include="images\Flags\si.svg" />
+    <Content Include="images\Flags\sj.svg" />
+    <Content Include="images\Flags\sk.svg" />
+    <Content Include="images\Flags\sl.svg" />
+    <Content Include="images\Flags\sm.svg" />
+    <Content Include="images\Flags\sn.svg" />
+    <Content Include="images\Flags\so.svg" />
+    <Content Include="images\Flags\sr.svg" />
+    <Content Include="images\Flags\ss.svg" />
+    <Content Include="images\Flags\st.svg" />
+    <Content Include="images\Flags\sv.svg" />
+    <Content Include="images\Flags\sx.svg" />
+    <Content Include="images\Flags\sy.svg" />
+    <Content Include="images\Flags\sz.svg" />
+    <Content Include="images\Flags\tc.svg" />
+    <Content Include="images\Flags\td.svg" />
+    <Content Include="images\Flags\tf.svg" />
+    <Content Include="images\Flags\tg.svg" />
+    <Content Include="images\Flags\th.svg" />
+    <Content Include="images\Flags\tj.svg" />
+    <Content Include="images\Flags\tk.svg" />
+    <Content Include="images\Flags\tl.svg" />
+    <Content Include="images\Flags\tm.svg" />
+    <Content Include="images\Flags\tn.svg" />
+    <Content Include="images\Flags\to.svg" />
+    <Content Include="images\Flags\tr.svg" />
+    <Content Include="images\Flags\tt.svg" />
+    <Content Include="images\Flags\tv.svg" />
+    <Content Include="images\Flags\tw.svg" />
+    <Content Include="images\Flags\tz.svg" />
+    <Content Include="images\Flags\ua.svg" />
+    <Content Include="images\Flags\ug.svg" />
+    <Content Include="images\Flags\um.svg" />
+    <Content Include="images\Flags\un.svg" />
+    <Content Include="images\Flags\us.svg" />
+    <Content Include="images\Flags\uy.svg" />
+    <Content Include="images\Flags\uz.svg" />
+    <Content Include="images\Flags\va.svg" />
+    <Content Include="images\Flags\vc.svg" />
+    <Content Include="images\Flags\ve.svg" />
+    <Content Include="images\Flags\vg.svg" />
+    <Content Include="images\Flags\vi.svg" />
+    <Content Include="images\Flags\vn.svg" />
+    <Content Include="images\Flags\vu.svg" />
+    <Content Include="images\Flags\wf.svg" />
+    <Content Include="images\Flags\ws.svg" />
+    <Content Include="images\Flags\ye.svg" />
+    <Content Include="images\Flags\yt.svg" />
+    <Content Include="images\Flags\za.svg" />
+    <Content Include="images\Flags\zm.svg" />
+    <Content Include="images\Flags\zw.svg" />
+    <Content Include="images\image-not-found.jpg" />
+    <Content Include="images\img-not-found.png" />
+    <Content Include="images\logo_competimeter.png" />
+    <Content Include="images\medida05.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="images\medida05-o.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="images\medida1-o.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="images\medida15.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="images\medida25-o.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="images\medida25.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="images\PROMOTERS_ICON.svg" />
+    <Content Include="images\STORE_ICON.svg" />
+    <Content Include="images\tipo16-o.png" />
+    <Content Include="images\tipo16.png" />
+    <Content Include="Scripts\bootstrap-multiselect.js" />
+    <Content Include="Scripts\bootstrap.min.js.map">
+      <DependentUpon>bootstrap.min.js</DependentUpon>
+    </Content>
+    <None Include="Scripts\jquery-2.1.4.intellisense.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <Content Include="images\1.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="images\2.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="images\3.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="images\4.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="images\5.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="images\6.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="images\7.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="images\8.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="images\ajax-loader.gif">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="images\arroba-o.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="images\arroba.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="images\checkIn.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="images\checkOut.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="images\checkpos-perfom.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="images\circuloAmarillo.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="images\circuloRojo.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="images\circuloVerde.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="images\conReporte.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="images\drag old.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="images\drag-o.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="images\drag.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="images\ecualiza-o.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="images\ecualiza.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="images\ecualiza2.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="images\error-generico.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="images\flechabajo-o.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="images\flechabajo.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="images\imagen.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="images\imgPlaceholderOff.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="images\imgPlaceholderOn.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="images\isotipo.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="images\lapiz.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="images\Layouts\8.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="images\llave-o.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="images\llave.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="images\loading.gif">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="images\loadingwheel.gif">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="images\logo-checkpos.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="images\logo.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="images\logo_checkpos_big.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="images\lupa.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="images\lupa2.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="images\medida.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="images\medida.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="images\medida15-o.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="images\medida1.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="images\medida2-o.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="images\medida2.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="images\medida3-o.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="images\medida3.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="images\myLocation.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="images\navi.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="images\perfil.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="images\search-icon.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="images\sindatos.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="images\sinReporte.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="images\tipo1-o.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="images\tipo1.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="images\tipo10-o.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="images\tipo10.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="images\tipo11-o.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="images\tipo11.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="images\tipo12-o.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="images\tipo12.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="images\tipo13-o.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="images\tipo13.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="images\tipo14-o.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="images\tipo14.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="images\tipo15-o.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="images\tipo15.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="images\tipo17-o.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="images\tipo17.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="images\tipo2-o.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="images\tipo2.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="images\tipo3-o.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="images\tipo3.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="images\tipo4-o.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="images\tipo4.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="images\tipo5-o.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="images\tipo5.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="images\tipo6-o.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="images\tipo6.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="images\tipo7-o.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="images\tipo7.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="images\tipo8-o.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="images\tipo8.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="images\tipo9-o.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="images\tipo9.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\bootstrap-switch.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\bootstrap-switch.min.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\bootstrap.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\bootstrap.min.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\buttons.colVis.min.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\canvas2image.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\circliful.js" />
+    <Content Include="Scripts\d3.min.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\dataTables.bootstrap.min.js" />
+    <Content Include="Scripts\dataTables.buttons.min.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\datatables.min.js" />
+    <Content Include="Scripts\datepicker-es.js" />
+    <Content Include="Scripts\download.js" />
+    <Content Include="Scripts\drilldown.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\etiquetaLayout.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\ExportGraficos.js" />
+    <Content Include="Scripts\exporting.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\filtrosReporting.js" />
+    <Content Include="Scripts\footable.js" />
+    <Content Include="Scripts\footable.min.js" />
+    <Content Include="Scripts\firebase-app.js" />
+    <Content Include="Scripts\firebase-auth.js" />
+    <Content Include="Scripts\firebase-database.js" />
+    <Content Include="Scripts\firebase.js" />
+    <Content Include="Scripts\fullcalendar.min.js" />
+    <Content Include="Scripts\Graficos.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\highcharts-more.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\highcharts.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\html2canvas.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\image-picker.min.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\InfiniteScroll.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\jquery-2.1.4.min.map">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\jquery-3.3.1.min.js" />
+    <Content Include="Scripts\jquery-sidebar.js" />
+    <Content Include="Scripts\jquery-ui-1.12.1.js" />
+    <Content Include="Scripts\jquery-ui-1.12.1.min.js" />
+    <Content Include="Scripts\jquery-ui.min.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\jquery.circliful.js" />
+    <Content Include="Scripts\jquery.circliful.min.js" />
+    <Content Include="Scripts\jquery.droptabs.min.js.map">
+      <DependentUpon>jquery.droptabs.min.js</DependentUpon>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\jquery.dataTables.min.js" />
+    <None Include="Scripts\jquery.validate-vsdoc.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <Content Include="Scripts\jquery.droptabs.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\jquery.droptabs.min.js">
+      <DependentUpon>jquery.droptabs.js</DependentUpon>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\jquery.min.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\jquery.placeholder.min.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\jquery.slimscroll.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\jquery.slimscroll.min.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\jquery.unobtrusive-ajax.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\jquery.unobtrusive-ajax.min.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\jquery.validate.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\jquery.validate.min.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\jquery.validate.unobtrusive.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\jquery.validate.unobtrusive.min.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\map-icons.js" />
+    <Content Include="Scripts\markerclusterer.js" />
+    <Content Include="Scripts\MonthPicker.js" />
+    <Content Include="Scripts\numeral.min.js" />
+    <Content Include="Scripts\oms.min.js" />
+    <Content Include="Scripts\renderImagenes.js" />
+    <Content Include="Scripts\solid-gauge.js" />
+    <Content Include="Scripts\weekpicker.js" />
+    <Content Include="Scripts\locale-all.js" />
+    <Content Include="Scripts\metisMenu.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\modernizr-2.6.2.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\modernizr-custom.js" />
+    <Content Include="Scripts\moment.min.js" />
+    <Content Include="Scripts\multiselect.min.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\offcanvas-menu.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\placeholder.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\reporting.js" />
+    <Content Include="Scripts\respond.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\respond.min.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\select2.full.js" />
+    <Content Include="Scripts\select2.full.min.js" />
+    <Content Include="Scripts\Timeline.js" />
+    <Content Include="Scripts\typeahead.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\_references.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Web.Debug.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </Content>
+    <Content Include="Web.Release.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </Content>
+    <Content Include="Views\Web.config">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Views\_ViewStart.cshtml" />
+    <Content Include="Views\Shared\Error.cshtml" />
+    <Content Include="Views\Shared\_Layout.cshtml" />
+    <Content Include="Views\Account\_ExternalLoginsListPartial.cshtml" />
+    <Content Include="Views\Account\ConfirmEmail.cshtml" />
+    <Content Include="Views\Account\ExternalLoginConfirmation.cshtml" />
+    <Content Include="Views\Account\ExternalLoginFailure.cshtml" />
+    <Content Include="Views\Account\Login.cshtml" />
+    <Content Include="Views\Account\Register.cshtml" />
+    <Content Include="Views\Account\SendCode.cshtml" />
+    <Content Include="Views\Account\VerifyCode.cshtml" />
+    <Content Include="Views\Manage\AddPhoneNumber.cshtml" />
+    <Content Include="Views\Manage\ChangePassword.cshtml" />
+    <Content Include="Views\Manage\Index.cshtml" />
+    <Content Include="Views\Manage\ManageLogins.cshtml" />
+    <Content Include="Views\Manage\SetPassword.cshtml" />
+    <Content Include="Views\Manage\VerifyPhoneNumber.cshtml" />
+    <Content Include="Views\Shared\Lockout.cshtml" />
+    <Content Include="Views\Shared\_LoginPartial.cshtml" />
+    <Content Include="Views\Shared\Error404.cshtml" />
+    <Content Include="Views\Tableros\Administrar.cshtml" />
+    <Content Include="Views\Tableros\_ObjetosTablero.cshtml" />
+    <Content Include="Views\Tableros\Crear.cshtml" />
+    <Content Include="Views\Tableros\Editar.cshtml" />
+    <Content Include="Views\Shared\ClienteNoSeleccionado.cshtml" />
+    <Content Include="Views\Tableros\Permisos.cshtml" />
+    <Content Include="Views\Shared\UsuarioSinClientes.cshtml" />
+    <Content Include="Views\Tableros\Index.cshtml" />
+    <Content Include="Views\Tableros\NoTieneTableros.cshtml" />
+    <Content Include="Views\Tableros\_Clientes.cshtml" />
+    <Content Include="Views\Shared\_Logout.cshtml" />
+    <Content Include="Views\Datos\Index.cshtml" />
+    <Content Include="Views\Imagenes\Index.cshtml" />
+    <Content Include="Views\Imagenes\_imagenes.cshtml" />
+    <Content Include="Views\Datos\_tabla.cshtml" />
+    <Content Include="Views\Datos\NoTieneTablas.cshtml" />
+    <Content Include="Views\Configuracion\Index.cshtml" />
+    <Content Include="Views\Configuracion\Filtros.cshtml" />
+    <Content Include="Views\Shared\_Error501.cshtml" />
+    <Content Include="Views\Shared\_Tabs.cshtml" />
+    <Content Include="Views\Shared\_MarcaBlancaHeader.cshtml" />
+    <Content Include="Views\Shared\_MarcaBlancaFooter.cshtml" />
+    <Content Include="Views\Shared\_MarcaBlancaLogo.cshtml" />
+    <Content Include="Views\Shared\_Filtros.cshtml" />
+    <Content Include="Views\Shared\_NoTieneFiltros.cshtml" />
+    <Content Include="Views\Tableros\_NoPoseeObjetos.cshtml" />
+    <Content Include="Views\Tableros\_AmpliarObjeto.cshtml" />
+    <Content Include="Views\Shared\_Logo.cshtml" />
+    <Content Include="Views\Shared\_EncabezadoMarcaBlanca.cshtml" />
+    <Content Include="Views\Shared\_FooterMarcaBlanca.cshtml" />
+    <Content Include="Views\Alertas\Crear.cshtml" />
+    <Content Include="Views\Alertas\Editar.cshtml" />
+    <Content Include="Views\Alertas\Eliminar.cshtml" />
+    <Content Include="Views\Shared\NoDataFound.cshtml" />
+    <Content Include="Views\Alertas\Ver.cshtml" />
+    <Content Include="Views\Imagenes\_imagenPreview.cshtml" />
+    <Content Include="Views\Tableros\_ObjetoTipo15.cshtml" />
+    <Content Include="Views\Shared\EditorTemplates\Upload.cshtml" />
+    <Content Include="Views\Tableros\_PerfilUsuario.cshtml" />
+    <Content Include="Views\Shared\_ImagenPerfil.cshtml" />
+    <Content Include="Views\Shared\EditorTemplates\userEmail.cshtml" />
+    <Content Include="Views\Shared\_FiltrosAplicados.cshtml" />
+    <Content Include="Views\Account\_ForgotPassword.cshtml" />
+    <Content Include="Views\Account\_ForgotPasswordConfirmation.cshtml" />
+    <Content Include="Views\Account\_ResetPassword.cshtml" />
+    <Content Include="Views\Account\_ResetPasswordConfirmation.cshtml" />
+    <Content Include="Scripts\moment.min.js.map">
+      <DependentUpon>moment.min.js</DependentUpon>
+    </Content>
+    <Content Include="Views\Calendario\Index.cshtml" />
+    <Content Include="Views\Configuracion\_Filtros_TablaFiltros.cshtml" />
+    <Content Include="Views\Configuracion\_SideMenu.cshtml" />
+    <Content Include="Views\Configuracion\_Filtros_FormEditarNombre.cshtml" />
+    <Content Include="Views\Shared\_RedirectToLogin.cshtml" />
+    <Content Include="Views\Configuracion\Objetos.cshtml" />
+    <Content Include="Views\Configuracion\_Objetos_FormEditarNombre.cshtml" />
+    <Content Include="Views\Configuracion\MarcaBlanca.cshtml" />
+    <Content Include="Views\Configuracion\Usuarios.cshtml" />
+    <Content Include="Views\Configuracion\UsuarioNoEncontrado.cshtml" />
+    <Content Include="Views\Configuracion\EditarUsuario.cshtml" />
+    <Content Include="Views\Configuracion\Roles.cshtml" />
+    <Content Include="Views\Configuracion\RolNoEncontrado.cshtml" />
+    <Content Include="Views\Configuracion\EditarRol.cshtml" />
+    <Content Include="Views\Configuracion\CrearRol.cshtml" />
+    <Content Include="Views\Configuracion\AdministrarObjetos.cshtml" />
+    <Content Include="Views\Configuracion\AdministrarFiltros.cshtml" />
+    <Content Include="Views\Alertas\_Alertas_Tabla.cshtml" />
+    <Content Include="Views\Tableros\MisDatos.cshtml" />
+    <Content Include="Views\Alertas\Index.cshtml" />
+    <Content Include="Views\Calendario\Crear.cshtml" />
+    <Content Include="Views\Calendario\Editar.cshtml" />
+    <Content Include="Views\Calendario\_Evento.cshtml" />
+    <Content Include="Views\Calendario\Listado.cshtml" />
+    <Content Include="Views\Calendario\_TablaListado.cshtml" />
+    <Content Include="Views\Tableros\ErrorSoloLectura.cshtml" />
+    <Content Include="Views\Forecasting\SalesInOut.cshtml" />
+    <Content Include="Views\Forecasting\_SalesInOut.cshtml" />
+    <Content Include="Views\Forecasting\Confirmados.cshtml" />
+    <Content Include="Views\Forecasting\_TablaConfirmados.cshtml" />
+    <Content Include="Views\Forecasting\_ListSalesInOut.cshtml" />
+    <Content Include="Views\Forecasting\_fchistory.cshtml" />
+    <Content Include="Views\PriceRequest\Index.cshtml" />
+    <Content Include="Views\PriceRequest\_AccountImage.cshtml" />
+    <Content Include="Views\Tableros\BorrarEsto.cshtml" />
+    <Content Include="Views\PriceRequest\PriceRequestFormSended.cshtml" />
+    <Content Include="Views\PriceRequest\Admin.cshtml" />
+    <Content Include="Views\PriceRequest\_PhotoProductList.cshtml" />
+    <Content Include="Views\PriceRequest\_PriceRequestTable.cshtml" />
+    <Content Include="Views\PriceRequest\_PriceRequestHistory.cshtml" />
+    <Content Include="Views\Forecasting\_psifacturacion.cshtml" />
+    <Content Include="Views\Forecasting\_psitotal.cshtml" />
+    <Content Include="Views\PriceRequest\_ProductGapHeader.cshtml" />
+    <Content Include="Views\Forecasting\_ddlproductos.cshtml" />
+    <Content Include="Views\Forecasting\PsiSinCanal.cshtml" />
+    <Content Include="Views\PriceRequest\_PriceRequestTableRegion.cshtml" />
+    <Content Include="Views\Shared\EditorTemplates\CompetitorAccountViewModel.cshtml" />
+    <Content Include="Views\PriceRequest\PriceRequestForm.cshtml" />
+    <Content Include="Views\Geo\UnifiedMap.cshtml" />
+    <Content Include="Views\Shared\_FiltroSimple.cshtml" />
+    <Content Include="Views\Shared\_PartialFiltroFecha.cshtml" />
+    <Content Include="Views\Geo\_InfoWindowDetailPDV.cshtml" />
+    <Content Include="Views\Geo\_InfoWindowsPhotosPDV.cshtml" />
+    <Content Include="Views\Geo\_ListClientUserMap.cshtml" />
+    <Content Include="Views\Geo\_InfoWindowDetailReport.cshtml" />
+    <Content Include="Views\Geo\_ReportSignatureImage.cshtml" />
+    <Content Include="Views\Configuracion\_UserRegeneratePassword.cshtml" />
+    <Content Include="Views\PriceRequest\_emptyPriceGap.cshtml" />
+    <Content Include="Views\Tableros\_ErrorEnGrafico.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="App_Data\" />
+    <Folder Include="ContentClientes\" />
+    <Folder Include="Content\flags\" />
+    <Folder Include="Content\ImagenesDePerfil\" />
+    <Folder Include="Views\Base\" />
+    <Folder Include="Views\Language\" />
+    <Folder Include="Views\Reporte\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="packages.config" />
+    <None Include="Project_Readme.html" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Reporting.Domain\Reporting.Domain.csproj">
+      <Project>{e36ffa48-0e41-4cc1-9ebb-4b47641bcc3c}</Project>
+      <Name>Reporting.Domain</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\201509291316348_Initial.resx">
+      <DependentUpon>201509291316348_Initial.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201511191241185_fotoUsuario.resx">
+      <DependentUpon>201511191241185_fotoUsuario.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201511260045462_qwerty.resx">
+      <DependentUpon>201511260045462_qwerty.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Account.en.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Account.en.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Account.fr.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Account.fr.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Account.de.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Account.de.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Account.it.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Account.it.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Account.pt.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Account.pt.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Account.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Account.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Alertas.en.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Alertas.en.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Alertas.fr.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Alertas.fr.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Alertas.de.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Alertas.de.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Alertas.it.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Alertas.it.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Alertas.pt.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Alertas.pt.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Alertas.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Alertas.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Calendario.en.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Calendario.en.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Calendario.fr.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Calendario.fr.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Calendario.de.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Calendario.de.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Calendario.it.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Calendario.it.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Calendario.pt.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Calendario.pt.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Calendario.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Calendario.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Configuracion.en.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Configuracion.en.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Configuracion.fr.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Configuracion.fr.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Configuracion.de.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Configuracion.de.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Configuracion.it.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Configuracion.it.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Configuracion.pt.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Configuracion.pt.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Configuracion.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Configuracion.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Datos.en.resx">
+      <SubType>Designer</SubType>
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Datos.en.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Datos.fr.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Datos.fr.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Datos.de.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Datos.de.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Datos.it.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Datos.it.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Datos.pt.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Datos.pt.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Datos.resx">
+      <SubType>Designer</SubType>
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Datos.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Filtros.en.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Filtros.en.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Filtros.fr.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Filtros.fr.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Filtros.de.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Filtros.de.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Filtros.it.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Filtros.it.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Filtros.pt.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Filtros.pt.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Filtros.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Filtros.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Forecasting.de.resx" />
+    <EmbeddedResource Include="Resources\Forecasting.en.resx" />
+    <EmbeddedResource Include="Resources\Forecasting.fr.resx" />
+    <EmbeddedResource Include="Resources\Forecasting.it.resx" />
+    <EmbeddedResource Include="Resources\Forecasting.pt.resx" />
+    <EmbeddedResource Include="Resources\Forecasting.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Forecasting.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Graficos.en.resx">
+      <SubType>Designer</SubType>
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Graficos.en.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Graficos.fr.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Graficos.fr.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Graficos.de.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Graficos.de.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Graficos.it.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Graficos.it.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Graficos.pt.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Graficos.pt.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Graficos.resx">
+      <SubType>Designer</SubType>
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Graficos.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Imagenes.en.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Imagenes.en.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Imagenes.fr.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Imagenes.fr.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Imagenes.de.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Imagenes.de.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Imagenes.it.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Imagenes.it.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Imagenes.pt.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Imagenes.pt.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Imagenes.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Imagenes.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Mapas.en.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Mapas.en.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Mapas.fr.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Mapas.fr.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Mapas.de.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Mapas.de.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Mapas.it.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Mapas.it.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Mapas.pt.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Mapas.pt.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Mapas.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Mapas.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\PriceRequest.pt.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>PriceRequest.pt.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\PriceRequest.en.resx" />
+    <EmbeddedResource Include="Resources\PriceRequest.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>PriceRequest.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Shared.en.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Shared.en.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Shared.fr.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Shared.fr.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Shared.de.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Shared.de.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Shared.it.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Shared.it.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Shared.pt.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Shared.pt.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Shared.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Shared.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Tableros.en.resx">
+      <SubType>Designer</SubType>
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Tableros.en.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Tableros.fr.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Tableros.fr.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Tableros.de.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Tableros.de.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Tableros.it.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Tableros.it.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Tableros.pt.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Tableros.pt.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Tableros.resx">
+      <SubType>Designer</SubType>
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Tableros.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
+  <Target Name="MvcBuildViews" AfterTargets="AfterBuild" Condition="'$(MvcBuildViews)'=='true'">
+    <AspNetCompiler VirtualPath="temp" PhysicalPath="$(WebProjectOutputDir)" />
+  </Target>
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <UseIIS>False</UseIIS>
+          <AutoAssignPort>True</AutoAssignPort>
+          <DevelopmentServerPort>32394</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>http://localhost:30873/</IISUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>False</UseCustomServer>
+          <CustomServerUrl>
+          </CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target> -->
+</Project>

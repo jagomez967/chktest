@@ -1,0 +1,194 @@
+﻿@model Reporting.ViewModels.UsuarioPerfilViewModel
+
+@using (Ajax.BeginForm("GuardarPerfil", "Tableros", new AjaxOptions() { HttpMethod = "POST", OnBegin = "perfilOnBegin", OnSuccess = "perfilOnSuccess", OnComplete = "perfilOnComplete", InsertionMode = InsertionMode.ReplaceWith, UpdateTargetId = "formPerfilUsuario" }, htmlAttributes: new { id = "formPerfilUsuario" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(m => m.userId)
+    @Html.HiddenFor(m => m.Email)
+    @Html.HiddenFor(m => m.passwordFlag)
+
+    @Html.ValidationSummary(true)
+
+    <div class="container-fluid infoPerfil">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="col-xs-3">
+                    <div class="form-group">
+                        <div class="col-md-10">
+                            <label id="labelImgPerfil" class="foto-perfil">
+                                <img src="@Url.Content("~/Content/ImagenesDePerfil/" + Model.userId + ".jpg")" id="imgPerfil" onerror="this.onerror = null; this.src = '/images/perfil.jpg';" />
+                                @Html.EditorFor(model => model.ImageUpload)
+                                @Html.ValidationMessageFor(model => model.ImageUpload)
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xs-9 datos-perfil">
+                    <div class="form-group nuevo-correo">
+                        @Html.LabelFor(model => model.SelectedIdioma, new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            @Html.DropDownListFor(m => m.SelectedIdioma, Model.Idiomas, new { @class = "form-control" })
+                        </div>
+                    </div>
+
+                    <div class="form-group nuevo-correo">
+                        @Html.LabelFor(model => model.Nombre, new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            @Html.EditorFor(model => model.Nombre)
+                            @Html.ValidationMessageFor(model => model.Nombre)
+                        </div>
+                    </div>
+
+                    <div class="form-group nuevo-correo">
+                        @Html.LabelFor(model => model.Apellido, new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            @Html.EditorFor(model => model.Apellido)
+                            @Html.ValidationMessageFor(model => model.Apellido)
+                        </div>
+                    </div>
+
+                    <div class="form-group nuevo-correo">
+                        @Html.LabelFor(model => model.Email, new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            @Html.EditorFor(model => model.Email)
+                            @Html.ValidationMessageFor(model => model.Email)
+                        </div>
+                    </div>
+                    <a id="cambiarContraseñaButton" href="#">@Reporting.Resources.Tableros.lblCambiarContraseña</a>
+                    <a id="cancelarCambiarContraseña" href="#">@Reporting.Resources.Tableros.lblCancelar</a>
+                    <div class="white-space"></div>
+
+                        <div id="cambiarContraseña">
+                            <div class="form-group nuevo-correo">
+                                @Html.LabelFor(model => model.PasswordActual, new { @class = "control-label col-md-2" })
+                                <div class="col-md-10">
+                                    @Html.EditorFor(model => model.PasswordActual)
+                                    @Html.ValidationMessageFor(model => model.PasswordActual)
+                                    @Html.ValidationMessage("PasswordActualVacia")
+                                    @Html.ValidationMessage("PasswordActualIncorrecta")
+                                </div>
+                            </div>
+
+                            <div class="form-group nuevo-correo">
+                                @Html.LabelFor(model => model.Password, new { @class = "control-label col-md-2" })
+                                <div class="col-md-10">
+                                    @Html.EditorFor(model => model.Password)
+                                    @Html.ValidationMessageFor(model => model.Password)
+                                </div>
+                            </div>
+
+                            <div class="form-group nuevo-correo">
+                                @Html.LabelFor(model => model.ConfirmPassword, new { @class = "control-label col-md-2" })
+                                <div class="col-md-10">
+                                    @Html.EditorFor(model => model.ConfirmPassword)
+                                    @Html.ValidationMessageFor(model => model.ConfirmPassword)
+                                </div>
+                            </div>
+                        </div>
+
+                    <div class="form-group">
+                        <div class="col-md-offset-2 col-md-10">
+                            <input id="saveProfile" type="submit" value="@Reporting.Resources.Tableros.lblGuardarCambios" class="btn btn-accion pull-left" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+}
+
+<script>
+    function readURL(input) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+
+            reader.onload = function (e) {
+                $('#imgPerfil').attr('src', e.target.result);
+            }
+
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+
+
+    var passFlag = '@Model.passwordFlag';
+    if (passFlag > 0) {
+        $('#cambiarContraseña').show();
+        $('#cancelarCambiarContraseña').show();
+        $('#cambiarContraseñaButton').hide();
+        $('.infoPerfil').css("height", "480px");
+    }
+    else {
+        $('#cambiarContraseña').hide();
+        $('#cancelarCambiarContraseña').hide();
+        $('#cambiarContraseñaButton').show();
+        $('.infoPerfil').css("height", "315px");
+    }
+
+    $("#cambiarContraseñaButton").on('click', function () {
+        $("#passwordFlag").val(1);
+    });
+
+    $("#cancelarCambiarContraseña").on('click', function () {
+        $("#passwordFlag").val(0);
+        $("#PasswordActual").val('');
+        $("#Password").val('');
+        $("#ConfirmPassword").val('');
+    });
+
+    $("#ImageUpload").on('change', function () {
+        readURL(this);
+    });
+
+    $('#cambiarContraseñaButton').on('click', function () {
+        $('#cambiarContraseña').slideDown();
+        $('#cancelarCambiarContraseña').show();
+        $(this).hide();
+        $('.infoPerfil').animate({
+            height: "480px"
+        }, 400)
+    });
+
+    $('#cancelarCambiarContraseña').on('click', function () {
+        $('#cambiarContraseña').slideUp();
+        $('#cambiarContraseñaButton').show();
+        $(this).hide();
+        $('.infoPerfil').animate({
+            height: "315px"
+        }, 400)
+    });
+
+    function perfilOnBegin() {
+
+        $('#saveProfile').prop('disabled', true);
+
+        var imgData = new FormData();
+        var files = $("#ImageUpload").get(0).files;
+        if (files.length > 0) {
+            imgData.append("HelpSectionImages", files[0]);
+        }
+
+        $.ajax({
+            url: "@Url.Action("SetProfileData","Tableros")",
+            type: "POST",
+        processData: false,
+        contentType: false,
+        data: imgData,
+        async: false,
+        });
+    }
+
+    function perfilOnSuccess(data) {
+        if (data.success) {
+            $('#saveProfile').prop('disabled', false);
+
+            $('#modal-perfil-datos').empty();
+            $('#modal-perfil').modal('hide');
+        }
+    };
+
+    function perfilOnComplete() {
+        $('#saveProfile').prop('disabled', false);
+    }
+</script>

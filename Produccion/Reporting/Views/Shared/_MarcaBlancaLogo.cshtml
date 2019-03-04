@@ -1,0 +1,21 @@
+﻿@if (ViewBag.usaMarcaBlanca != null && ViewBag.usaMarcaBlanca)
+{
+    if (ViewBag.logoMarcaBlanca != null && ViewBag.logoMarcaBlanca != "")
+    {
+        <div class="logo pull-left" style="background: url('@ViewBag.logoMarcaBlanca'); margin: 2px 0 5px;width: 140px;height: 40px;background-size: cover;-ms-behavior: url(css/backgroundsize.min.htc);background-repeat:no-repeat;background-size:auto 100%;">
+            <a href="#">@Reporting.Resources.Shared.lblCheckposPerformance</a>
+        </div>
+    }
+    else
+    {
+        <div class="logo pull-left" style="background: url(/images/logo.png);margin: 2px 0 5px;width: 140px;height: 40px;background-size: cover;-ms-behavior: url(css/backgroundsize.min.htc);background-repeat:no-repeat;background-size:auto 100%;">
+            <a href="#">@Reporting.Resources.Shared.lblCheckposPerformance</a>
+        </div>
+    }
+}
+else
+{
+    <div class="logo pull-left" style="background: url(/images/logo.png);margin: 2px 0 5px;width: 140px;height: 40px;background-size: cover;-ms-behavior: url(css/backgroundsize.min.htc);background-repeat:no-repeat;background-size:auto 100%;">
+        <a href="#">@Reporting.Resources.Shared.lblCheckposPerformance</a>
+    </div>
+}

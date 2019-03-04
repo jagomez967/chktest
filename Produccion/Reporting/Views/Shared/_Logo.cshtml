@@ -1,0 +1,7 @@
+﻿@model string
+@if (!string.IsNullOrEmpty(Model))
+{
+    <div class="logo pull-left">
+        <img src="~/@Model" style="max-height:100%; max-width:100%;" />
+    </div>
+}

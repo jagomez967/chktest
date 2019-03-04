@@ -1,0 +1,33 @@
+﻿@using Reporting.ViewModels
+@model ObjetosDeTableroViewModel
+
+@foreach (ObjetoViewModel o in Model.Objetos)
+{
+    <div class="objetoTablero @o.Size" data-nombreobjeto="@o.TextoHeader" data-id="@o.Id" data-tipoobj="@o.Tipo" data-flgstack="@o.stackLabels" data-flgdata="@o.dataLabels" style="height:500px;">
+
+        <div class="objeto-panel-heading menuTablaModDatos">
+            <ul>
+                <li><a class="descargarTablaDatos" href="#"><i class="fa fa-download"></i> @Reporting.Resources.Datos.downloadDatosLabel</a></li>
+            </ul>
+        </div>
+        <div class="panel panel-default" style="height:100%;">
+            <div class="panel-body">
+                <div class="Objloading">
+                    <img src="@Url.Content("~/images/ajax-loader.gif")" />
+                </div>
+                <div class="ObjSinDatos">
+                    <img src="~/images/sindatos.png">
+                    <p>@Reporting.Resources.Datos.noDataFound</p>
+                </div>
+                <div class="ObjGrafico" style="height:100%;"></div>
+                @if (o.Descripcion != "")
+                {
+                    <div class="ObjToolTip">
+                        <i class="fa fa-info-circle fa-2x"></i>
+                        <p class="gTooltip">@o.Descripcion</p>
+                    </div>
+                }
+                </div>
+        </div>
+    </div>
+}

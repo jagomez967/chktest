@@ -1,0 +1,96 @@
+﻿@using Reporting.Models
+@model IEnumerable<ApplicationUser>
+
+@{
+    ViewBag.Title = "Usuarios";
+}
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>User</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @Html.Hidden("item-to-delete", "", new { @id = "item-to-delete" })
+        @foreach (ApplicationUser user in Model)
+        {
+            <tr>
+                <th>@user.Email</th>
+                <td align="right">
+                    <a href="@Url.Action("VerUsuario","Seguridad", new { @Id = user.Id })" class="btn btn-warning" role="button">Detalle <i class="fa fa-shield"></i></a>
+                    <a href="@Url.Action("EditarUsuario", "Seguridad", new { @Id = user.Id })" class="btn btn-primary" role="button">Editar <i class="fa fa-angle-double-right"></i></a>
+                    <a href="" class="btn btn-danger delete-btn" data-toggle="modal" data-target="#confirm-delete" data-id="@user.Id">Eliminar <i class="fa fa-trash-o"></i></a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@Html.ActionLink("Volver", "Index")
+
+<div id="confirm-delete" class="modal fade" role="dialog" style="margin-top:10%;">
+    <div class="modal-dialog">
+
+
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Eliminar Usuario</h4>
+            </div>
+            <div class="modal-body">
+                <p>¿Está seguro que quiere eliminar al Usuario seleccionado?.</p>
+                <em>No podrá revertir esta acción.</em>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success" id="btnConfirmDelete">Si</button>
+                <button type="button" class="btn btn-info" data-dismiss="modal">No</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+@section scripts{
+    <script>
+        var deleteLinkObj;
+
+        $('.delete-btn').click(function(e) {
+            e.preventDefault();
+            deleteLinkObj = $(this);
+            var id = deleteLinkObj.data('id');
+            $('#item-to-delete').val(id);
+            console.log(id);
+            console.log(deleteLinkObj);
+        });
+
+
+
+        $('#btnConfirmDelete').click(function() {
+            var id = $('#item-to-delete').val();
+            console.log(id);
+
+            $.ajax({
+                url: '@Url.Action("DeleteUsuario", "Seguridad")',
+                type: 'POST',
+                data: { Id: id },
+                success: function (data, textStatus, XMLHttpRequest) {
+                    if (data == "True") {
+                        deleteLinkObj.closest("tr").hide('fast');
+                    }
+                    $('#confirm-delete').modal('hide');
+                },
+                error: function (xhr, status, errorThrown) {
+                    console.log('----------------- DeleteUsuario ------------------');
+                    console.log(xhr);
+                    console.log(status);
+                    console.log(errorThrown);
+                    console.log('--------------------------------------------------');
+                }
+            });
+        });
+
+    </script>
+}
+

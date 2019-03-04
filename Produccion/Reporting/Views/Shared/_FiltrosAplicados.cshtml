@@ -1,0 +1,104 @@
+﻿@using Reporting.ViewModels
+@model FiltrosViewModel
+
+<div id="filtrosLock">
+
+    <div class="lockLoading">
+        <img src="@Url.Content("~/images/ajax-loader.gif")">
+    </div>
+    
+    @if (Model.isLocked)
+    {
+        <h6 style="font-size: 1em; width: 170px; margin-top:2px;">
+            @if (User.IsInRole("Administrador") || User.IsInRole("ClienteAdmin"))
+            {
+                <span style="color: #FDA515;" class="fa fa-lock filtrosLock" aria-hidden="true"></span>
+            }
+            <span>@Reporting.Resources.Shared.lblFiltrosAplicadosLabel</span>
+        </h6>
+        <i style="color: #475c64; margin-left: 140px; font-size: 20px; margin-top: -17px; display: block; " class="fa fa-exclamation-circle" aria-hidden="true"></i>
+    }
+    else
+    {
+        <h6 style="font-size: 1em; width: 170px; margin-top:2px;">
+            <span style="color: #000000;" class="fa fa-unlock filtrosLock" aria-hidden="true"></span>
+            <span>@Reporting.Resources.Shared.lblFiltrosAplicadosLabel</span>
+        </h6>
+    }
+
+    <ul class="filtrosAplicados">
+            @foreach (FiltroFechaViewModel ff in Model.FiltrosFechas)
+            {
+                <li>
+                    @* Titulo *@
+                    <div>
+                        <strong>@ff.Nombre</strong>
+                    </div>
+
+                    @switch (ff.TipoFechaSeleccionada)
+                    {
+                        case "D":
+                            <small style="display:block;">@Reporting.Resources.Shared.lblDesde @ff.DiaDesde</small>
+                            <small style="display:block;">@Reporting.Resources.Shared.lblHasta @ff.DiaHasta</small>
+                            break;
+                        case "M":
+                            <small style="display:block;">@Reporting.Resources.Shared.lblDesde @ff.MesDesde</small>
+                            <small style="display:block;">@Reporting.Resources.Shared.lblHasta @ff.MesHasta</small>
+                            break;
+                        case "T":
+                            <small style="display:block;">@Reporting.Resources.Shared.lblDesde @ff.TrimestreDesde</small>
+                            <small style="display:block;">@Reporting.Resources.Shared.lblHasta @ff.TrimestreHasta</small>
+                            break;
+                        case "S":
+                            <small style="display:block;">@Reporting.Resources.Shared.lblDesde @ff.SemanaDesde</small>
+                            <small style="display:block;">@Reporting.Resources.Shared.lblHasta @ff.SemanaHasta</small>
+                            break;
+                    }
+                </li>
+            }
+
+        @foreach (FiltroCheckViewModel fc in Model.FiltrosChecks)
+        {
+            if (fc.Items.Any(i => i.Selected && !i.isLocked))
+            {
+                <li class="filtrosAplicadosLi">
+                    <div class="filtroitemtitulo">
+                        <strong>@fc.Nombre</strong>
+                    </div>
+                    <div style="display:block;">
+                        <ul class="filtros">
+                            @foreach (ItemViewModel itm in fc.Items.Where(item => item.Selected && !item.isLocked))
+                            {
+                                <li class="filtrosAp aplicados">
+                                    <div class="itmcheckbox">
+                                        <input class="itemfiltrocheck" type="hidden" name="Filtros.FiltrosChecks[@(Model.FiltrosChecks.IndexOf(fc))].Items[@fc.Items.IndexOf(itm)].IdItem" value="@itm.IdItem">
+                                        <span style="margin-left:5px;">@itm.Descripcion</span>
+                                    </div>
+                                </li>
+                            }
+                        </ul>
+                    </div>
+                </li>
+            }
+        }
+    </ul>
+</div>
+
+<div id="signoExclamacion" style="display:none;">
+    @foreach (FiltroCheckViewModel fc in Model.FiltrosChecks)
+    {
+        if (fc.Items.Any(i => i.Selected && i.isLocked))
+        {
+            <div style="color: #fda515;">
+                <strong>@fc.Nombre</strong>
+            </div>
+            <div style="display:block;">
+                @foreach (ItemViewModel itm in fc.Items.Where(item => item.Selected && item.isLocked))
+                {
+                    <input class="itemBloqueadoId" type="hidden" name="Filtros.FiltrosChecks[@(Model.FiltrosChecks.IndexOf(fc))].Items[@fc.Items.IndexOf(itm)].IdItem" value="@itm.IdItem">
+                    <small style="display:block;">@itm.Descripcion</small>
+                }
+            </div>
+        }
+    }
+</div>

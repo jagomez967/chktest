@@ -1,0 +1,21 @@
+﻿@using Reporting.ViewModels
+@model List<ImagenViewModel>
+
+@foreach (ImagenViewModel img in Model)
+{
+    <a href="javascript:void(0)" id="@img.id" alt="" class="imagen">
+        <div class="col-xs-12 col-sm-3">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <img src="@img.imgb64" />
+                    <div class=" clearfix"></div>
+                </div>
+                <div class="datos-fotos panel-footer">
+                    <span class="nombre-pdv">@(img.idPuntoDeVenta + " - " + img.nombrePuntoDeVenta)</span>
+                    <span class="label pull-right">@img.cantTags @Reporting.Resources.Imagenes.lblImagenesTags</span>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+        </div>
+    </a>
+}

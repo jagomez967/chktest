@@ -1,0 +1,18 @@
+﻿
+@model List<string>
+
+@if (Model.Count > 0)
+{
+    foreach (string imgB64 in Model)
+    {
+        <div class="section-image-container">
+            <a href="#" onclick="zoomImageItem(this)">
+                <img src="@imgB64" aria-hidden="true">
+                </a>
+        </div>
+    }
+}
+else
+{
+    <span>@Reporting.Resources.Mapas.NotExistsPhotos</span>
+}

@@ -1,0 +1,49 @@
+﻿@using Reporting.ViewModels
+@model ImagenesVM
+
+
+@{
+    bool TieneMarca = (Model.marcaBase64 != null && (String.IsNullOrEmpty(Model.marcaBase64))==false);
+    string AlturaImagen;
+    string MargenImagen;
+}
+
+@if (!TieneMarca)
+    {
+        AlturaImagen = "175px";
+        MargenImagen = "0px";
+    }
+    else
+    {
+         AlturaImagen = "125px";
+        MargenImagen = "45px";
+}
+    <img src="@Model.marcaBase64" style="
+    height: 29px;
+    position: absolute;
+    margin-left: 20px;
+    margin-top: 3px;
+">
+    @foreach (var i in Model.imagenes)
+    {
+        <a href="#" id="@i.id" alt="" class="imagen fotos" style="margin-top:@MargenImagen;margin-right:20px;min-width:200px;max-width:250px">
+            <div>
+                <div class="panel panel-default">
+                    <div class="panel-body" style="height:@AlturaImagen">
+                        <img src="@i.imgb64">
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="datos-fotos panel-footer" style="border-top: none;">
+                        <span class="nombre-pdv">@i.idPuntoDeVenta - @i.nombrePuntoDeVenta</span>
+                        <span class="label pull-right style=" margin-top: 10px;
+                              background: #FDA515;
+                              top: -8px;
+                              font-weight: 400;
+                              font-size: .8em;
+                              position: relative;">@i.tags.Count tags</span>
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+                </div>
+            </a>
+        }

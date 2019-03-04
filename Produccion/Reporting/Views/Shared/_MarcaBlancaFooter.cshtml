@@ -1,0 +1,13 @@
+﻿@if (ViewBag.fondoMarcaBlanca != null && ViewBag.fondoMarcaBlanca != "")
+{
+    <div class="container-fluid footerBlanca">
+        <div class="row">
+            <div class="powered"><img src="/images/checkpos-perfom.png" width="113" height="30"></div>
+
+            <div class="finalBlanca" style="background-image:url('@ViewBag.fondoMarcaBlanca')">
+                <span class="textoBlanca pull-right" data-placement="bottom"><a href="#" target="_blank">@ViewBag.linkMarcaBlanca</a></span>
+            </div>
+        </div>
+    </div>
+
+}

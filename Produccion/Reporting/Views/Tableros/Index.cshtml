@@ -1,0 +1,434 @@
+﻿@using Reporting.ViewModels
+@model TableroViewModel
+
+@{
+    ViewBag.Title = Reporting.Resources.Tableros.titulo;
+}
+
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
+@using (Ajax.BeginForm("AplicarFiltros", "Tableros", null, new AjaxOptions { OnBegin = "aplicarfiltrobegin", OnSuccess = "aplicarfiltrosuccess", OnComplete = "aplicarfiltrocomplete", InsertionMode = InsertionMode.Replace, UpdateTargetId = "filtrostablero" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.Hidden("TableroId")
+
+    <div class="filtroReporting">
+        <div class="filtroacciones">
+            <button type="submit" class="btn aplicarfiltro">@Reporting.Resources.Tableros.lblAplicarFiltro <i class="fa fa-check pull-right"></i></button>
+        </div>
+        <div id="loadingfiltros" style="display:none;">
+            <strong>@Reporting.Resources.Tableros.lblCargandoFiltros</strong>
+        </div>
+        <div id="filtrostablero" class="filtroitems"></div>
+    </div>
+}
+
+<a id="downloadCanvasGraph" hidden></a>
+
+<div id="tabs">
+    @Html.Partial("_Tabs", Model.Tabs)
+</div>
+
+<div class="container-fluid tab-content tab-content-reporting">
+    <label id="cargandoTablero" style="display:none;">@Reporting.Resources.Tableros.lblCargandoTablero</label>
+    <div id="objetos"></div>
+</div>
+
+<div class="modal fade foto-ampliada" id="modalAmpliarImagen" tabindex="-1" role="dialog" aria-labelledby="tituloModalAmpliar">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content"></div>
+    </div>
+</div>
+
+<div class="modal fade" id="imagemodal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">@Reporting.Resources.Tableros.lblCerrar</span></button>
+                <h4 class="modal-title" id="myModalLabel"></h4>
+            </div>
+            <div class="modal-body">
+                <img src="" id="imagepreview" style="width: 100%; height: 50%; margin-left: -5px;">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">@Reporting.Resources.Tableros.lblCerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="overlay" id="waitLoadTablero"></div>
+@section scripts{
+
+    @Scripts.Render("~/bundles/unobstrusive")
+    <script>
+        var urlSaveFiltroLock = '@Url.Action("SaveFiltrosLock","Tableros")';
+         var urlGetFiltroAutocomplete  = '@Url.Action("GetFiltroAutocomplete", "Datos")';
+        $(document).ready(function () {
+            $('#waitLoadTablero').hide();
+            $('.marcablanca').hide();
+            $('#TableroId').val(GetTableroId());
+            GetFiltrosDeTablero(ArmarTablero);
+        });
+
+        function GetFiltrosDeTablero(callback) {
+            var tabid = GetTableroId();
+
+            $.ajax({
+                url: "@Url.Action("GetFiltrosPartialView", "Tableros")",
+                data: { TableroId: tabid },
+                cache: false,
+                type: "POST",
+                dataType: "html",
+                beforeSend: function () {
+                    $('.filtroitems').empty();
+                    $('#loadingfiltros').show();
+                },
+                success: function (data, textStatus, XMLHttpRequest) {
+                    $(".filtroitems").html(data);
+                    callback();
+                },
+                complete: function () {
+                    $('#loadingfiltros').hide();
+
+                    if (!Modernizr.inputtypes.date) {
+                        setFechasDowngradeBrowsers();
+                    }
+                }
+            });
+        }
+
+        function aplicarfiltrosuccess() {
+            ArmarTablero();
+        }
+
+        function aplicarfiltrobegin() {
+            $('.aplicarfiltro').prop("disabled", true);
+            $('#objetos').empty();
+            $('#cargandoTablero').show();
+        }
+
+        function aplicarfiltrocomplete() {
+            $('.aplicarfiltro').prop("disabled", false);
+
+            if (!Modernizr.inputtypes.date) {
+                setFechasDowngradeBrowsers();
+            }
+        }
+
+        $(window).resize(function () {
+            resizeCharts();
+        });
+
+        $('#tabs').on('click', '.tabItem', function () {
+            var tabId = $(this).parent().data('tabid');
+            $("·linkEditarTablero").attr('href', '@Url.Action("Editar", "Tableros")/' + tabId);
+            $('#TableroId').val(tabId);
+            $('#linkEditarTablero').attr('href', '@Url.Action("Editar", "Tableros")' + '/' + tabId)
+            $('#tabs').find('.tabs-ReportingTablero li').removeClass('active');
+            $(this).parent().addClass('active');
+            $('#objetos').empty();
+            $('#cargandoTablero').show();
+            GetFiltrosDeTablero(ArmarTablero);
+        })
+
+        function ArmarTablero() {
+            var tabid = GetTableroId();
+
+            $('#objetos').empty();
+
+            $.ajax({
+                url: "@Url.Action("GetObjetos", "Tableros")",
+                data: { TableroId: tabid },
+                cache: false,
+                type: "POST",
+                dataType: "html",
+                beforeSend: function () {
+                    $('#cargandoTablero').show();
+                },
+                success: function (data, textStatus, XMLHttpRequest) {
+                    $("#objetos").html(data);
+                    InicializarObjetosDeTablero();
+                },
+                complete: function () {
+                    $('#cargandoTablero').hide();
+                }
+            });
+        };
+
+        $('body').on('click', '#tabShowHide', function () {
+            var val = $('body, .slide-menu').css('left') === '200px' ? '0px' : '200px';
+            var _padding = $('body, .slide-menu').css('left') != '200px' ? '200px' : '0px';
+            $('body, .slide-menu').css('left', val);
+            $("body").css('padding-right', _padding);
+            resizeCharts();
+        });
+
+        function resizeCharts() {
+            $('div.ObjGrafico').each(function () {
+                var div = $(this).closest('.panel-default');
+                divWidth = div.width();
+                var finalWidth = divWidth - 12;
+                $(this).width(finalWidth);
+                try { $(this).highcharts().reflow(); } catch (e) { }
+            });
+        }
+
+        function InicializarObjetosDeTablero() {
+            $('.objetoTablero').each(function () {
+                var divObjGrafico = $(this).find('.ObjGrafico');
+
+                try { divObjGrafico.highcharts().destroy(); } catch (e) { }
+                divObjGrafico.html('');
+                divObjGrafico.hide();
+                var url = "@Url.Action("GetDataGraficoJson", "Tableros")";
+                CargarGrafico($(this), 1, '240px', 'N', url, GetTableroId());
+            });
+        };
+
+    </script>
+    <script>
+        $('#objetos').on('click', '.descargarTablaDatos', function () {
+
+            var divObjetoTablero = $(this).parents('.objetoTablero');
+            var objetoTipo = divObjetoTablero.attr('data-tipoobj');
+            var urldatos = "@Url.Action("DescargarDatos", "Datos")";
+            var urldownload = "@Url.Action("DownloadFileByToken", "Datos")";
+            var url = "@Url.Action("GetDataGraficoJson", "Tableros")";
+            exportData(divObjetoTablero, urldatos, urldownload, url);
+            return false;
+        });
+
+
+        $('#objetos').on('click', '.expandirObjeto', function () {
+            var divObjetoTablero = $(this).parents('.objetoTablero');
+            var objid = divObjetoTablero.attr('data-id');
+            $.ajax({
+                url: "@Url.Action("VistaAmpliarObjeto", "Tableros")",
+                method: 'POST',
+                data: { objetoid: objid },
+                dataType: 'html',
+                success: function (result) {
+                    $('#full-screen-box-body').html(result);
+                    var divDestino = $('#full-screen-box-body').find('#vistaAmpliadaDeGrafico');
+                    var url = "@Url.Action("GetDataGraficoJson", "Tableros")";
+                    CargarGrafico(divDestino, 1, '480px', 'A', url, GetTableroId());
+                    return false;
+                },
+                complete: function () {
+                    $('#full-screen-box').fadeIn();
+                    $('#renderBody').hide();
+                    return false;
+                }
+            });
+        });
+
+        $('#objetos').on('click', '.descargarImagen', function () {
+            var divObjetoTablero = $(this).parents('.objetoTablero');
+
+            exportImage(divObjetoTablero);
+
+            return false;
+        });
+    </script>
+    <script>
+        /*CONTROLES DE TABLAS*/
+        $('#objetos').on('click', '.tablefirstpage', function () {
+            var divObjeto = $(this).parents('.objetoTablero');
+
+            if ($(this).attr('disabled') === 'disabled') {
+                return false;
+            }
+            var url = "@Url.Action("GetDataGraficoJson", "Tableros")";
+            CargarGrafico(divObjeto, 1, '240px', 'N', url, GetTableroId());
+            return false;
+        });
+        $('#objetos').on('click', '.tablepreviouspage', function () {
+            var divObjeto = $(this).parents('.objetoTablero');
+
+            if ($(this).attr('disabled') === 'disabled') {
+                return false;
+            }
+            var page = $(this).parent().find('.numpage').val();
+            var newpage = +page - 1;
+            var url = "@Url.Action("GetDataGraficoJson", "Tableros")";
+
+            CargarGrafico(divObjeto, newpage, '240px', 'N', url, GetTableroId());
+            return false;
+        });
+        $('#objetos').on('click', '.tablenextpage', function () {
+            var divObjeto = $(this).parents('.objetoTablero');
+
+            if ($(this).attr('disabled') === 'disabled') {
+                return false;
+            }
+            var page = $(this).parent().find('.numpage').val();
+            var newpage = +page + 1;
+            var url = "@Url.Action("GetDataGraficoJson", "Tableros")";
+            CargarGrafico(divObjeto, newpage, '240px', 'N', url, GetTableroId());
+            return false;
+        });
+        $('#objetos').on('click', '.tablelastpage', function () {
+            var divObjeto = $(this).parents('.objetoTablero');
+
+            var totalPages = $(this).parents('.tablaControles').find('.numpage').data('totalpages');
+            if ($(this).attr('disabled') === 'disabled') {
+                return false;
+            }
+            var url = "@Url.Action("GetDataGraficoJson", "Tableros")";
+            CargarGrafico(divObjeto, totalPages, '240px', 'N', url, GetTableroId());
+            return false;
+        });
+
+
+        $('#objetos').on('click', '.imgInteriores4', function () {
+            var sourceImg = $(this).find('img').attr('src');
+            $('#imagepreview').attr('src', sourceImg);
+            $('#imagemodal').modal('show');
+            return false;
+        });
+
+        $('#objetos').on('click', 'table td.details-control', function () {
+            var table = $(this).parent().parent().parent().DataTable();
+            var tr = $(this).closest('tr');
+            var row = table.row(tr);
+            var idObjeto = $(this).parents('.objetoTablero').data('id');
+            var divSize = $(this).parents('.objetoTablero').data('size');
+            var tableId = Math.random().toString(36).slice(2);
+
+            if (row.child.isShown()) {
+                row.child.hide();
+                tr.removeClass('shown');
+            }
+            else {
+                var columns = table.settings().init().columns;
+                var esclave = [];
+                var esclaveValue = [];
+                var data = row.data();
+
+                table.columns().every(function (index) {
+                    if (columns[index].data != null) {
+                        if (columns[index].esclave) {
+                            esclave.push(columns[index].data);
+                        }
+                    }
+                })
+
+                $.each(esclave, function (i) {
+                    var clave = esclave[i];
+                    if (data[clave]) {
+                        esclaveValue.push(data[clave]);
+                    }
+                })
+
+                $.ajax({
+                    type: "POST",
+                    url: '@Url.Action("GetFilasAnidadas", "Tableros")',
+                    contentType: "application/json; charset=utf-8",
+                    data: JSON.stringify({
+                        ObjetoId: idObjeto,
+                        Esclave: esclave,
+                        EsclaveValue: esclaveValue
+                    }),
+                    success: function (result) {
+                        var data = result.Valores;
+
+                        if (result.Valores.length > 0) {
+                            var nestedTable = '<table id="' + tableId + '" cellpadding="5" cellspacing="0" border="0">' + '<thead><tr>';
+
+                            $.each(result.Columns, function (i) {
+                                var cols = '<th>' + result.Columns[i].title + '</th>';
+                                nestedTable = nestedTable + cols;
+                            })
+
+                            nestedTable = nestedTable + '</tr></thead>';
+                            nestedTable = nestedTable + '<tbody>'
+
+                            var keys = Object.keys(result.Valores[0]);
+                            var nestedDataProp = [];
+                            $.each(keys, function (i) {
+                                if (keys[i].startsWith('nested')) {
+                                    nestedDataProp.push(keys[i]);
+                                }
+                            })
+                            $.each(data, function (index) {
+                                var trInit = '<tr>';
+                                var trEnd = '</tr>';
+                                var tdInit = '<td>';
+                                var tdEnd = '</td>';
+                                var value = '';
+
+                                value = value + trInit;
+                                $.each(nestedDataProp, function (i) {
+
+                                    if (data[index][nestedDataProp[i]] != "") {
+                                        value = value + tdInit + data[index][nestedDataProp[i]] + tdEnd;
+                                    }
+                                    else {
+                                        value = value + tdInit + '-' + tdEnd;
+                                    }
+                                })
+                                value = value + trEnd;
+                                nestedTable = nestedTable + value;
+                            })
+                            nestedTable = nestedTable + '</tbody></table>'
+
+                            row.child(nestedTable).show();
+                            tr.addClass('shown');
+
+                            $("#" + tableId).removeClass();
+                            $("#" + tableId).addClass('tablaDatosAnidadosMainStyle');
+
+                            switch (divSize) {
+                                case 'S': $("#" + tableId).addClass('ajustarTablaSmall');
+                                    break;
+                                case 'M': $("#" + tableId).addClass('ajustarTablaMedium');
+                                    break;
+                                case 'L': $("#" + tableId).addClass('ajustarTablaBig');
+                                    break;
+                            }
+                        }
+                    },
+                    error: function (xhr, status, error) {
+                        console.log('----------------- GetFilasAnidadas -----------------');
+                        console.log(xhr);
+                        console.log(status);
+                        console.log(error);
+                        console.log('-----------------------------------------------------');
+                    }
+                });
+            }
+            return false;
+        });
+
+        $('body').on('click', 'a.imagen', function () {
+            var id = $(this).attr('id');
+            $.ajax({
+                url: '@Url.Action("GetFotoPorId", "Imagenes")',
+                data: { idFoto: id },
+                type: 'POST',
+                success: function (data) {
+
+                    if(data)
+                    {
+                        $('#modalAmpliarImagen').find('.modal-content').html(data);
+                    }
+                    $('#modalAmpliarImagen').modal('show');
+                },
+                error: function (xhr, status, errorThrown) {
+                    console.log('----------------- GetFotoPorId ------------------');
+                    console.log(xhr);
+                    console.log(status);
+                    console.log(errorThrown);
+                    console.log('--------------------------------------------------');
+                }
+            });
+
+            return false;
+        });
+
+        function GetTableroId() {
+            return $('#tabs').find('.tabs-ReportingTablero .active').data('tabid');
+        }
+
+    </script>
+}

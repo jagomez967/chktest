@@ -1,0 +1,232 @@
+﻿@using Reporting.ViewModels;
+@model List<TableroPermisoViewModel>
+
+@{
+    ViewBag.Title = Reporting.Resources.Tableros.admTitulo;
+}
+
+@{ 
+    List<SelectListItem> listItemsAltura = new List<SelectListItem>();
+
+
+    listItemsAltura.Add(new SelectListItem
+    {
+        Text = "0.3x",
+        Value = "XS"
+    });
+    listItemsAltura.Add(new SelectListItem
+    {
+        Text = "0.6x",
+        Value = "S"
+    });
+
+    listItemsAltura.Add(new SelectListItem
+    {
+        Text = "Standard",
+        Value = "SM"
+    });
+
+    listItemsAltura.Add(new SelectListItem
+    {
+        Text = "1.3x",
+        Value = "M"
+    });
+
+    listItemsAltura.Add(new SelectListItem
+    {
+        Text = "1.6x",
+        Value = "ML"
+    });
+
+    listItemsAltura.Add(new SelectListItem
+    {
+        Text = "2x",
+        Value = "L"
+    });
+
+    listItemsAltura.Add(new SelectListItem
+    {
+        Text = "2.3x",
+        Value = "XL"
+    });
+
+    listItemsAltura.Add(new SelectListItem
+    {
+        Text = "2.6x",
+        Value = "XXL"
+    });
+
+    listItemsAltura.Add(new SelectListItem
+    {
+        Text = "3x",
+        Value = "XXXL"
+    });
+}
+
+
+
+<div class="container-fluid panel panel-default editar-ReportingTablero">
+    <div class="row">
+        <div class="col-xs-12 col-sm-6">
+            <h2>@Reporting.Resources.Tableros.admTitulo</h2>
+        </div>
+        <div class="col-xs-12 col-sm-6">
+            @if (MyHelpers.IsInRole("crearTablero"))
+            {
+                <a href='@Url.Action("Crear", "Tableros")' class="btn btn-accion-outline pull-right"><i class="fa fa-plus"></i>  @Reporting.Resources.Tableros.admAgregarTablero</a>
+            }
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-8 col-sm-offset-2">
+            <ol id="lista-ReportingTablero" class="list-group">
+                @foreach (TableroPermisoViewModel tablero in Model)
+                {
+                    <li class="list-group-item">
+                        <input id="tableroid-atrr" type="hidden" value="@tablero.tableroId" />
+                        <input id="orden-tablero" type="hidden" value="@(tablero.orden== null? 0: tablero.orden)"/>
+                        <span class="nombre">@tablero.tableroNombre</span>
+                        @if(!@tablero.propio){
+                                <span class="nombre" style="text-align:right"><i style="color:dimgrey">   Compartido por: @tablero.propietario</i></span>    
+                        }                                                                                            
+                        <div class="acciones pull-right">
+                            @if (MyHelpers.IsInRole("verTablero"))
+                            {
+                                <a class="ver" href="@Url.Action("Mostrar", "Tableros", new { @id=tablero.tableroId})"><i class="fa fa-external-link-square"></i> @Reporting.Resources.Tableros.admLabelVer</a>
+                            }
+
+                            @if (MyHelpers.IsInRole("editarTablero"))
+                            {
+                                if (tablero.permiteEscritura)
+                                {
+                                    <a class="editar" href="@Url.Action("Editar", "Tableros", new { @id = tablero.tableroId })"><i class="fa fa-pencil"></i> @Reporting.Resources.Tableros.admLabelEditar</a>
+                                }
+                            }
+
+                            @if (MyHelpers.IsInRole("compartirTablero"))
+                            {
+                                if (tablero.propio)
+                                {
+                                    <a class="compartir" href="@Url.Action("Permisos", "Tableros", new { @id = tablero.tableroId })"><i class="fa fa-shield"></i> @Reporting.Resources.Tableros.admLabelPermisos</a>
+                                    <div class="dropdown eliminar pull-right">
+                                        <a class="dropdown-toggle eliminar" href="#" data-toggle="dropdown" aria-expanded="true"><i class="fa fa-trash-o"></i> @Reporting.Resources.Tableros.admLabelEliminar</a>
+                                        <ul class="dropdown-menu pull-right">
+                                            <li>
+                                                <p>@Reporting.Resources.Tableros.admPreguntaEliminar</p>
+                                            </li>
+                                            <li>
+                                                <div class="pull-left">
+                                                    <a href="#" class="btn btn-link">@Reporting.Resources.Tableros.admNoEliminar</a>
+                                                </div>
+                                                <div class="pull-right">
+                                                    <a href="#" class="btn btn-danger btnEliminarTablero">@Reporting.Resources.Tableros.admSiEliminar</a>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                }
+                            }
+                        </div>
+                    </li>
+                }
+
+            </ol>
+
+        </div>
+
+    </div>
+</div>
+@section scripts{
+    <script>
+        $('a.btnEliminarTablero').on('click', function () {
+            var obj = $(this).parent().parent().parent().parent().parent().parent();
+            var tableroId = obj.find('#tableroid-atrr').val();        
+            $.ajax({
+                url: '@Url.Action("Delete", "Tableros")',
+                type: 'POST',
+                data: { TableroId: tableroId },
+                success: function (data) {
+                    if (data === 'True') {
+                        obj.fadeOut('slow', function () {
+                            obj.remove();
+                        });
+                    } else {
+                        alert('@Reporting.Resources.Tableros.errEliminarTablero');
+                    }
+                },
+                error: function (xhr, status, errorThrown) {
+                    console.log('---------------- eliminarTablero -----------------');
+                    console.log(xhr);
+                    console.log(status);
+                    console.log(errorThrown);
+                    console.log('--------------------------------------------------');
+                }
+            });
+
+            return false;
+        });
+
+        function ActualizarOrdenLista() {
+
+            var dictTableros = {};
+            var tableroId;
+            $('#lista-ReportingTablero > li').each(function (index) {
+                tableroId = $(this).find('#tableroid-atrr').val();
+                $(this).find('#orden-tablero').val(index);
+                dictTableros[tableroId] = index; 
+  
+            });
+
+            $.ajax({
+                url: '@Url.Action("GuardarOrden", "Tableros")',
+                type: 'POST',
+                data: { ListaTablero: dictTableros },
+                success: function (data) {
+                    console.log('Saved Order');                    
+                },
+                error: function (xhr, status, errorThrown) {
+                    console.log('---------------- eliminarTablero -----------------');
+                    console.log(xhr);
+                    console.log(status);
+                    console.log(errorThrown);
+                    console.log('--------------------------------------------------');
+                }
+            });
+        };
+
+        $("#lista-ReportingTablero").sortable({
+            group: 'lista-ReportingTablero',
+            pullPlaceholder: false,
+            onDrop: function ($item, container, _super) {
+                var $clonedItem = $('<li/>').css({ height: 0 });
+                $item.before($clonedItem);
+                $clonedItem.animate({ 'height': $item.height() });
+
+                $item.animate($clonedItem.position(), function () {
+                    $clonedItem.detach();
+                    _super($item, container);
+                });
+                ActualizarOrdenLista();
+            },
+            
+            onDragStart: function ($item, container, _super) {
+                var offset = $item.offset(),
+                    pointer = container.rootGroup.pointer;
+
+                adjustment = {
+                    left: pointer.left - offset.left,
+                    top: pointer.top - offset.top
+                };
+
+                _super($item, container);
+            },
+            onDrag: function ($item, position) {
+                $item.css({
+                    left: position.left - adjustment.left,
+                    top: position.top - adjustment.top
+                });
+            },
+            stop: function (evt, ui) { ActualizarOrdenLista(); }
+        });
+    </script>
+}

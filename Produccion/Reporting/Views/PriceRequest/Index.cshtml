@@ -1,0 +1,71 @@
+﻿@using Reporting.ViewModels
+@model List<ProductGapDetailViewModel>
+@{
+    ViewBag.Title = Reporting.Resources.PriceRequest.TitlePriceRequest.ToUpper();
+}
+
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
+<div class="col-sm-12" id="PriceRequestMain" style="padding-right:15px;color: black">
+    <div class="container-fluid panel panel-default">
+        <div id="MainPriceRequest">
+            @foreach (ProductGapDetailViewModel p in Model)
+            {
+                @Html.Partial("_ProductGapHeader", p)
+            }
+        </div>
+        <div id="GapRetailDetails" style="font-family:'AVENIR NEXT MEDIUM';"></div>
+    </div>
+</div>
+
+<div class="newPageloading">
+    <img src="@Url.Content("~/images/ajax-loader.gif")" />
+</div>
+
+@section scripts{
+    <script>
+        
+        hideLoadingWheel = () => $('.newPageloading').hide();
+        showLoadingWheel = () => $('.newPageloading').show();
+
+        $('.btn-price-request').on('click', () => {            
+            if ($("input.checkbox-round-gap:checked").length == 0) {
+                swal("@Reporting.Resources.PriceRequest.PriceRequest_",
+                    "@Reporting.Resources.PriceRequest.ErrorAtLeastOneProduct",
+                    "error");
+                return false;
+            }          
+            showLoadingWheel();
+            return true;
+        });
+
+        $('.gap-detail-show').on('click', () => $('input.checkbox-round-gap:checkbox').removeAttr('checked'));
+
+        $(document).ready( () => hideLoadingWheel() );
+
+    </script>
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,14 @@
+﻿@model bool
+@if (Model)
+{
+    <div class="container-fluid footerBlanca marcablanca">
+        <div class="row">
+            <div class="powered"><img src="~/images/checkpos-perfom.png" width="113" height="30"></div>
+
+            <div class="finalBlanca">
+                <img src="~/ContentClientes/@ViewBag.marcaBlancaToken/MarcaBlanca/footer.jpg" />
+                <span class="textoBlanca pull-right" data-placement="bottom"><a href="#" target="_blank">@ViewBag.marcaBlancaLink</a></span>
+            </div>
+        </div>
+    </div>
+}

@@ -1,0 +1,453 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Account" xml:space="preserve">
+    <value>Cuenta</value>
+  </data>
+  <data name="Action" xml:space="preserve">
+    <value>Acciones</value>
+  </data>
+  <data name="Back" xml:space="preserve">
+    <value>Volver</value>
+  </data>
+  <data name="Brand" xml:space="preserve">
+    <value>Marca</value>
+  </data>
+  <data name="ChangeState" xml:space="preserve">
+    <value>Cambiar estado</value>
+  </data>
+  <data name="Close" xml:space="preserve">
+    <value>Cerrar</value>
+  </data>
+  <data name="Competitors" xml:space="preserve">
+    <value>Competidores</value>
+  </data>
+  <data name="Country" xml:space="preserve">
+    <value>País</value>
+  </data>
+  <data name="DeleteRequest" xml:space="preserve">
+    <value>Eliminar</value>
+  </data>
+  <data name="EditRequest" xml:space="preserve">
+    <value>Editar</value>
+  </data>
+  <data name="EOL" xml:space="preserve">
+    <value>EOL</value>
+  </data>
+  <data name="ErrorAtLeastOneProduct" xml:space="preserve">
+    <value>Se debe seleccionar al menos un producto de la cuenta para la solicitud</value>
+  </data>
+  <data name="ErrorOnlyOneCompetitor" xml:space="preserve">
+    <value>Solo debe seleccionar un producto competidor</value>
+  </data>
+  <data name="GAP" xml:space="preserve">
+    <value>GAP</value>
+  </data>
+  <data name="HideDetail" xml:space="preserve">
+    <value>Ocultar Detalles</value>
+  </data>
+  <data name="History" xml:space="preserve">
+    <value>Historial</value>
+  </data>
+  <data name="IdealGap" xml:space="preserve">
+    <value>GAP Ideal</value>
+  </data>
+  <data name="Inventory" xml:space="preserve">
+    <value>Inventario</value>
+  </data>
+  <data name="LastState" xml:space="preserve">
+    <value>Estado</value>
+  </data>
+  <data name="ListPriceRequestTitle" xml:space="preserve">
+    <value>Listado de Solicitudes de Baja de Precio</value>
+  </data>
+  <data name="Model" xml:space="preserve">
+    <value>Modelo</value>
+  </data>
+  <data name="ModificationDate" xml:space="preserve">
+    <value>Fecha</value>
+  </data>
+  <data name="NetASP" xml:space="preserve">
+    <value>NetASP</value>
+  </data>
+  <data name="NetASPCondition" xml:space="preserve">
+    <value>Condicion NetASP </value>
+  </data>
+  <data name="NetASPVariancePercent" xml:space="preserve">
+    <value>Variación % NetASP</value>
+  </data>
+  <data name="NetASPVariancePrice" xml:space="preserve">
+    <value>Variación $ NetASP</value>
+  </data>
+  <data name="NewGap" xml:space="preserve">
+    <value>Nuevo Gap</value>
+  </data>
+  <data name="Photo" xml:space="preserve">
+    <value>Foto</value>
+  </data>
+  <data name="PriceGap" xml:space="preserve">
+    <value>GAP</value>
+  </data>
+  <data name="PriceRequestBTN" xml:space="preserve">
+    <value>Price Request</value>
+  </data>
+  <data name="PriceRequestForm" xml:space="preserve">
+    <value>Formulario Baja de Precio</value>
+  </data>
+  <data name="PriceVariance" xml:space="preserve">
+    <value>Variación de Precio</value>
+  </data>
+  <data name="Request" xml:space="preserve">
+    <value>Request</value>
+  </data>
+  <data name="RequestFormTitle" xml:space="preserve">
+    <value>Formulario de Solicitud de Baja de Precio</value>
+  </data>
+  <data name="RequestSendSuccesfull" xml:space="preserve">
+    <value>Solicitud enviada con éxíto</value>
+  </data>
+  <data name="RequestSent" xml:space="preserve">
+    <value>Solicitud Enviada</value>
+  </data>
+  <data name="SearchInTable" xml:space="preserve">
+    <value>Buscar en la Tabla</value>
+  </data>
+  <data name="SelectPhoto" xml:space="preserve">
+    <value>Seleccionar Foto</value>
+  </data>
+  <data name="SellIn" xml:space="preserve">
+    <value>Sell In</value>
+  </data>
+  <data name="Send" xml:space="preserve">
+    <value>Enviar</value>
+  </data>
+  <data name="ShowDetail" xml:space="preserve">
+    <value>Mostrar Detalles</value>
+  </data>
+  <data name="Stores" xml:space="preserve">
+    <value>Tiendas</value>
+  </data>
+  <data name="TitlePriceRequest" xml:space="preserve">
+    <value>Solicitud de baja de Precio</value>
+  </data>
+  <data name="UBP" xml:space="preserve">
+    <value>UBP</value>
+  </data>
+  <data name="UBPProposal" xml:space="preserve">
+    <value>Propuesta UBP</value>
+  </data>
+  <data name="UserName" xml:space="preserve">
+    <value>Usuario</value>
+  </data>
+  <data name="ViewRequest" xml:space="preserve">
+    <value>Ver Solicitud</value>
+  </data>
+  <data name="NO" xml:space="preserve">
+    <value>NO</value>
+  </data>
+  <data name="YES" xml:space="preserve">
+    <value>SI</value>
+  </data>
+  <data name="Select" xml:space="preserve">
+    <value>Foto</value>
+  </data>
+  <data name="SelectPhotoFromGalery" xml:space="preserve">
+    <value>Seleccione fotografias</value>
+  </data>
+  <data name="NoPhotoFound" xml:space="preserve">
+    <value>No existen fotografias</value>
+  </data>
+  <data name="NoPriceRequestFound" xml:space="preserve">
+    <value>No se Encontraron Solicitudes de Baja de Precio</value>
+  </data>
+  <data name="ActualState" xml:space="preserve">
+    <value>Estado</value>
+  </data>
+  <data name="Commentary" xml:space="preserve">
+    <value>Comentario</value>
+  </data>
+  <data name="Date" xml:space="preserve">
+    <value>Fecha</value>
+  </data>
+  <data name="ApproveRequest" xml:space="preserve">
+    <value>Aprobar</value>
+  </data>
+  <data name="DownloadRequest" xml:space="preserve">
+    <value>Descargar</value>
+  </data>
+  <data name="ValidateNetAsp" xml:space="preserve">
+    <value>Debe ingresar NetASP</value>
+  </data>
+  <data name="ValidateNetAspCondition" xml:space="preserve">
+    <value>Debe ingresar NetASP Condition</value>
+  </data>
+  <data name="ValidateUbpProposal" xml:space="preserve">
+    <value>Debe ingresar Propuesta UBP</value>
+  </data>
+  <data name="Confirm" xml:space="preserve">
+    <value>Confirmar</value>
+  </data>
+  <data name="DeletePriceRequestConfirm" xml:space="preserve">
+    <value>Desea eliminar la solicitud?</value>
+  </data>
+  <data name="RejectRequest" xml:space="preserve">
+    <value>Rechazar</value>
+  </data>
+  <data name="InitialStatus" xml:space="preserve">
+    <value>Estado Inicial</value>
+  </data>
+  <data name="PriceRequestClosed" xml:space="preserve">
+    <value>Price Request Closed</value>
+  </data>
+  <data name="RequestApproved" xml:space="preserve">
+    <value>Solicitud Aprobada</value>
+  </data>
+  <data name="RequestRejected" xml:space="preserve">
+    <value>Solicutud Rechazada</value>
+  </data>
+  <data name="UpdatedStatus" xml:space="preserve">
+    <value>Solicitud Modificada</value>
+  </data>
+  <data name="PR_Approved" xml:space="preserve">
+    <value>Aprobado</value>
+  </data>
+  <data name="PR_Downloaded" xml:space="preserve">
+    <value>Descargado</value>
+  </data>
+  <data name="PR_DownloadError" xml:space="preserve">
+    <value>Error en Descarga</value>
+  </data>
+  <data name="PR_Generated" xml:space="preserve">
+    <value>Solicitud Creada</value>
+  </data>
+  <data name="PR_InitialError" xml:space="preserve">
+    <value>Error en Generación</value>
+  </data>
+  <data name="PR_InitialStatus" xml:space="preserve">
+    <value>Estado Inicial</value>
+  </data>
+  <data name="PR_NoState" xml:space="preserve">
+    <value>Sin Estado</value>
+  </data>
+  <data name="PR_RejectedByAdmin" xml:space="preserve">
+    <value>Rechazada por EAI</value>
+  </data>
+  <data name="PR_RejectedByManager" xml:space="preserve">
+    <value>Rechazada por SEC</value>
+  </data>
+  <data name="PR_Revision" xml:space="preserve">
+    <value>Revision OK</value>
+  </data>
+  <data name="NextAlertIn" xml:space="preserve">
+    <value>Proxima alerta en : </value>
+  </data>
+  <data name="ErrorOnRejectPR" xml:space="preserve">
+    <value>Error al rechazar solicitud</value>
+  </data>
+  <data name="NoPhotoForProduct" xml:space="preserve">
+    <value>no se encontraron imagenes vinculadas al producto/cadena, mostrando fotos de los reportes</value>
+  </data>
+  <data name="RejectRequestSubtitle" xml:space="preserve">
+    <value>Ingrese mensaje con motivo del rechazo</value>
+  </data>
+  <data name="RejectRequestTitle" xml:space="preserve">
+    <value>Rechazar Solicitud de Baja de Precio</value>
+  </data>
+  <data name="ErrorOnAprroveRequest" xml:space="preserve">
+    <value>Error al aprobar solicitud</value>
+  </data>
+  <data name="ErrorOnDeleteRequest" xml:space="preserve">
+    <value>Error on Delete Request</value>
+  </data>
+  <data name="ErrorOnValidateRequest" xml:space="preserve">
+    <value>Error al validar solicitud</value>
+  </data>
+  <data name="Id" xml:space="preserve">
+    <value>Id</value>
+  </data>
+  <data name="RequestDeleted" xml:space="preserve">
+    <value>Request Deleted</value>
+  </data>
+  <data name="RejectRequestSecTitle" xml:space="preserve">
+    <value>Rechazo de solicitud (SEC)</value>
+  </data>
+  <data name="SelectedPhotos" xml:space="preserve">
+    <value>Fotos Seleccionadas</value>
+  </data>
+  <data name="AdminPriceRequest" xml:space="preserve">
+    <value>Admin PR</value>
+  </data>
+  <data name="PriceRequest_" xml:space="preserve">
+    <value>Price Request</value>
+  </data>
+  <data name="ViewPriceRequest" xml:space="preserve">
+    <value>Ver PR</value>
+  </data>
+  <data name="Accounts" xml:space="preserve">
+    <value>Cuentas</value>
+  </data>
+  <data name="Product" xml:space="preserve">
+    <value>Producto</value>
+  </data>
+  <data name="ValidateNetAspConditionZero" xml:space="preserve">
+    <value>NetASP Condition no puede ser cero</value>
+  </data>
+  <data name="Checking" xml:space="preserve">
+    <value>Verificando...</value>
+  </data>
+  <data name="PleaseWait" xml:space="preserve">
+    <value>Por favor espere</value>
+  </data>
+  <data name="SuccessOnApproveRequest" xml:space="preserve">
+    <value>Solicitud aprobada con éxito</value>
+  </data>
+  <data name="SuccessOnRejectPR" xml:space="preserve">
+    <value>Solicitud rechazada con éxito</value>
+  </data>
+  <data name="ErrorOnGetPhotos" xml:space="preserve">
+    <value>Error al obtener fotos</value>
+  </data>
+  <data name="ErrorOnSendPriceRequest" xml:space="preserve">
+    <value>Ocurrio un error al enviar solicitud</value>
+  </data>
+  <data name="AdminPriceRequest_" xml:space="preserve">
+    <value>Administrador Price Request</value>
+  </data>
+  <data name="Deleting" xml:space="preserve">
+    <value>Eliminando...</value>
+  </data>
+  <data name="ErrorOnLoadHistory" xml:space="preserve">
+    <value>Error al cargar historial</value>
+  </data>
+  <data name="LoadingHistory" xml:space="preserve">
+    <value>Cargando historial...</value>
+  </data>
+  <data name="ErrorOnDownload" xml:space="preserve">
+    <value>Error en descarga</value>
+  </data>
+  <data name="CannotBeEmpty" xml:space="preserve">
+    <value>no puede estar vacío</value>
+  </data>
+  <data name="CannotBeZero" xml:space="preserve">
+    <value>no puede ser cero</value>
+  </data>
+  <data name="MustBeNumeric" xml:space="preserve">
+    <value>debe ser numérico</value>
+  </data>
+</root>

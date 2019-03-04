@@ -1,0 +1,774 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="btnCrearNuevoRolLabel" xml:space="preserve">
+    <value>Créer un nouveau rôle</value>
+  </data>
+  <data name="btnCrearRolLabel" xml:space="preserve">
+    <value>Enregistrer les modifications</value>
+  </data>
+  <data name="btnMarcaBlancaGuardarCambios" xml:space="preserve">
+    <value>Enregistrer les modifications</value>
+  </data>
+  <data name="btnUsuariosActivarReporting" xml:space="preserve">
+    <value>Activer les rapports</value>
+  </data>
+  <data name="cambioRealizadoConExito" xml:space="preserve">
+    <value>La modification a été couronnée de succès</value>
+  </data>
+  <data name="confAsignarPermisosError" xml:space="preserve">
+    <value>Une erreur s'est produite lors de la tentative d'attribution d'autorisations</value>
+  </data>
+  <data name="confFiltroIdRequerido" xml:space="preserve">
+    <value>Idolatry</value>
+  </data>
+  <data name="confFiltroLeyendaRequerida" xml:space="preserve">
+    <value>Le nom du filtre est requis</value>
+  </data>
+  <data name="confFiltroLeyendaTooLong" xml:space="preserve">
+    <value>Maximum de 50 caractères</value>
+  </data>
+  <data name="confFiltroModuloLabel" xml:space="preserve">
+    <value>Module</value>
+  </data>
+  <data name="confFiltroSinFiltros" xml:space="preserve">
+    <value>Aucun filtre trouvé</value>
+  </data>
+  <data name="confMenuMarcaBlanca" xml:space="preserve">
+    <value>Marque blanche</value>
+  </data>
+  <data name="confMenuNombreFiltros" xml:space="preserve">
+    <value>Nom des filtres</value>
+  </data>
+  <data name="confMenuObjetos" xml:space="preserve">
+    <value>Objets</value>
+  </data>
+  <data name="confMenuRoles" xml:space="preserve">
+    <value>Rôles</value>
+  </data>
+  <data name="confMenuUsuarios" xml:space="preserve">
+    <value>Utilisateurs</value>
+  </data>
+  <data name="confMenuVisibilidadFamilias" xml:space="preserve">
+    <value>Visibilité des objets</value>
+  </data>
+  <data name="confMenuVisibilidadFiltros" xml:space="preserve">
+    <value>Filtres de visibilité</value>
+  </data>
+  <data name="confMenuVisibilidadUsuarios" xml:space="preserve">
+    <value>Visibilité entre les utilisateurs</value>
+  </data>
+  <data name="confObjetoIdRequerido" xml:space="preserve">
+    <value>Identification requise</value>
+  </data>
+  <data name="confObjetoLeyendaRequerida" xml:space="preserve">
+    <value>Le nom de l'objet est requis</value>
+  </data>
+  <data name="confObjetoLeyendaTooLong" xml:space="preserve">
+    <value>Maximum de 50 caractères</value>
+  </data>
+  <data name="confRolAsignarPermisos" xml:space="preserve">
+    <value>sauvegarder</value>
+  </data>
+  <data name="confRolCreadoExitosamente" xml:space="preserve">
+    <value>Le rôle a été créé avec succès</value>
+  </data>
+  <data name="confRolDuplicado" xml:space="preserve">
+    <value>Le rôle existe déjà</value>
+  </data>
+  <data name="confRolError" xml:space="preserve">
+    <value>Impossible de créer un rôle</value>
+  </data>
+  <data name="confRolLabel" xml:space="preserve">
+    <value>Rôle</value>
+  </data>
+  <data name="confRolNameMaxLengthError" xml:space="preserve">
+    <value>Maximum de 50 caractères</value>
+  </data>
+  <data name="confRolNameRequiredError" xml:space="preserve">
+    <value>Le nom du rôle ne peut pas être vide</value>
+  </data>
+  <data name="confUsuarioApellidoRequired" xml:space="preserve">
+    <value>Le nom ne peut pas être laissé vide</value>
+  </data>
+  <data name="confUsuarioAsignarRolLabel" xml:space="preserve">
+    <value>Affecter des rôles à l'utilisateur</value>
+  </data>
+  <data name="confUsuarioConfirmPassword" xml:space="preserve">
+    <value>Les mots de passe ne correspondent pas</value>
+  </data>
+  <data name="confUsuarioEmailNotNull" xml:space="preserve">
+    <value>Le champ Email ne peut pas être vide</value>
+  </data>
+  <data name="confUsuarioNombreRequired" xml:space="preserve">
+    <value>Le nom ne peut pas être laissé vide</value>
+  </data>
+  <data name="confUsuarioNotNull" xml:space="preserve">
+    <value>Les champs Nom et prénom ne peuvent pas être laissés vides</value>
+  </data>
+  <data name="confUsuarioPasswordLength" xml:space="preserve">
+    <value>Le mot de passe doit contenir au moins 6 caractères</value>
+  </data>
+  <data name="confUsuarioPasswordNotNull" xml:space="preserve">
+    <value>Vous devez entrer un mot de passe</value>
+  </data>
+  <data name="crearNuevoRolAsignarPermisosTitle" xml:space="preserve">
+    <value>Attribuer des autorisations au rôle</value>
+  </data>
+  <data name="crearNuevoRolButton" xml:space="preserve">
+    <value>Créer un nouveau rôle</value>
+  </data>
+  <data name="crearNuevoRolModalTitulo" xml:space="preserve">
+    <value>Créer un nouveau rôle</value>
+  </data>
+  <data name="crearNuevoUsuarioButton" xml:space="preserve">
+    <value>Créer un nouvel utilisateur</value>
+  </data>
+  <data name="crearNuevoUsuarioConfirmPassword" xml:space="preserve">
+    <value>Confirmer mot de passe</value>
+  </data>
+  <data name="crearNuevoUsuarioEmail" xml:space="preserve">
+    <value>Catégories apparentées</value>
+  </data>
+  <data name="crearNuevoUsuarioFirstName" xml:space="preserve">
+    <value>nom</value>
+  </data>
+  <data name="crearNuevoUsuarioLastName" xml:space="preserve">
+    <value>Le nom</value>
+  </data>
+  <data name="crearNuevoUsuarioModalTitulo" xml:space="preserve">
+    <value>Créer un nouvel utilisateur</value>
+  </data>
+  <data name="crearNuevoUsuarioPassword" xml:space="preserve">
+    <value>Mot de passe</value>
+  </data>
+  <data name="errAsignarUsuarioPerformanceReporting" xml:space="preserve">
+    <value>Erreur lors de l'affectation de l'utilisateur de performance à celui créé lors des rapports</value>
+  </data>
+  <data name="errCargarFormularioNombreFiltro" xml:space="preserve">
+    <value>Erreur inattendue lors de la tentative de chargement du formulaire pour modifier le nom du filtre</value>
+  </data>
+  <data name="errDatosRolGuardar" xml:space="preserve">
+    <value>Une erreur s'est produite lors de l'enregistrement des données de rôle.</value>
+  </data>
+  <data name="errEditarUsuarioGuardar" xml:space="preserve">
+    <value>Une erreur s'est produite lors de la tentative d'enregistrement de données utilisateur.</value>
+  </data>
+  <data name="errFamiliaNombreAsignadoLength" xml:space="preserve">
+    <value>Doit être au plus 50 caractères</value>
+  </data>
+  <data name="errFormatoImagen" xml:space="preserve">
+    <value>Les formats d'image pris en charge sont gif, jpg, png</value>
+  </data>
+  <data name="errGuardarDatosNuevoRol" xml:space="preserve">
+    <value>Une erreur s'est produite lors de l'enregistrement des données de rôle.</value>
+  </data>
+  <data name="errGuardarNombreObjeto" xml:space="preserve">
+    <value>Impossible d'effectuer une modification, le nom de l'objet ne peut excéder 100 caractères</value>
+  </data>
+  <data name="errImagenFormato" xml:space="preserve">
+    <value>Le format de l'image est incorrect</value>
+  </data>
+  <data name="errImagenSize" xml:space="preserve">
+    <value>L'image ne peut pas dépasser 500kb</value>
+  </data>
+  <data name="errImagenSize500kb" xml:space="preserve">
+    <value>L'image ne peut pas peser plus de 500kb</value>
+  </data>
+  <data name="errInesperadoModificacion" xml:space="preserve">
+    <value>Une erreur s'est produite lors de la tentative de modification. Si cela persiste, contactez le support. Nous nous excusons pour les inconvénients.</value>
+  </data>
+  <data name="errIntentarCrearUsuario" xml:space="preserve">
+    <value>Une erreur s'est produite lors de la tentative de création de l'utilisateur dans les rapports</value>
+  </data>
+  <data name="errMarcaBlancaImagenFormato" xml:space="preserve">
+    <value>Le format de l'image choisie est incorrect.</value>
+  </data>
+  <data name="errMarcaBlancaImagenSize" xml:space="preserve">
+    <value>La taille maximale de la photo devrait être de 500kb.</value>
+  </data>
+  <data name="errObjetosCargarFormularioNombre" xml:space="preserve">
+    <value>Erreur inattendue lors de la tentative de chargement du formulaire pour modifier le nom de l'objet</value>
+  </data>
+  <data name="errorSizeImagenMarcaBlanca" xml:space="preserve">
+    <value>La taille de l'image ne peut pas dépasser 300kb</value>
+  </data>
+  <data name="errorSizeLogoMarcaBlanca" xml:space="preserve">
+    <value>La taille de l'image ne peut pas dépasser 100kb</value>
+  </data>
+  <data name="errorTipoImagenMarcaBlanca" xml:space="preserve">
+    <value>L'image n'a pas de format valide. Les formats possibles sont: jpg, png, gif</value>
+  </data>
+  <data name="flgMarcaBlancaLabel" xml:space="preserve">
+    <value>Activer / Désactiver l'étiquette blanche</value>
+  </data>
+  <data name="footerMarcaBlancaLabel" xml:space="preserve">
+    <value>Pied de page de l'image</value>
+  </data>
+  <data name="imgMarcaBlancaLabel" xml:space="preserve">
+    <value>Image d'arrière-plan</value>
+  </data>
+  <data name="imgMarcaBlancaRequired" xml:space="preserve">
+    <value>Il est obligatoire de sélectionner une image</value>
+  </data>
+  <data name="imgPreviewMarcaBlancaLabel" xml:space="preserve">
+    <value>Image actuellement chargée</value>
+  </data>
+  <data name="lblAdHoc" xml:space="preserve">
+    <value>* Ad-Hoc:</value>
+  </data>
+  <data name="lblAdministracion" xml:space="preserve">
+    <value>Administration</value>
+  </data>
+  <data name="lblAsignacionFiltros" xml:space="preserve">
+    <value>Affectation de filtre</value>
+  </data>
+  <data name="lblAsignacionFiltrosSubTitulo" xml:space="preserve">
+    <value>Vous pouvez gérer quels filtres sont visibles pour l'utilisateur</value>
+  </data>
+  <data name="lblAsignacionFiltrosTitulo2" xml:space="preserve">
+    <value>Affectation de filtre</value>
+  </data>
+  <data name="lblAsignacionObjetos" xml:space="preserve">
+    <value>Affectation d'objets</value>
+  </data>
+  <data name="lblAsignacionObjetosSubTitulo" xml:space="preserve">
+    <value>Gérer les objets affectés au client</value>
+  </data>
+  <data name="lblAsignacionObjetosTitulo2" xml:space="preserve">
+    <value>Affectation d'objets</value>
+  </data>
+  <data name="lblAsignarObjetosTitulo" xml:space="preserve">
+    <value>Affectation d'objets</value>
+  </data>
+  <data name="lblCancelar" xml:space="preserve">
+    <value>Annuler</value>
+  </data>
+  <data name="lblCargandoFiltros" xml:space="preserve">
+    <value>Chargement des filtres ...</value>
+  </data>
+  <data name="lblConfiguracionIndexTitulo" xml:space="preserve">
+    <value>Paramètres</value>
+  </data>
+  <data name="lblConfigurarFiltrosSubTitulo" xml:space="preserve">
+    <value>Vous pouvez modifier la légende et la visibilité des filtres pour chaque module de l'application</value>
+  </data>
+  <data name="lblConfigurarFiltrosTitulo" xml:space="preserve">
+    <value>Configurer les filtres</value>
+  </data>
+  <data name="lblConfigurarFiltrosTitulo2" xml:space="preserve">
+    <value>Configuration du filtre</value>
+  </data>
+  <data name="lblConfigurarObjetosSubTitulo" xml:space="preserve">
+    <value>Vous pouvez modifier la légende et la visibilité des objets du tableau de bord de l'application</value>
+  </data>
+  <data name="lblConfigurarObjetosTitulo" xml:space="preserve">
+    <value>Configurer des objets</value>
+  </data>
+  <data name="lblConfigurarObjetosTitulo2" xml:space="preserve">
+    <value>Configurer des objets</value>
+  </data>
+  <data name="lblCrearRolTitulo" xml:space="preserve">
+    <value>Créer un rôle</value>
+  </data>
+  <data name="lblCrearRolTitulo2" xml:space="preserve">
+    <value>Créer un rôle</value>
+  </data>
+  <data name="lblDatosGuardaronExitosamente" xml:space="preserve">
+    <value>Les données de rôle ont été enregistrées avec succès</value>
+  </data>
+  <data name="lblDatosRolGuardadosExito" xml:space="preserve">
+    <value>Les données de rôle ont été enregistrées avec succès</value>
+  </data>
+  <data name="lblEditarNombreFiltro" xml:space="preserve">
+    <value>Modifier le nom du filtre</value>
+  </data>
+  <data name="lblEditarRolGuardarCambios" xml:space="preserve">
+    <value>Enregistrer les modifications</value>
+  </data>
+  <data name="lblEditarRolPermiso" xml:space="preserve">
+    <value>Permission</value>
+  </data>
+  <data name="lblEditarRolPermisos" xml:space="preserve">
+    <value>Autorisations</value>
+  </data>
+  <data name="lblEditarRolSeleccionado" xml:space="preserve">
+    <value>Sélectionné</value>
+  </data>
+  <data name="lblEditarRolTitulo" xml:space="preserve">
+    <value>Modifier le rôle</value>
+  </data>
+  <data name="lblEditarRolTitulo2" xml:space="preserve">
+    <value>Modifier le rôle</value>
+  </data>
+  <data name="lblEditarUsuarioEsCheckpos" xml:space="preserve">
+    <value>C'est CheckPos</value>
+  </data>
+  <data name="lblEditarUsuarioGuardadoExitoso" xml:space="preserve">
+    <value>Données utilisateur sauvegardées avec succès</value>
+  </data>
+  <data name="lblEditarUsuarioGuardarCambios" xml:space="preserve">
+    <value>Enregistrer les modifications</value>
+  </data>
+  <data name="lblEditarUsuarioModificarCalendario" xml:space="preserve">
+    <value>Vous pouvez modifier le calendrier</value>
+  </data>
+  <data name="lblEditarUsuarioTitulo" xml:space="preserve">
+    <value>Modifier l'utilisateur</value>
+  </data>
+  <data name="lblEditarUsuarioTitulo2" xml:space="preserve">
+    <value>Modifier l'utilisateur</value>
+  </data>
+  <data name="lblEmpresa" xml:space="preserve">
+    <value>Société</value>
+  </data>
+  <data name="lblErrNombreFiltro" xml:space="preserve">
+    <value>Impossible de modifier, le nom du filtre ne peut pas dépasser 50 caractères</value>
+  </data>
+  <data name="lblFiltros" xml:space="preserve">
+    <value>Filtres</value>
+  </data>
+  <data name="lblGuardandoNombreObjeto" xml:space="preserve">
+    <value>Enregistrement du nouveau nom de l'objet ...</value>
+  </data>
+  <data name="lblGuardarCambios" xml:space="preserve">
+    <value>Enregistrer les modifications</value>
+  </data>
+  <data name="lblGuardarNombreDeFiltro" xml:space="preserve">
+    <value>Enregistrement du nouveau nom du filtre ...</value>
+  </data>
+  <data name="lblMarcaBlanca" xml:space="preserve">
+    <value>Marque blanche</value>
+  </data>
+  <data name="lblMarcaBlancaResolucionRecomendada" xml:space="preserve">
+    <value>Max: 500kb. Recommandé: 1366x768</value>
+  </data>
+  <data name="lblMarcaBlancaResolucionRecomendada2" xml:space="preserve">
+    <value>Max: 500kb. Recommandé: 140x40</value>
+  </data>
+  <data name="lblMarcaBlancaResolucionRecomendada3" xml:space="preserve">
+    <value>Max: 500kb. Recommandé: 1366x100</value>
+  </data>
+  <data name="lblMarcaBlancaSubTitulo" xml:space="preserve">
+    <value>À partir de cet écran, vous pouvez adapter le style du site en fonction de votre marque.</value>
+  </data>
+  <data name="lblMarcaBlancaTitulo" xml:space="preserve">
+    <value>Marque blanche</value>
+  </data>
+  <data name="lblMarcaBlancaTitulo2" xml:space="preserve">
+    <value>Marque blanche</value>
+  </data>
+  <data name="lblNombreFiltroAviso" xml:space="preserve">
+    <value>Le nom du filtre que vous entrez est celui que vous allez voir dans le filtre côté Reporting.</value>
+  </data>
+  <data name="lblNombrePorDefecto" xml:space="preserve">
+    <value>Nom par défaut:</value>
+  </data>
+  <data name="lblObjetos" xml:space="preserve">
+    <value>Objets</value>
+  </data>
+  <data name="lblObjetosTablaColNombreAsignado" xml:space="preserve">
+    <value>Nom attribué par l'utilisateur</value>
+  </data>
+  <data name="lblObjetosTablaColNombreDefecto" xml:space="preserve">
+    <value>Nom par défaut</value>
+  </data>
+  <data name="lblObjetosTablaColVisibilidad" xml:space="preserve">
+    <value>Visibilité</value>
+  </data>
+  <data name="lblOnOffLabelNo" xml:space="preserve">
+    <value>Non</value>
+  </data>
+  <data name="lblOnOffLabelYes" xml:space="preserve">
+    <value>Oui</value>
+  </data>
+  <data name="lblPerfilApellido" xml:space="preserve">
+    <value>Le nom</value>
+  </data>
+  <data name="lblPerfilEmail" xml:space="preserve">
+    <value>Email</value>
+  </data>
+  <data name="lblPerfilIdioma" xml:space="preserve">
+    <value>Langage</value>
+  </data>
+  <data name="lblPerfilNombre" xml:space="preserve">
+    <value>Nom</value>
+  </data>
+  <data name="lblPerfilRol" xml:space="preserve">
+    <value>Rôle</value>
+  </data>
+  <data name="lblPerfilTelefono" xml:space="preserve">
+    <value>Téléphone</value>
+  </data>
+  <data name="lblPermiso" xml:space="preserve">
+    <value>Permission</value>
+  </data>
+  <data name="lblPermisos" xml:space="preserve">
+    <value>Autorisations</value>
+  </data>
+  <data name="lblReporting" xml:space="preserve">
+    <value>Rapports</value>
+  </data>
+  <data name="lblRoles" xml:space="preserve">
+    <value>Rôles</value>
+  </data>
+  <data name="lblRolesSubTitulo" xml:space="preserve">
+    <value>Liste des rôles, vous pouvez modifier et créer de nouveaux rôles avec différentes autorisations</value>
+  </data>
+  <data name="lblRolesTablaColNombre" xml:space="preserve">
+    <value>nom</value>
+  </data>
+  <data name="lblRolesTitulo" xml:space="preserve">
+    <value>Rôles</value>
+  </data>
+  <data name="lblRolesTitulo2" xml:space="preserve">
+    <value>Paramètres de rôles</value>
+  </data>
+  <data name="lblRolNoEncontradoAqui" xml:space="preserve">
+    <value>ici</value>
+  </data>
+  <data name="lblRolNoEncontradoLink1" xml:space="preserve">
+    <value>Vous pouvez accéder à la liste des rôles en cliquant</value>
+  </data>
+  <data name="lblRolNoEncontradoMensaje" xml:space="preserve">
+    <value>Impossible de trouver le rôle que vous recherchez</value>
+  </data>
+  <data name="lblRolNoEncontradonoAfectaDatos" xml:space="preserve">
+    <value>Cela n'affectera pas vos données.</value>
+  </data>
+  <data name="lblRolNoEncontradoTitulo" xml:space="preserve">
+    <value>Rôle introuvable</value>
+  </data>
+  <data name="lblSeleccionado" xml:space="preserve">
+    <value>Sélectionné</value>
+  </data>
+  <data name="lblTablaColAsignado" xml:space="preserve">
+    <value>Attribué</value>
+  </data>
+  <data name="lblTablaColAsignadoAsignacionObjetos" xml:space="preserve">
+    <value>Attribué</value>
+  </data>
+  <data name="lblTablaColCategoriaAsignacionObjetos" xml:space="preserve">
+    <value>Catégorie</value>
+  </data>
+  <data name="lblTablaColNombre" xml:space="preserve">
+    <value>nom</value>
+  </data>
+  <data name="lblTablaColNombreAsignacionObjetos" xml:space="preserve">
+    <value>nom</value>
+  </data>
+  <data name="lblTablaColNombreAsignadoPorUsuario" xml:space="preserve">
+    <value>Nom attribué par l'utilisateur</value>
+  </data>
+  <data name="lblTablaColNombreDefecto" xml:space="preserve">
+    <value>Nom par défaut</value>
+  </data>
+  <data name="lblTablaColVisible" xml:space="preserve">
+    <value>Visible</value>
+  </data>
+  <data name="lblTituloAsignacionFiltros" xml:space="preserve">
+    <value>Affectation de filtre</value>
+  </data>
+  <data name="lblTituloEditarNombreObjeto" xml:space="preserve">
+    <value>Modifier le nom de l'objet</value>
+  </data>
+  <data name="lblTituloGraficoAviso" xml:space="preserve">
+    <value>Le texte que vous entrez est celui que vous consultez en tant que titre pour ce type de graphique dans le futur.</value>
+  </data>
+  <data name="lblUsuarioNoEncontradoLink1" xml:space="preserve">
+    <value>Vous pouvez accéder à la liste des utilisateurs en cliquant</value>
+  </data>
+  <data name="lblUsuarioNoEncontradoLinkAqui" xml:space="preserve">
+    <value>ici</value>
+  </data>
+  <data name="lblUsuarioNoEncontradoMensaje" xml:space="preserve">
+    <value>Utilisateur introuvable</value>
+  </data>
+  <data name="lblUsuarioNoEncontradoSubTitulo" xml:space="preserve">
+    <value>Cela n'affectera pas vos données.</value>
+  </data>
+  <data name="lblUsuarioNoEncontradoTitulo" xml:space="preserve">
+    <value>Utilisateur introuvable</value>
+  </data>
+  <data name="lblUsuarios" xml:space="preserve">
+    <value>Utilisateurs</value>
+  </data>
+  <data name="lblUsuariosActivando" xml:space="preserve">
+    <value>Activation ...</value>
+  </data>
+  <data name="lblUsuariosRoles" xml:space="preserve">
+    <value>Utilisateurs et rôles</value>
+  </data>
+  <data name="lblUsuariosSubtitulo" xml:space="preserve">
+    <value>Liste des utilisateurs, vous pouvez modifier les attributs et l'affectation des rôles des utilisateurs</value>
+  </data>
+  <data name="lblUsuariosTablaColApellido" xml:space="preserve">
+    <value>Le nom</value>
+  </data>
+  <data name="lblUsuariosTablaColEmail" xml:space="preserve">
+    <value>Catégories apparentées</value>
+  </data>
+  <data name="lblUsuariosTablaColNombre" xml:space="preserve">
+    <value>nom</value>
+  </data>
+  <data name="lblUsuariosTitulo" xml:space="preserve">
+    <value>Utilisateurs</value>
+  </data>
+  <data name="lblUsuariosTitulo2" xml:space="preserve">
+    <value>Configuration de l'utilisateur</value>
+  </data>
+  <data name="lblUtilizaNombrePorDefecto" xml:space="preserve">
+    <value>(Utilise le nom par défaut)</value>
+  </data>
+  <data name="linkMarcaBlancaLabel" xml:space="preserve">
+    <value>Lien vers la page personnelle</value>
+  </data>
+  <data name="logoMarcaBlancaLabel" xml:space="preserve">
+    <value>Logo</value>
+  </data>
+  <data name="noDataFoundViewSubTitle" xml:space="preserve">
+    <value>Vous devez créer au moins un objet à afficher</value>
+  </data>
+  <data name="noDataFoundViewTitle" xml:space="preserve">
+    <value>Aucune donnée trouvée</value>
+  </data>
+  <data name="noTieneClienteSeleccionado" xml:space="preserve">
+    <value>Vous n'avez pas sélectionné un client, vous devez en choisir un pour continuer</value>
+  </data>
+  <data name="noTieneUsuarios" xml:space="preserve">
+    <value>Aucun utilisateur trouvé</value>
+  </data>
+  <data name="noTieneUsuariosSubTitulo" xml:space="preserve">
+    <value>Aucune donnée à afficher</value>
+  </data>
+  <data name="PerfilApellidoErrorLength" xml:space="preserve">
+    <value>Le nom de famille de l'utilisateur doit comporter entre 3 et 30 caractères</value>
+  </data>
+  <data name="PerfilApellidoRequiredError" xml:space="preserve">
+    <value>Il est obligatoire de spécifier un nom d'utilisateur</value>
+  </data>
+  <data name="PerfilEmailErrorLength" xml:space="preserve">
+    <value>Le courrier électronique doit comporter moins de 100 caractères</value>
+  </data>
+  <data name="PerfilEmailRequiredError" xml:space="preserve">
+    <value>Il est obligatoire de spécifier un courrier électronique</value>
+  </data>
+  <data name="PerfilNombreErrorLength" xml:space="preserve">
+    <value>Le nom d'utilisateur doit comporter entre 3 et 30 caractères</value>
+  </data>
+  <data name="PerfilNombreRequiredError" xml:space="preserve">
+    <value>Il est obligatoire de spécifier un nom d'utilisateur</value>
+  </data>
+  <data name="permiso_administrarTablero" xml:space="preserve">
+    <value>Gérer</value>
+  </data>
+  <data name="permiso_compartirTablero" xml:space="preserve">
+    <value>Partager</value>
+  </data>
+  <data name="permiso_crearAlertas" xml:space="preserve">
+    <value>Créer une alerte</value>
+  </data>
+  <data name="permiso_crearTablero" xml:space="preserve">
+    <value>Créer</value>
+  </data>
+  <data name="permiso_descargarImagenes" xml:space="preserve">
+    <value>Télécharger</value>
+  </data>
+  <data name="permiso_editarAlertas" xml:space="preserve">
+    <value>Modifier l'alerte</value>
+  </data>
+  <data name="permiso_editarTablero" xml:space="preserve">
+    <value>Modifier</value>
+  </data>
+  <data name="permiso_eliminarAlertas" xml:space="preserve">
+    <value>Supprimer l'alerte</value>
+  </data>
+  <data name="permiso_eliminarTablero" xml:space="preserve">
+    <value>Supprimer</value>
+  </data>
+  <data name="permiso_verAlertas" xml:space="preserve">
+    <value>Voir Alerte</value>
+  </data>
+  <data name="permiso_verDatos" xml:space="preserve">
+    <value>Voir</value>
+  </data>
+  <data name="permiso_verImagenes" xml:space="preserve">
+    <value>Voir</value>
+  </data>
+  <data name="permiso_verMapas" xml:space="preserve">
+    <value>Voir</value>
+  </data>
+  <data name="permiso_verTablero" xml:space="preserve">
+    <value>Voir</value>
+  </data>
+  <data name="placeholderAsignacionObjetosBuscar" xml:space="preserve">
+    <value>Filtrer l'objet par son nom ...</value>
+  </data>
+  <data name="placeholderConfigurarObjetosSearch" xml:space="preserve">
+    <value>Filtrer l'objet par son nom ...</value>
+  </data>
+  <data name="placeholderNombrePersonalizadoFiltro" xml:space="preserve">
+    <value>Nom du filtre personnalisé</value>
+  </data>
+  <data name="placeholderRolesBuscar" xml:space="preserve">
+    <value>Rôles de filtre ...</value>
+  </data>
+  <data name="placeholderSearchNombreFiltro" xml:space="preserve">
+    <value>Filtrer le filtre par son nom ...</value>
+  </data>
+  <data name="placeholderSeleccionModulo" xml:space="preserve">
+    <value>Sélectionnez un module</value>
+  </data>
+  <data name="placeholderUsuariosBuscar" xml:space="preserve">
+    <value>Filtrer les utilisateurs ...</value>
+  </data>
+  <data name="reviseSiDatosSonCorrectos" xml:space="preserve">
+    <value>Vérifiez si les données sont correctes</value>
+  </data>
+  <data name="seleccionUnRol" xml:space="preserve">
+    <value>Sélectionnez un rôle</value>
+  </data>
+  <data name="successMarcaBlanca" xml:space="preserve">
+    <value>Paramètres enregistrés avec succès</value>
+  </data>
+  <data name="tooltipBorrarFoto" xml:space="preserve">
+    <value>Supprimer la photo</value>
+  </data>
+  <data name="tooltipSizeResFondo" xml:space="preserve">
+    <value>La taille maximale est de 300kb. Résolution recommandée: 1366 x 768.</value>
+  </data>
+  <data name="tooltipSizeResFooter" xml:space="preserve">
+    <value>La taille maximale est de 100kb. Résolution recommandée: 1366 x 100.</value>
+  </data>
+  <data name="tooltipSizeResLogo" xml:space="preserve">
+    <value>La taille maximale est de 100kb. Résolution recommandée: 140 x 40.</value>
+  </data>
+  <data name="usuarioDebeTenerMailValido" xml:space="preserve">
+    <value>L'utilisateur doit avoir un email valide pour générer l'utilisateur Reporting</value>
+  </data>
+  <data name="usuarioNoEncontrado" xml:space="preserve">
+    <value>Utilisateur introuvable</value>
+  </data>
+  <data name="utilizaNombrePorDefecto" xml:space="preserve">
+    <value>(Utilise le nom par défaut)</value>
+  </data>
+  <data name="lblRegenerarUsuario" xml:space="preserve">
+    <value>Regenerar Usuario</value>
+  </data>
+</root>

@@ -1,0 +1,54 @@
+﻿@using Reporting.ViewModels
+
+@model FiltroFechaViewModel
+
+<li>
+    @* Titulo *@
+    <div>
+        <strong>@Model.Nombre</strong>
+    </div>
+
+    @switch (Model.TipoFechaSeleccionada)
+    {
+        case "D":
+            if (Model.DiaDesde == null && Model.DiaHasta == null)
+            {
+                <small>@Reporting.Resources.Filtros.ResourceManager.GetString("lblMesActual")</small>
+            }
+            else
+            {
+                <small style="display:block;">@Model.DiaDesde &rarr; @Model.DiaHasta</small>
+            }
+            break;
+        case "M":
+            if (Model.MesDesde == null && Model.MesHasta == null)
+            {
+                <small>@Reporting.Resources.Filtros.ResourceManager.GetString("lblMesActual")</small>
+            }
+            else
+            {
+                <small style="display:block;">@Model.MesDesde &rarr; @Model.MesHasta</small>
+            }
+            break;
+        case "T":
+            if (Model.TrimestreDesde == null && Model.TrimestreHasta == null)
+            {
+                <small>@Reporting.Resources.Filtros.ResourceManager.GetString("lblMesActual")</small>
+            }
+            else
+            {
+                <small style="display:block;">Desde: @Model.TrimestreDesde &rarr; @Model.TrimestreHasta</small>
+            }
+            break;
+        case "S":
+            if (Model.SemanaDesde == null && Model.SemanaHasta == null)
+            {
+                <small>@Reporting.Resources.Filtros.ResourceManager.GetString("lblMesActual")</small>
+            }
+            else
+            {
+                <small style="display:block;">Desde: @Model.SemanaDesde &rarr; @Model.SemanaHasta</small>
+            }
+            break;
+    }
+</li>

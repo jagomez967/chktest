@@ -1,0 +1,277 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{E36FFA48-0E41-4CC1-9EBB-4B47641BCC3C}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Reporting.Domain</RootNamespace>
+    <AssemblyName>Reporting.Domain</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="EntityFramework">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="HtmlAgilityPack, Version=1.8.11.0, Culture=neutral, PublicKeyToken=bd319b19eaf3b43a, processorArchitecture=MSIL">
+      <HintPath>..\packages\HtmlAgilityPack.1.8.11\lib\Net45\HtmlAgilityPack.dll</HintPath>
+    </Reference>
+    <Reference Include="ICSharpCode.SharpZipLib">
+      <HintPath>..\packages\SharpZipLib.0.86.0\lib\20\ICSharpCode.SharpZipLib.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
+    </Reference>
+    <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
+      <HintPath>..\packages\NLog.4.5.10\lib\net45\NLog.dll</HintPath>
+    </Reference>
+    <Reference Include="NPOI, Version=2.3.0.0, Culture=neutral, PublicKeyToken=0df73ec7942b34e1, processorArchitecture=MSIL">
+      <HintPath>..\packages\NPOI.2.3.0\lib\net40\NPOI.dll</HintPath>
+    </Reference>
+    <Reference Include="NPOI.OOXML, Version=2.3.0.0, Culture=neutral, PublicKeyToken=0df73ec7942b34e1, processorArchitecture=MSIL">
+      <HintPath>..\packages\NPOI.2.3.0\lib\net40\NPOI.OOXML.dll</HintPath>
+    </Reference>
+    <Reference Include="NPOI.OpenXml4Net, Version=2.3.0.0, Culture=neutral, PublicKeyToken=0df73ec7942b34e1, processorArchitecture=MSIL">
+      <HintPath>..\packages\NPOI.2.3.0\lib\net40\NPOI.OpenXml4Net.dll</HintPath>
+    </Reference>
+    <Reference Include="NPOI.OpenXmlFormats, Version=2.3.0.0, Culture=neutral, PublicKeyToken=0df73ec7942b34e1, processorArchitecture=MSIL">
+      <HintPath>..\packages\NPOI.2.3.0\lib\net40\NPOI.OpenXmlFormats.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.IO.Compression" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Transactions" />
+    <Reference Include="System.Web.Helpers, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.0.0\lib\net45\System.Web.Helpers.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Mvc, Version=5.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.AspNet.Mvc.5.0.0\lib\net45\System.Web.Mvc.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.AspNet.Razor.3.0.0\lib\net45\System.Web.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.0.0\lib\net45\System.Web.WebPages.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Deployment, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.0.0\lib\net45\System.Web.WebPages.Deployment.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.0.0\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Entities\BigKPIChart.cs" />
+    <Compile Include="Entities\ChartError.cs" />
+    <Compile Include="Entities\GeoInfoPDV.cs" />
+    <Compile Include="Abstract\IAbmsRepository.cs" />
+    <Compile Include="Abstract\IClienteRepository.cs" />
+    <Compile Include="Abstract\ICommonRepository.cs" />
+    <Compile Include="Abstract\IDatosRepository.cs" />
+    <Compile Include="Abstract\IFiltroRepository.cs" />
+    <Compile Include="Abstract\IGeoRepository.cs" />
+    <Compile Include="Abstract\IImagenesRepository.cs" />
+    <Compile Include="Abstract\ITableroRepository.cs" />
+    <Compile Include="Abstract\IUsuarioRepository.cs" />
+    <Compile Include="Concrete\AbmsRepository.cs" />
+    <Compile Include="Concrete\ClienteRepository.cs" />
+    <Compile Include="Concrete\CommonRepository.cs" />
+    <Compile Include="Concrete\DatosRepository.cs" />
+    <Compile Include="Concrete\FiltroRepository.cs" />
+    <Compile Include="Concrete\GeoRepository.cs" />
+    <Compile Include="Concrete\ImagenesRepository.cs" />
+    <Compile Include="Concrete\RepContext.cs" />
+    <Compile Include="Concrete\TableroRepository.cs" />
+    <Compile Include="Concrete\UsuarioRepository.cs" />
+    <Compile Include="Entities\AlertaCampo.cs" />
+    <Compile Include="Entities\AlertaModulo.cs" />
+    <Compile Include="Entities\AlertaProducto.cs" />
+    <Compile Include="Entities\Alertas.cs" />
+    <Compile Include="Entities\AlertasCampos.cs" />
+    <Compile Include="Entities\AlertasModulos.cs" />
+    <Compile Include="Entities\AlertasProductos.cs" />
+    <Compile Include="Entities\AreaChart.cs" />
+    <Compile Include="Entities\Cadena.cs" />
+    <Compile Include="Entities\Calendario.cs" />
+    <Compile Include="Entities\CalendarioConcepto.cs" />
+    <Compile Include="Entities\Categoria.cs" />
+    <Compile Include="Entities\Chart.cs" />
+    <Compile Include="Entities\CircleDetailChart.cs" />
+    <Compile Include="Entities\ClassicTable.cs" />
+    <Compile Include="Entities\GeoInfoReportModel.cs" />
+    <Compile Include="Entities\GeoMarkerSimple.cs" />
+    <Compile Include="Entities\ReportDetailModel.cs" />
+    <Compile Include="Entities\SolidGauge.cs" />
+    <Compile Include="Entities\FlatStackedColumn.cs" />
+    <Compile Include="Entities\Cliente.cs" />
+    <Compile Include="Entities\ClienteFlagName.cs" />
+    <Compile Include="Entities\ClientePuntoDeVentaLayout.cs" />
+    <Compile Include="Entities\ClientePuntoDeVentaLayoutItems.cs" />
+    <Compile Include="Entities\ColumnChart.cs" />
+    <Compile Include="Entities\Empresa.cs" />
+    <Compile Include="Entities\EmpresaMail.cs" />
+    <Compile Include="Entities\EncuestaChart.cs" />
+    <Compile Include="Entities\EtiquetaLayoutChart.cs" />
+    <Compile Include="Entities\Familia.cs" />
+    <Compile Include="Entities\FamiliaClientes.cs" />
+    <Compile Include="Entities\Filtro.cs" />
+    <Compile Include="Entities\FiltroSeleccionado.cs" />
+    <Compile Include="Entities\Forecasting.cs" />
+    <Compile Include="Entities\ForecastingConfirmStatus.cs" />
+    <Compile Include="Entities\ForecastingConfirmStatusLog.cs" />
+    <Compile Include="Entities\ForecastingMesIndicador.cs" />
+    <Compile Include="Entities\GapModel.cs" />
+    <Compile Include="Entities\GapProductModel.cs" />
+    <Compile Include="Entities\GapRetailModel.cs" />
+    <Compile Include="Entities\GeoPos.cs" />
+    <Compile Include="Entities\GeoRuta.cs" />
+    <Compile Include="Entities\Grafico.cs" />
+    <Compile Include="Entities\Imagen.cs" />
+    <Compile Include="Entities\ImagenesChart.cs" />
+    <Compile Include="Entities\ImagenesTags.cs" />
+    <Compile Include="Entities\Item.cs" />
+    <Compile Include="Entities\LineChart.cs" />
+    <Compile Include="Entities\LineGroupChart.cs" />
+    <Compile Include="Entities\Localidad.cs" />
+    <Compile Include="Entities\Marca.cs" />
+    <Compile Include="Entities\MeasureChart.cs" />
+    <Compile Include="Entities\MetricaCircular.cs" />
+    <Compile Include="Entities\MultiTendenciaChart.cs" />
+    <Compile Include="Entities\Negocio.cs" />
+    <Compile Include="Entities\NewPriceRequestForm.cs" />
+    <Compile Include="Entities\OrderTab.cs" />
+    <Compile Include="Entities\PhotoProductModel.cs" />
+    <Compile Include="Entities\PieChart.cs" />
+    <Compile Include="Entities\PieDrillDownChart.cs" />
+    <Compile Include="Entities\PieLineColChart.cs" />
+    <Compile Include="Entities\PieSemiCircleChart.cs" />
+    <Compile Include="Entities\PieWheelChart.cs" />
+    <Compile Include="Entities\PriceAlertModel.cs" />
+    <Compile Include="Entities\PriceRequestHistoryModel.cs" />
+    <Compile Include="Entities\PriceRequestModel.cs" />
+    <Compile Include="Entities\PriceRequestSendDetailsModel.cs" />
+    <Compile Include="Entities\PriceRequestStatusModel.cs" />
+    <Compile Include="Entities\ProductModel.cs" />
+    <Compile Include="Entities\Producto.cs" />
+    <Compile Include="Entities\Product_M.cs" />
+    <Compile Include="Entities\Provincia.cs" />
+    <Compile Include="Entities\PuntoDeVenta.cs" />
+    <Compile Include="Entities\GeoMarker.cs" />
+    <Compile Include="Entities\PuntoDeVentaAlerta.cs" />
+    <Compile Include="Entities\PuntoDeVentaFoto.cs" />
+    <Compile Include="Entities\Reporte.cs" />
+    <Compile Include="Entities\ReportePaisSimple.cs" />
+    <Compile Include="Entities\ReporteSimple.cs" />
+    <Compile Include="Entities\ReportingAspNetUsuario.cs" />
+    <Compile Include="Entities\ReportingClienteObjeto.cs" />
+    <Compile Include="Entities\ReportingFamiliaNombreCliente.cs" />
+    <Compile Include="Entities\ReportingFamiliaObjeto.cs" />
+    <Compile Include="Entities\ReportingFamiliaObjetoCliente.cs" />
+    <Compile Include="Entities\ReportingFiltroNombreCliente.cs" />
+    <Compile Include="Entities\ReportingFiltros.cs" />
+    <Compile Include="Entities\ReportingFiltrosCliente.cs" />
+    <Compile Include="Entities\ReportingFiltrosModulo.cs" />
+    <Compile Include="Entities\ReportingModulos.cs" />
+    <Compile Include="Entities\ReportingObjeto.cs" />
+    <Compile Include="Entities\ReportingObjetoCategoria.cs" />
+    <Compile Include="Entities\ReportingPermisos.cs" />
+    <Compile Include="Entities\ReportingRoles.cs" />
+    <Compile Include="Entities\ReportingRolPermisos.cs" />
+    <Compile Include="Entities\ReportingTablero.cs" />
+    <Compile Include="Entities\ReportingTableroObjeto.cs" />
+    <Compile Include="Entities\ReportingTableroUsuario.cs" />
+    <Compile Include="Entities\RequestDownPriceItemModel.cs" />
+    <Compile Include="Entities\ScatterChart.cs" />
+    <Compile Include="Entities\SimpleFamilyClient.cs" />
+    <Compile Include="Entities\SimpleKPIChart.cs" />
+    <Compile Include="Entities\SpiderWebChart.cs" />
+    <Compile Include="Entities\SparkLineChart.cs" />
+    <Compile Include="Entities\StackedColumnChart.cs" />
+    <Compile Include="Entities\StackedColumnDrillDownChart.cs" />
+    <Compile Include="Entities\Tab.cs" />
+    <Compile Include="Entities\TableChart.cs" />
+    <Compile Include="Entities\TableroPermiso.cs" />
+    <Compile Include="Entities\Tags.cs" />
+    <Compile Include="Entities\Timeline.cs" />
+    <Compile Include="Entities\TipoCadena.cs" />
+    <Compile Include="Entities\Usuario.cs" />
+    <Compile Include="Entities\ReportingVisibilidadEntreUsuario.cs" />
+    <Compile Include="Entities\UsuarioPerfil.cs" />
+    <Compile Include="Entities\Usuario_Cliente.cs" />
+    <Compile Include="Entities\Usuario_PuntoDeVenta.cs" />
+    <Compile Include="Entities\Zona.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
+    <Content Include="NLog.config">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <None Include="NLog.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="packages.config">
+      <SubType>Designer</SubType>
+    </None>
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Web.Debug.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </Content>
+    <Content Include="Web.Release.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </Content>
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

@@ -1,0 +1,170 @@
+﻿@using Reporting.ViewModels
+@model List<ConfModuloReportingVM>
+
+@{
+    ViewBag.Title = Reporting.Resources.Configuracion.lblConfigurarFiltrosTitulo;
+}
+
+
+@section styles
+{
+    <style>
+        #div-tabla-filtros{
+            display:none;
+        }
+
+        #loadingtabla{
+            display:none;
+        }
+
+        #mensaje-error-nombre-filtro{
+            display:none;
+        }
+
+        #loading-editar-filtro{
+            display:none;
+        }
+    </style>
+}
+
+@Html.Partial("_SideMenu")
+
+<div class="titulo-pagina-fotos">
+    <a class="ecualiza-fotos always-visible animated slideInLeft" id="tabShowHide" href="#"></a>
+</div>
+
+<div class="container-fluid panel panel-default configurarTablero">
+    <h1>@Reporting.Resources.Configuracion.lblConfigurarFiltrosTitulo2</h1>
+    <h5>@Reporting.Resources.Configuracion.lblConfigurarFiltrosSubTitulo</h5>
+    <hr />
+    <select id="modulos-select">
+        <option></option>
+        @if (Model.Count > 0)
+        {
+            foreach (var m in Model)
+            {
+                <option value="@m.ModuloId">@m.Leyenda</option>
+            }
+        }
+    </select>
+    <p id="loadingtabla">@Reporting.Resources.Configuracion.lblCargandoFiltros</p>
+    <hr />
+    <div id="div-tabla-filtros"></div>
+</div>
+
+<div class="modal fade" id="modal-editar-nombre" tabindex="-1" role="dialog" aria-labelledby="modal-editar-nombre-label" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content"></div>
+    </div>
+</div>
+
+@section scripts{
+@Scripts.Render("~/bundles/unobstrusive")
+    <script>
+        
+
+        $(document).ready(function () {
+            $('#modulos-select').select2({
+                placeholder: '@Reporting.Resources.Configuracion.placeholderSeleccionModulo',
+                width:'400px'
+            });
+
+            $('body').on('click', '#tabShowHide', function () {
+                var val = $('body, .slide-menu').css('left') === '200px' ? '0px' : '200px';
+                var _padding = $('body, .slide-menu').css('left') != '200px' ? '200px' : '0px';
+                $('body, .slide-menu').css('left', val);
+                $("body").css('padding-right', _padding);
+            });
+
+            $('#modulos-select').on('change', function () {
+                var moduloid = $(this).val();
+                $.ajax({
+                    url: '@Url.Action("FiltrosGetTablaFiltrosPorModulo","Configuracion")',
+                    dataType: 'html',
+                    data: { moduloid: moduloid },
+                    method: 'POST',
+                    beforeSend: function () {
+                        $('#loadingtabla').show();
+                        $('#div-tabla-filtros').hide();
+                    },
+                    success: function (html) {
+                        if (html) {
+                            $('#div-tabla-filtros').html(html);
+                            $('#div-tabla-filtros').find('.filtroactivo').bootstrapSwitch({
+                                size: 'mini',
+                                onText: "@Reporting.Resources.Configuracion.lblOnOffLabelYes",
+                                offText: "@Reporting.Resources.Configuracion.lblOnOffLabelNo"
+                            });
+                        } else {
+                            console.log('Error: No se pudieron cargar los filtros');
+                        }
+                    },
+                    error: function () {
+                        console.log('Error Inesperado al cargar los filtros');
+                    },
+                    complete: function () {
+                        $('#loadingtabla').hide();
+                        $('#div-tabla-filtros').show();
+                    }
+                });
+            });
+
+            $('#div-tabla-filtros').on('switchChange.bootstrapSwitch','.filtroactivo', function (event, state) {
+                var moduloid = $('#modulos-select').val();
+                var filtroid = $(this).closest('tr').attr('data-filtro-id');
+                $.ajax({
+                    url: '@Url.Action("FiltrosToggleFiltroActivo","Configuracion")',
+                    dataType: 'json',
+                    data: { moduloid: moduloid, filtroid: filtroid, activo: state },
+                    method: 'POST',
+                    success: function (result) {
+                        if (!result) {
+                            return false;
+                        }
+                    },
+                    error: function () {
+                        console.log('Error Inesperado al cambiar estado activo de filtro');
+                    }
+                });
+            });
+
+            $('#div-tabla-filtros').on('click', '.btn-editar-nombre', function () {
+                var filtroid=$(this).closest('tr').attr('data-filtro-id');
+
+                $.ajax({
+                    url:'@Url.Action("FiltrosFormEditarNombre","Configuracion")',
+                    dataType: 'html',
+                    method:'GET',
+                    data:{filtroid:filtroid},
+                    success: function (html) {
+                        if (html) {
+                            $('#modal-editar-nombre').find('.modal-content').html(html);
+                            var form = $('#modal-editar-nombre').find('.modal-content').find('form');
+                            $.validator.unobtrusive.parse(form);
+                            $('#modal-editar-nombre').modal('show');
+                        }
+                    },
+                    error:function(){
+                        alert('@Reporting.Resources.Configuracion.errCargarFormularioNombreFiltro');
+                    }
+                });
+                return false;
+            });
+
+            $('#modal-editar-nombre').on('click', '#btn-modal-cancelar', function () {
+                $('#modal-editar-nombre').modal('hide');
+            });
+        });
+
+        function NombreFiltroOnSuccess() {
+            console.log('EditarNombreFiltroOnSuccess');
+            var filtroid = $('#modal-editar-nombre').find('#hddnFiltroId').val();
+            var nuevonombre = $('#modal-editar-nombre').find('#modal-input-nombre-filtro').val();
+            if (nuevonombre.length > 0) {
+                $('#div-tabla-filtros tr').filter('[data-filtro-id="' + filtroid + '"]').find('td:nth-child(3)').html(nuevonombre);
+            } else {
+                $('#div-tabla-filtros tr').filter('[data-filtro-id="' + filtroid + '"]').find('td:nth-child(3)').html("@Reporting.Resources.Configuracion.lblUtilizaNombrePorDefecto");
+            }
+        }
+</script>
+}

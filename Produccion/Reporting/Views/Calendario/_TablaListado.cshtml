@@ -1,0 +1,71 @@
+﻿@using Reporting.ViewModels
+@model List<EventoCalendarioVM>
+
+<input type="button" class="btn btn-primary pull-right" value="@Reporting.Resources.Calendario.btnDescargarExcel" id="btnExportar" />
+<table class="table table-hover table-responsive table-bordered">
+    <thead>
+        <tr>
+            <th>@Reporting.Resources.Calendario.lblEventoTableColUsuario</th>
+            <th>@Reporting.Resources.Calendario.lblEventoTableColFecha</th>
+            <th>@Reporting.Resources.Calendario.lblEventoTableColIdPuntoDeVenta</th>
+            <th>@Reporting.Resources.Calendario.lblEventoTableColPuntoDeVenta</th>
+            <th>@Reporting.Resources.Calendario.lblEventoTableColCiudad</th>
+            <th class="hidden-xs">@Reporting.Resources.Calendario.lblEventoTableColConcepto</th>
+            <th class="hidden-xs">@Reporting.Resources.Calendario.lblEventoTableColObservaciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        @{
+            int i = 0;
+
+            while (i < Model.Count)
+            {
+                var usuarioactual = Model[i].IdUsuario;
+                var dateactual = Model[i].Date.ToString("yyyyMMdd");
+
+                while (i < Model.Count && usuarioactual == Model[i].IdUsuario)
+                {
+                    if (dateactual == Model[i].Date.ToString("yyyyMMdd"))
+                    {
+                        <tr>
+                            <td>@Model[i].NombreUsuario</td>
+                            <td>@Model[i].Date</td>
+                            <td>@Model[i].IdPuntoDeVenta</td>
+                            <td>
+                                <span style="display:block;">@Model[i].NombrePuntoDeVenta</span>
+                                <small>@Model[i].DireccionPuntoDeVenta</small>
+                            </td>
+                            <td>@Model[i].Localidad</td>
+                            <td class="hidden-xs">@Model[i].Concepto</td>
+                            <td class="hidden-xs">@Model[i].Observaciones</td>
+                        </tr>
+                    }
+                    else
+                    {
+                        <tr>
+                            <td>@Model[i].NombreUsuario</td>
+                            <td style="border-top:5px solid #ddd">@Model[i].Date</td>
+                            <td>@Model[i].IdPuntoDeVenta</td>
+                            <td style="border-top:5px solid #ddd">
+                                <span style="display:block;">@Model[i].NombrePuntoDeVenta</span>
+                                <small>@Model[i].DireccionPuntoDeVenta</small>
+                            </td>
+                            <td>@Model[i].Localidad</td>
+                            <td style="border-top:5px solid #ddd" class="hidden-xs">@Model[i].Concepto</td>
+                            <td style="border-top:5px solid #ddd" class="hidden-xs">@Model[i].Observaciones</td>
+                        </tr>
+            
+                        dateactual = Model[i].Date.ToString("yyyyMMdd");
+                    }
+
+                    i++;
+                }
+                <tr>
+                    <td colspan="5" style="background-color:#ddd"></td>
+                </tr>
+                i++;
+            }
+        }
+    </tbody>
+</table>
+

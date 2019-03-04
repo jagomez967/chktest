@@ -1,0 +1,41 @@
+﻿@model List<Reporting.ViewModels.ForecastingConfirmStatusLogViewModel>
+
+<div class="table-responsive" style="max-height:350px;">
+    <table class="table table-condensed">
+        <thead>
+            <tr>
+                <th>@Reporting.Resources.Forecasting.cliente</th>
+                <th>@Reporting.Resources.Forecasting.producto</th>
+                <th>@Reporting.Resources.Forecasting.fecha</th>
+                <th>@Reporting.Resources.Forecasting.usuario</th>
+                <th style="width:100px;">@Reporting.Resources.Forecasting.operacion</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var m in Model)
+            {
+                <tr>
+                    <td>@m.Cadena [@m.IdCadena]</td>
+                    <td>@(!string.IsNullOrEmpty(m.Producto) ? string.Format("{0} [{1}]", m.Producto, m.IdProducto) : "N/A")</td>
+                    <td>@m.Fecha</td>
+                    <td>@m.UsuarioNombre</td>
+                    <td>
+                        @switch (m.OperationType)
+                        {
+                            case "SAVE":
+                                <span class="text-primary">@m.OperationType</span>
+                                break;
+                            case "CONFIRM":
+                                <span class="text-success">@m.OperationType</span>
+                                break;
+                            case "UNBLOCK":
+                                <span class="text-danger">@m.OperationType</span>
+                                break;
+                        }
+                    </td>
+                    <td style="white-space:pre-wrap; word-wrap:break-word;">@m.Observaciones</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

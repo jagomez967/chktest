@@ -1,0 +1,242 @@
+﻿@using Reporting.ViewModels
+@model DatosViewModel
+
+@{
+    ViewBag.Title = Reporting.Resources.Datos.titulo;
+}
+
+@using (Ajax.BeginForm("AplicarFiltros", "Datos", null, new AjaxOptions { OnBegin = "aplicarfiltrobegin", OnSuccess = "aplicarfiltrosuccess", OnComplete = "aplicarfiltrocomplete", InsertionMode = InsertionMode.Replace, UpdateTargetId = "filtrostablero" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.Hidden("TableroId")
+
+    <div class="filtroReporting">
+        <div class="filtroacciones">
+            <button type="submit" class="btn aplicarfiltro">Aplicar Filtro <i class="fa fa-check pull-right"></i></button>
+        </div>
+        <div id="loadingfiltros" style="display:none;">
+            <strong>@Reporting.Resources.Datos.lblDatosIndexCargandoFiltros</strong>
+        </div>
+        <div id="filtrostablero" class="filtroitems"></div>
+    </div>
+}
+
+<div id="tabs">
+    @Html.Partial("_Tabs", Model.Tabs)
+</div>
+
+<div class="container-fluid tab-content tab-content-reporting">
+    <label id="cargandoTablero" style="display:none;">@Reporting.Resources.Datos.lblDatosIndexCargandoTablero</label>
+    <div id="objetos"></div>
+</div>
+
+@section scripts{
+
+    @Scripts.Render("~/bundles/unobstrusive")
+    <script>
+        var urlSaveFiltroLock = '@Url.Action("SaveFiltrosLock","Datos")';
+        $(document).ready(function () {
+            $('.marcablanca').hide();
+            $('#TableroId').val(GetTableroId());
+            GetFiltrosDeTablero(ArmarTablero);
+        })
+
+        function GetFiltrosDeTablero(callback) {
+            var tabid = GetTableroId();
+
+            $.ajax({
+                url: "@Url.Action("GetFiltrosPartialView", "Datos")",
+                data: { TableroId: tabid },
+            cache: false,
+            type: "POST",
+            dataType: "html",
+            beforeSend: function () {
+                $('.filtroitems').empty();
+                $('#loadingfiltros').show();
+            },
+            success: function (data, textStatus, XMLHttpRequest) {
+                $(".filtroitems").html(data);
+                callback();
+            },
+            complete: function () {
+                $('#loadingfiltros').hide();
+                
+                if (!Modernizr.inputtypes.date) {
+                    setFechasDowngradeBrowsers();
+                }
+
+            }
+        });
+        }
+
+        function aplicarfiltrosuccess() {
+            ArmarTablero();
+        }
+
+        function aplicarfiltrobegin() {
+            $('.aplicarfiltro').prop("disabled", true);
+            $('#objetos').empty();
+            $('#cargandoTablero').show();
+        }
+
+        function aplicarfiltrocomplete() {
+            $('.aplicarfiltro').prop("disabled", false);
+            
+            if (!Modernizr.inputtypes.date) {
+                setFechasDowngradeBrowsers();
+            }
+        }
+
+        $('#tabs').on('click', '.tabItem', function () {
+            var tabId = $(this).parent().data('tabid');
+            $('#TableroId').val(tabId);
+            $('#tabs').find('.tabs-ReportingTablero li').removeClass('active');
+            $(this).parent().addClass('active');
+            $('#objetos').empty();
+            $('#cargandoTablero').show();
+            GetFiltrosDeTablero(ArmarTablero);
+        })
+
+        function ArmarTablero() {
+            var tabid = GetTableroId();
+
+            $('#objetos').empty();
+
+            $.ajax({
+                url: "@Url.Action("GetObjetos", "Datos")",
+                data: { TableroId: tabid },
+            cache: false,
+            type: "POST",
+            dataType: "html",
+            beforeSend: function () {
+                $('#cargandoTablero').show();
+            },
+            success: function (data, textStatus, XMLHttpRequest) {
+                $("#objetos").html(data);
+                InicializarObjetosDeTablero();
+            },
+            complete: function () {
+                $('#cargandoTablero').hide();
+            }
+        });
+        };
+
+        $('body').on('click', '#tabShowHide', function () {
+            var val = $('body, .slide-menu').css('left') === '200px' ? '0px' : '200px';
+            var _padding = $('body, .slide-menu').css('left') != '200px' ? '200px' : '0px';
+            $('body, .slide-menu').css('left', val);
+            $("body").css('padding-right', _padding);
+        });
+
+        function InicializarObjetosDeTablero() {
+            $('.objetoTablero').each(function () {
+                var divObjGrafico = $(this).find('.ObjGrafico');
+                try { divObjGrafico.highcharts().destroy(); } catch (e) { }
+                divObjGrafico.html('');
+                divObjGrafico.hide();
+                var url = "@Url.Action("GetDataTablaJson", "Datos")";
+                CargarGrafico($(this), 1, '500px', 'D', url);
+            });
+        };
+
+        /*CONTROLES DE TABLAS*/
+        $('#objetos').on('click', '.tablefirstpage', function () {
+            var divObjeto = $(this).parents('.objetoTablero');
+
+            if ($(this).attr('disabled') === 'disabled') {
+                return false;
+            }
+            var url = "@Url.Action("GetDataTablaJson", "Datos")";
+            CargarGrafico(divObjeto, 1, '500px', 'D', url);
+            return false;
+        });
+
+        $('#objetos').on('click', '.tablepreviouspage', function () {
+            var divObjeto = $(this).parents('.objetoTablero');
+
+            if ($(this).attr('disabled') === 'disabled') {
+                return false;
+            }
+            var page = $(this).parent().find('.numpage').val();
+            var newpage = +page - 1;
+            var url = "@Url.Action("GetDataTablaJson", "Datos")";
+            CargarGrafico(divObjeto, newpage, '500px', 'D', url);
+            return false;
+        });
+        $('#objetos').on('click', '.tablenextpage', function () {
+            var divObjeto = $(this).parents('.objetoTablero');
+
+            if ($(this).attr('disabled') === 'disabled') {
+                return false;
+            }
+            var page = $(this).parent().find('.numpage').val();
+            var newpage = +page + 1;
+            var url = "@Url.Action("GetDataTablaJson", "Datos")";
+            CargarGrafico(divObjeto, newpage, '500px', 'D', url);
+            return false;
+        });
+        $('#objetos').on('click', '.tablelastpage', function () {
+            var divObjeto = $(this).parents('.objetoTablero');
+
+            var totalPages = $(this).parents('.tablaControles').find('.numpage').data('totalpages');
+            if ($(this).attr('disabled') === 'disabled') {
+                return false;
+            }
+            var url = "@Url.Action("GetDataTablaJson", "Datos")";
+            CargarGrafico(divObjeto, totalPages, '500px', 'D', url);
+            return false;
+        });
+
+
+        $('#objetos').on('click', '.descargarTablaDatos', function () {
+            var link = $(this);
+            var objId = $(this).parent().parent().parent().parent().data('id');
+            var filename = $(this).parent().parent().parent().parent().data('nombreobjeto').replace(/\s/g, '') + ($('.objetoTablero').attr('data-tipoobj') == 30 ? '.xlsx': '.csv');
+
+            if (link.attr("disabled") == "disabled") {
+                return false;
+            }
+
+            link.attr('disabled', 'disabled');
+
+            $.ajax({
+                url: '@Url.Action("DescargarDatos", "Datos")',
+                type: 'POST',
+                data: {
+                    ObjetoId: objId
+                },
+                success: function (result) {
+                    if (result.length <= 0) {
+                        window.alert('@Reporting.Resources.Datos.noDataFound');
+                        return;
+                    }
+
+                    var dl = document.createElement("a");
+             
+                    dl.href = "@Url.Action("DownloadFileByToken", "Datos")" + "?token=" + result;
+                    dl.download = filename;
+                    dl.style = "visibility:hidden;";
+                    dl.onclick = 'return false;';
+                    document.body.appendChild(dl);
+                    dl.click();
+                    document.body.removeChild(dl);
+                },
+                error: function (xhr, status, errorThrown) {
+                    console.log('--------------- Descargar Datos ------------------');
+                    console.log(xhr);
+                    console.log(status);
+                    console.log(errorThrown);
+                    console.log('--------------------------------------------------');
+                },
+                complete: function () {
+                    link.removeAttr("disabled");
+                }
+            });
+
+        });
+
+        function GetTableroId() {
+            return $('#tabs').find('.tabs-ReportingTablero .active').data('tabid');
+        }
+    </script>
+}

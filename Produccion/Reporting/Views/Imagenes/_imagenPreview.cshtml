@@ -1,0 +1,78 @@
+﻿@using Reporting.ViewModels
+@model ImagenViewModel
+
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+    <h4 class="modal-title" id="modalAsignarPermisos-label">@Model.nombrePuntoDeVenta</h4>
+</div>
+
+<div class="modal-body">
+    <img id="imgPreview" src="@Model.imgb64" img-id="@Model.id" img-pdv-id="@Model.idPuntoDeVenta" img-pdv-nombre="@Model.nombrePuntoDeVenta" img-fecha="@Model.fechaCreacion" img-direccion="@Model.direccionPuntoDeVenta" img-provincia="@Model.provincia" />
+
+
+    <div class="row datos">
+        <div class="col-xs-12">
+            <div class="dato">
+                <span class="tipodato">@Reporting.Resources.Imagenes.lblImagenPreviewUsuario @Model.Usuario</span>
+            </div>
+        </div>
+        <div class="col-xs-12">
+            <div class="dato">
+                <span class="tipodato">@Reporting.Resources.Imagenes.lblImagenPreviewPuntoDeVenta @Model.idPuntoDeVenta - @Model.nombrePuntoDeVenta</span>
+            </div>
+        </div>
+        <div class="col-xs-12">
+            <div class="dato">
+                <span class="tipodato">@Reporting.Resources.Imagenes.lblImagenPreviewDireccion @Model.direccionPuntoDeVenta (@Model.provincia)</span>
+            </div>
+        </div>
+
+        @if (!string.IsNullOrEmpty(Model.comentarios))
+        {
+            <div class="col-xs-12">
+                <div class="dato">
+                    <span class="tipodato">@Reporting.Resources.Imagenes.lblImagenPreviewComentarios @Model.comentarios</span>
+                </div>
+            </div>
+        }
+        <div class="col-xs-12">
+            <div class="dato">
+                <span class="tipodato">@Reporting.Resources.Imagenes.lblImagenPreviewReporte @Model.idReporte</span>
+            </div>
+        </div>
+        <div class="col-xs-12">
+            <div class="dato">
+                <span class="tipodato">@Reporting.Resources.Imagenes.lblImagenPreviewFechaCreacion @Model.fechaCreacion</span>
+            </div>
+        </div>
+        @if (Model.tags != null && Model.tags.Count > 0)
+        {
+            <div class="col-xs-12">
+                <div class="dato">
+                    <span class="tipodato">
+                        @Reporting.Resources.Imagenes.lblImagenPreviewTags @foreach (string s in Model.tags)
+                        {<div class="badge">@s</div>}
+                    </span>
+                </div>
+            </div>
+        }
+
+    </div>
+</div>
+<div class="modal-footer">
+    <button type="button" id="descargarImagen" class="btn btn-accion">@Reporting.Resources.Imagenes.descargarFotoLabel</button>
+</div>
+
+<script>
+    $('#descargarImagen').on('click', function () {
+        var srcImg = $('#imgPreview').attr('src');
+        var pdvId = $('#imgPreview').attr('img-pdv-id');
+        var pdvNombre = $('#imgPreview').attr('img-pdv-nombre');
+        var imgFecha = $('#imgPreview').attr('img-fecha');
+        var direccion = $('#imgPreview').attr('img-direccion');
+        var provincia = $('#imgPreview').attr('img-provincia');
+        var nombrearchivo = pdvId + '-' + pdvNombre + '-' + provincia + '-' + direccion + '-' + imgFecha + '.jpg';
+
+        download(srcImg, nombrearchivo, "image/jpg");
+    });
+</script>

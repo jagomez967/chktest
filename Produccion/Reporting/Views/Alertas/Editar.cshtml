@@ -1,0 +1,757 @@
+﻿@using Reporting.ViewModels
+@model AlertaVM
+
+@{
+    ViewBag.Title = Reporting.Resources.Alertas.lblTituloEditarAlerta;
+}
+
+@section styles{
+    <style>
+        ul {
+            list-style-type: none;
+        }
+
+        input[type=checkbox]:checked + input[type=hidden] + label {
+            color: darkorange;
+        }
+
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 54px;
+            height: 28px;
+        }
+
+            .switch input {
+                display: none;
+            }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            -webkit-transition: .4s;
+            transition: .4s;
+        }
+
+            .slider:before {
+                position: absolute;
+                content: "";
+                height: 20px;
+                width: 20px;
+                left: 4px;
+                bottom: 4px;
+                background-color: white;
+                -webkit-transition: .4s;
+                transition: .4s;
+            }
+
+        input:checked + input[type=hidden] + .slider {
+            background-color: #2196F3;
+        }
+
+        input:focus + input[type=hidden] + .slider {
+            box-shadow: 0 0 1px #2196F3;
+        }
+
+        input:checked + input[type=hidden] + .slider:before {
+            -webkit-transform: translateX(26px);
+            -ms-transform: translateX(26px);
+            transform: translateX(26px);
+        }
+
+        /* Rounded sliders */
+        .slider.round {
+            border-radius: 34px;
+        }
+
+            .slider.round:before {
+                border-radius: 50%;
+            }
+
+        .hide {
+            display: none;
+        }
+
+        .cadenapdv {
+            max-height: 200px;
+            overflow-y: scroll;
+            overflow-x: hidden;
+        }
+    </style>
+}
+
+<div class="container-fluid panel panel-default configurarTablero">
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+    <div class="form-horizontal">
+        <div class="form-group">
+            <input type="submit" value="@Reporting.Resources.Alertas.btnEditarGuardarCambiosLabel" class="btn btn-accion" />
+            @Html.ActionLink(Reporting.Resources.Alertas.btnCancelarEditarYVolverALaLista, "Index")
+        </div>
+        <hr />
+
+        <div class="form-group">
+            <div class="row">
+                <div class="col-md-2">
+                    @Html.LabelFor(m => m.Activo)
+                </div>
+                <div class="col-md-10">
+                    <label class="switch">
+                        @Html.CheckBoxFor(model => model.Activo, htmlAttributes: new { @id = "chkactivo" })
+                        <div class="slider round"></div>
+                    </label>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="row">
+                <div class="col-md-2">
+                    @Html.LabelFor(model => model.Descripcion)
+                </div>
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.Descripcion, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Descripcion, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="row">
+                <div class="col-md-2">
+                    @Html.LabelFor(model => model.TipoReporteSeleccionado)
+                </div>
+                <div class="col-md-10">
+                    @Html.DropDownList("TipoReporteSeleccionado", ViewData["TiposDeReporte"] as List<SelectListItem>, htmlAttributes: new { @id = "ddlTipoReporte" })
+                    @Html.ValidationMessageFor(model => model.TipoReporteSeleccionado, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>
+
+        <div id="divtriggerseleccionado" class="form-group @((Model.AccionTriggerSeleccionada=="0" || string.IsNullOrEmpty(Model.AccionTriggerSeleccionada))?"hide":"")">
+            <div class="row">
+                <div class="col-md-2">
+                    @Html.LabelFor(model => model.AccionTriggerSeleccionada)
+                </div>
+                <div class="col-md-10">
+                    @Html.Hidden("AccionSeleccionada", Model.AccionTriggerSeleccionada, htmlAttributes: new { @id = "hddAccionSeleccionada" })
+                    @Html.DropDownList("AccionTriggerSeleccionada", new SelectList(string.Empty, "Value", "Text"), htmlAttributes: new { @id = "ddlAccionTrigger" })
+                    @Html.ValidationMessageFor(model => model.AccionTriggerSeleccionada, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="row">
+                <div class="col-md-2">
+                    @Html.LabelFor(m => m.Consolidado)
+                </div>
+                <div class="col-md-10">
+                    <label class="switch">
+                        @Html.CheckBoxFor(m => m.Consolidado, htmlAttributes: new { @id = "chkconrepeticion" })
+                        <div class="slider round"></div>
+                    </label>
+                </div>
+            </div>
+        </div>
+
+        <div id="divrepeticion" class="@((Model.Consolidado)?"":"hide")">
+            <div class="form-group">
+                <div class="col-md-2"></div>
+                <div class="col-md-10">
+
+                    @Html.CheckBoxFor(model => model.Lunes)
+                    @Html.LabelFor(model => model.Lunes)
+
+                    @Html.CheckBoxFor(model => model.Martes)
+                    @Html.LabelFor(model => model.Martes)
+
+                    @Html.CheckBoxFor(model => model.Miercoles)
+                    @Html.LabelFor(model => model.Miercoles)
+
+                    @Html.CheckBoxFor(model => model.Jueves)
+                    @Html.LabelFor(model => model.Jueves)
+
+                    @Html.CheckBoxFor(model => model.Viernes)
+                    @Html.LabelFor(model => model.Viernes)
+
+                    @Html.CheckBoxFor(model => model.Sabado)
+                    @Html.LabelFor(model => model.Sabado)
+
+                    @Html.CheckBoxFor(model => model.Domingo)
+                    @Html.LabelFor(model => model.Domingo)
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-md-2"></div>
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.Hora, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Hora, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="row">
+                <div class="col-md-2">
+                    @Html.LabelFor(model => model.Destinatarios)
+                </div>
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.Destinatarios, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Destinatarios, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>
+
+        <div id="divpuntosdeventa" class="form-group">
+            <div class="row">
+                <div class="col-md-2">
+                    @Html.LabelFor(model => model.PuntosDeVenta)
+                </div>
+                <div class="col-md-10">
+                    <input type="text" style="display:block" class="typeahead" id="pdvtypeahead" placeholder="@Reporting.Resources.Alertas.placeholderSearch" />
+                    <a id="pdvtodosninguno" class="todos" href="#">@Reporting.Resources.Alertas.lblTodoNinguno</a>
+                    <div class="cadenapdv">
+                        <table>
+                            <tbody>
+                                @foreach (var p in Model.PuntosDeVenta)
+                            {
+                                <tr class="pdvfila">
+                                    <td>
+                                        @Html.Hidden(string.Format("PuntosDeVenta[{0}].idZona", Model.PuntosDeVenta.IndexOf(p)), p.idZona)
+                                        @Html.Hidden(string.Format("PuntosDeVenta[{0}].idCadena", Model.PuntosDeVenta.IndexOf(p)), p.idCadena)
+                                        @Html.Hidden(string.Format("PuntosDeVenta[{0}].idPuntoDeVenta", Model.PuntosDeVenta.IndexOf(p)), p.idPuntoDeVenta)
+                                        @Html.Hidden(string.Format("PuntosDeVenta[{0}].ZonaDescr", Model.PuntosDeVenta.IndexOf(p)), p.ZonaDescr)
+                                        @Html.Hidden(string.Format("PuntosDeVenta[{0}].CadenaDescr", Model.PuntosDeVenta.IndexOf(p)), p.CadenaDescr)
+                                        @Html.Hidden(string.Format("PuntosDeVenta[{0}].PuntoDeVentaDescr", Model.PuntosDeVenta.IndexOf(p)), p.PuntoDeVentaDescr)
+
+                                        @if (p.Selected)
+                                    {
+                                        <input type="checkbox" value="true" name="@string.Format("PuntosDeVenta[{0}].Selected", Model.PuntosDeVenta.IndexOf(p))" id="@string.Format("Model_PuntosDeVenta_{0}_Selected", Model.PuntosDeVenta.IndexOf(p))" checked="checked" />
+                                }
+                                else
+                                {
+                                    <input type="checkbox" value="true" name="@string.Format("PuntosDeVenta[{0}].Selected", Model.PuntosDeVenta.IndexOf(p))" id="@string.Format("Model_PuntosDeVenta_{0}_Selected", Model.PuntosDeVenta.IndexOf(p))" />
+                            }
+
+                                        <input type="hidden" value="false" name="@string.Format("PuntosDeVenta[{0}].Selected", Model.PuntosDeVenta.IndexOf(p))">
+                                        <label for="@string.Format("Model_PuntosDeVenta_{0}_Selected", Model.PuntosDeVenta.IndexOf(p))">@(string.Format("{0} - {1} - {2} - {3}", p.ZonaDescr, p.CadenaDescr, p.PuntoDeVentaDescr,p.RazonSocial))</label>
+                                    </td>
+                                </tr>
+                        }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="camposReporte" class="form-group @((Model.TipoReporteSeleccionado == "reportepersonalizado") ? "" : "hide")">
+            <div class="row">
+                <div class="col-md-2">
+                    @Html.LabelFor(model => model.Campos)
+                </div>
+                <div class="col-md-10">
+                    <div id="ul-campos">
+                        <ul class="tree">
+                            @foreach (var m in Model.Campos.Select(s => new { s.IdMarca, s.MarcaDescr }).Distinct())
+                        {
+                            <li>
+                                <a href="#"><strong>@m.MarcaDescr</strong></a>
+                                @if (Model.Campos.Where(x => x.IdMarca == m.IdMarca).Count() > 0)
+                            {
+                                <ul>
+                                    @foreach (var s in Model.Campos.Where(c => c.IdMarca == m.IdMarca).Select(c => new { c.IdSeccion, c.SeccionDescr }).Distinct())
+                                {
+                                    <li>
+                                        <em>@s.SeccionDescr</em>
+                                        @if (Model.Campos.Where(x => x.IdMarca == m.IdMarca && x.IdSeccion == s.IdSeccion).Count() > 0)
+                                    {
+                                        <ul>
+                                            @foreach (var q in Model.Campos.Where(c => c.IdMarca == m.IdMarca && c.IdSeccion == s.IdSeccion))
+                                        {
+                                            <li>
+                                                @Html.Hidden(string.Format("Campos[{0}].IdMarca", Model.Campos.IndexOf(q)), q.IdMarca)
+                                                @Html.Hidden(string.Format("Campos[{0}].IdSeccion", Model.Campos.IndexOf(q)), q.IdSeccion)
+                                                @Html.Hidden(string.Format("Campos[{0}].IdCampo", Model.Campos.IndexOf(q)), q.IdCampo)
+                                                @Html.Hidden(string.Format("Campos[{0}].MarcaDescr", Model.Campos.IndexOf(q)), q.MarcaDescr)
+                                                @Html.Hidden(string.Format("Campos[{0}].SeccionDescr", Model.Campos.IndexOf(q)), q.SeccionDescr)
+                                                @Html.Hidden(string.Format("Campos[{0}].CampoDescr", Model.Campos.IndexOf(q)), q.CampoDescr)
+
+                                                @if (q.Selected)
+                                            {
+                                                <input type="checkbox" value="true" name="@string.Format("Campos[{0}].Selected", Model.Campos.IndexOf(q))" id="@string.Format("Model_Campos_{0}_Selected", Model.Campos.IndexOf(q))" checked="checked" />
+                                        }
+                                        else
+                                        {
+                                            <input type="checkbox" value="true" name="@string.Format("Campos[{0}].Selected", Model.Campos.IndexOf(q))" id="@string.Format("Model_Campos_{0}_Selected", Model.Campos.IndexOf(q))" />
+                                    }
+
+                                                <input type="hidden" value="false" name="@string.Format("Campos[{0}].Selected", Model.Campos.IndexOf(q))">
+                                                <label for="@string.Format("Model_Campos_{0}_Selected", Model.Campos.IndexOf(q))">@q.CampoDescr</label>
+                                            </li>
+                                    }
+                                        </ul>
+                                }
+                                    </li>
+                            }
+                                </ul>
+                        }
+                            </li>
+                    }
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div id="alertainventarioreporte" class="form-group @((Model.TipoReporteSeleccionado == "alertainventario")?"":"hide")">
+            <div class="row">
+                <div class="col-md-2">
+                    @Html.LabelFor(model => model.Modulos)
+                </div>
+                <div class="col-md-10">
+                    <div class="modulosalerta">
+                        <table>
+                            <tbody>
+                                @foreach (var m in Model.Modulos)
+                            {
+                                <tr>
+                                    @Html.Hidden(string.Format("Modulos[{0}].idModuloClienteItem", Model.Modulos.IndexOf(m)), m.idModuloClienteItem)
+                                    @Html.Hidden(string.Format("Modulos[{0}].idModuloItem", Model.Modulos.IndexOf(m)), m.idModuloItem)
+                                    @Html.Hidden(string.Format("Modulos[{0}].leyenda", Model.Modulos.IndexOf(m)), m.leyenda)
+                                    @*@Html.Hidden(string.Format("Modulos[{0}].esIgual", Model.Modulos.IndexOf(m)), m.esIgual)
+                                    @Html.Hidden(string.Format("Modulos[{0}].esMenor", Model.Modulos.IndexOf(m)), m.esMenor)
+                                    @Html.Hidden(string.Format("Modulos[{0}].esMayor", Model.Modulos.IndexOf(m)), m.esMayor)
+                                    @Html.Hidden(string.Format("Modulos[{0}].valor", Model.Modulos.IndexOf(m)), m.valor)*@
+
+                                    <td style="text-align:left;">
+                                        <label for="@string.Format("Model_Modulos_{0}_valor", Model.Modulos.IndexOf(m))">@m.leyenda</label>
+                                    </td>
+                                    <td style="padding-right:10px;"><b>:</b><!--un dos puntos suelto por ahi--></td>
+                                    <td>
+                                        <input type="text"
+                                               style="display:block"
+                                               class="typeahead"
+                                               id="@string.Format("Model_Modulos_{0}_valor", Model.Modulos.IndexOf(m))"
+                                               name="@string.Format("Modulos[{0}].valor", Model.Modulos.IndexOf(m))"
+                                               placeholder="Ingrese valor"
+                                               value="@String.Format("{0:0.##}", m.valor)" />
+                                    </td>
+
+                                    <td>
+                                        <ul>
+                                            @if (m.esIgual == true)
+                                        {
+                                            if (m.esMenor == true)
+                                            {
+                                                <li>
+                                                    <input type="checkbox" value="true"
+                                                           name="@string.Format("Modulos[{0}].esMenor", Model.Modulos.IndexOf(m))"
+                                                           id="@string.Format("Model_Modulos_{0}_esMenor", Model.Modulos.IndexOf(m))"
+                                                           checked="checked" />
+                                                    <label for="@string.Format("Model_Modulos_{0}_esMenor", Model.Modulos.IndexOf(m))">Menor</label>
+                                                    <input type="hidden" value="false" name="@string.Format("Modulos[{0}].esMenor", Model.Modulos.IndexOf(m))">
+                                                </li>
+                                                <li>
+                                                    <input type="checkbox" value="true"
+                                                           name="@string.Format("Modulos[{0}].esIgual", Model.Modulos.IndexOf(m))"
+                                                           id="@string.Format("Model_Modulos_{0}_esIgual", Model.Modulos.IndexOf(m))"
+                                                           checked="checked" />
+                                                    <label for="@string.Format("Model_Modulos_{0}_esIgual", Model.Modulos.IndexOf(m))">Igual</label>
+                                                    <input type="hidden" value="false" name="@string.Format("Modulos[{0}].esIgual", Model.Modulos.IndexOf(m))">
+                                                </li>
+                                                <li>
+                                                    <input type="checkbox" value="true"
+                                                           name="@string.Format("Modulos[{0}].esMayor", Model.Modulos.IndexOf(m))"
+                                                           id="@string.Format("Model_Modulos_{0}_esMayor", Model.Modulos.IndexOf(m))" />
+                                                    <label for="@string.Format("Model_Modulos_{0}_esMayor", Model.Modulos.IndexOf(m))">Mayor</label>
+                                                    <input type="hidden" value="false" name="@string.Format("Modulos[{0}].esMayor", Model.Modulos.IndexOf(m))">
+                                                </li>
+                                        }
+                                        else if (m.esMayor == true)
+                                        {
+                                            <li>
+                                                <input type="checkbox" value="true"
+                                                       name="@string.Format("Modulos[{0}].esMenor", Model.Modulos.IndexOf(m))"
+                                                       id="@string.Format("Model_Modulos_{0}_esMenor", Model.Modulos.IndexOf(m))" />
+                                                <label for="@string.Format("Model_Modulos_{0}_esMenor", Model.Modulos.IndexOf(m))">Menor</label>
+                                                <input type="hidden" value="false" name="@string.Format("Modulos[{0}].esMenor", Model.Modulos.IndexOf(m))">
+                                            </li>
+                                            <li>
+                                                <input type="checkbox" value="true"
+                                                       name="@string.Format("Modulos[{0}].esIgual", Model.Modulos.IndexOf(m))"
+                                                       id="@string.Format("Model_Modulos_{0}_esIgual", Model.Modulos.IndexOf(m))"
+                                                       checked="checked" />
+                                                <label for="@string.Format("Model_Modulos_{0}_esIgual", Model.Modulos.IndexOf(m))">Igual</label>
+                                                <input type="hidden" value="false" name="@string.Format("Modulos[{0}].esIgual", Model.Modulos.IndexOf(m))">
+                                            </li>
+                                            <li>
+                                                <input type="checkbox" value="true"
+                                                       name="@string.Format("Modulos[{0}].esMayor", Model.Modulos.IndexOf(m))"
+                                                       id="@string.Format("Model_Modulos_{0}_esMayor", Model.Modulos.IndexOf(m))"
+                                                       checked="checked" />
+                                                <label for="@string.Format("Model_Modulos_{0}_esMayor", Model.Modulos.IndexOf(m))">Mayor</label>
+                                                <input type="hidden" value="false" name="@string.Format("Modulos[{0}].esMayor", Model.Modulos.IndexOf(m))">
+                                            </li>
+                                    }
+                                    else
+                                    {
+                                        <li>
+                                            <input type="checkbox" value="true"
+                                                   name="@string.Format("Modulos[{0}].esMenor", Model.Modulos.IndexOf(m))"
+                                                   id="@string.Format("Model_Modulos_{0}_esMenor", Model.Modulos.IndexOf(m))" />
+                                            <label for="@string.Format("Model_Modulos_{0}_esMenor", Model.Modulos.IndexOf(m))">Menor</label>
+                                            <input type="hidden" value="false" name="@string.Format("Modulos[{0}].esMenor", Model.Modulos.IndexOf(m))">
+                                        </li>
+                                        <li>
+                                            <input type="checkbox" value="true"
+                                                   name="@string.Format("Modulos[{0}].esIgual", Model.Modulos.IndexOf(m))"
+                                                   id="@string.Format("Model_Modulos_{0}_esIgual", Model.Modulos.IndexOf(m))"
+                                                   checked="checked" />
+                                            <label for="@string.Format("Model_Modulos_{0}_esIgual", Model.Modulos.IndexOf(m))">Igual</label>
+                                            <input type="hidden" value="false" name="@string.Format("Modulos[{0}].esIgual", Model.Modulos.IndexOf(m))">
+                                        </li>
+                                        <li>
+                                            <input type="checkbox" value="true"
+                                                   name="@string.Format("Modulos[{0}].esMayor", Model.Modulos.IndexOf(m))"
+                                                   id="@string.Format("Model_Modulos_{0}_esMayor", Model.Modulos.IndexOf(m))" />
+                                            <label for="@string.Format("Model_Modulos_{0}_esMayor", Model.Modulos.IndexOf(m))">Mayor</label>
+                                            <input type="hidden" value="false" name="@string.Format("Modulos[{0}].esMayor", Model.Modulos.IndexOf(m))">
+                                        </li>
+                                }
+                            }
+                            else
+                            {
+                                if (m.esMenor == true)
+                                {
+                                    <li>
+                                        <input type="checkbox" value="true"
+                                               name="@string.Format("Modulos[{0}].esMenor", Model.Modulos.IndexOf(m))"
+                                               id="@string.Format("Model_Modulos_{0}_esMenor", Model.Modulos.IndexOf(m))"
+                                               checked="checked" />
+                                        <label for="@string.Format("Model_Modulos_{0}_esMenor", Model.Modulos.IndexOf(m))">Menor</label>
+                                        <input type="hidden" value="false" name="@string.Format("Modulos[{0}].esMenor", Model.Modulos.IndexOf(m))">
+                                    </li>
+                                    <li>
+                                        <input type="checkbox" value="true"
+                                               name="@string.Format("Modulos[{0}].esIgual", Model.Modulos.IndexOf(m))"
+                                               id="@string.Format("Model_Modulos_{0}_esIgual", Model.Modulos.IndexOf(m))" />
+                                        <label for="@string.Format("Model_Modulos_{0}_esIgual", Model.Modulos.IndexOf(m))">Igual</label>
+                                        <input type="hidden" value="false" name="@string.Format("Modulos[{0}].esIgual", Model.Modulos.IndexOf(m))">
+                                    </li>
+                                    <li>
+                                        <input type="checkbox" value="true"
+                                               name="@string.Format("Modulos[{0}].esMayor", Model.Modulos.IndexOf(m))"
+                                               id="@string.Format("Model_Modulos_{0}_esMayor", Model.Modulos.IndexOf(m))" />
+                                        <label for="@string.Format("Model_Modulos_{0}_esMayor", Model.Modulos.IndexOf(m))">Mayor</label>
+                                        <input type="hidden" value="false" name="@string.Format("Modulos[{0}].esMayor", Model.Modulos.IndexOf(m))">
+                                    </li>
+                            }
+                            else if (m.esMayor == true)
+                            {
+                                <li>
+                                    <input type="checkbox" value="true"
+                                           name="@string.Format("Modulos[{0}].esMenor", Model.Modulos.IndexOf(m))"
+                                           id="@string.Format("Model_Modulos_{0}_esMenor", Model.Modulos.IndexOf(m))" />
+                                    <label for="@string.Format("Model_Modulos_{0}_esMenor", Model.Modulos.IndexOf(m))">Menor</label>
+                                    <input type="hidden" value="false" name="@string.Format("Modulos[{0}].esMenor", Model.Modulos.IndexOf(m))">
+                                </li>
+                                <li>
+                                    <input type="checkbox" value="true"
+                                           name="@string.Format("Modulos[{0}].esIgual", Model.Modulos.IndexOf(m))"
+                                           id="@string.Format("Model_Modulos_{0}_esIgual", Model.Modulos.IndexOf(m))" />
+                                    <label for="@string.Format("Model_Modulos_{0}_esIgual", Model.Modulos.IndexOf(m))">Igual</label>
+                                    <input type="hidden" value="false" name="@string.Format("Modulos[{0}].esIgual", Model.Modulos.IndexOf(m))">
+                                </li>
+                                <li>
+                                    <input type="checkbox" value="true"
+                                           name="@string.Format("Modulos[{0}].esMayor", Model.Modulos.IndexOf(m))"
+                                           id="@string.Format("Model_Modulos_{0}_esMayor", Model.Modulos.IndexOf(m))"
+                                           checked="checked" />
+                                    <label for="@string.Format("Model_Modulos_{0}_esMayor", Model.Modulos.IndexOf(m))">Mayor</label>
+                                    <input type="hidden" value="false" name="@string.Format("Modulos[{0}].esMayor", Model.Modulos.IndexOf(m))">
+                                </li>
+                        }
+                        else
+                        {
+                            <li>
+                                <input type="checkbox" value="true"
+                                       name="@string.Format("Modulos[{0}].esMenor", Model.Modulos.IndexOf(m))"
+                                       id="@string.Format("Model_Modulos_{0}_esMenor", Model.Modulos.IndexOf(m))" />
+                                <label for="@string.Format("Model_Modulos_{0}_esMenor", Model.Modulos.IndexOf(m))">Menor</label>
+                                <input type="hidden" value="false" name="@string.Format("Modulos[{0}].esMenor", Model.Modulos.IndexOf(m))">
+                            </li>
+                            <li>
+                                <input type="checkbox" value="true"
+                                       name="@string.Format("Modulos[{0}].esIgual", Model.Modulos.IndexOf(m))"
+                                       id="@string.Format("Model_Modulos_{0}_esIgual", Model.Modulos.IndexOf(m))" />
+                                <label for="@string.Format("Model_Modulos_{0}_esIgual", Model.Modulos.IndexOf(m))">Igual</label>
+                                <input type="hidden" value="false" name="@string.Format("Modulos[{0}].esIgual", Model.Modulos.IndexOf(m))">
+                            </li>
+                            <li>
+                                <input type="checkbox" value="true"
+                                       name="@string.Format("Modulos[{0}].esMayor", Model.Modulos.IndexOf(m))"
+                                       id="@string.Format("Model_Modulos_{0}_esMayor", Model.Modulos.IndexOf(m))" />
+                                <label for="@string.Format("Model_Modulos_{0}_esMayor", Model.Modulos.IndexOf(m))">Mayor</label>
+                                <input type="hidden" value="false" name="@string.Format("Modulos[{0}].esMayor", Model.Modulos.IndexOf(m))">
+                            </li>
+                    }
+
+                }
+                                        </ul>
+                                    </td>
+
+
+                                </tr>
+                        }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div id="alertaDistancia" class="form-group @((Model.TipoReporteSeleccionado == "alertadistancia" || Model.TipoReporteSeleccionado == "checkin") ? "" : "hide")">
+            <div class="row">
+                <div class="col-md-2" id="distanciaTexto" style="font-weight: 700;">
+                    @*@Html.LabelFor(model => model.Productos)*@
+                    @* @((Model.TipoReporteSeleccionado == "checkin") ? @Reporting.Resources.Alertas.lblDistanciaMinima : @Reporting.Resources.Alertas.lblDistanciaMaxima)*@
+                </div>
+                <div class="col-md-10">
+                    @*     <input type="text" style="display:block" class="typeahead" id="alertadistanciatypeahead" placeholder="0.00" />*@
+                    @Html.EditorFor(model => model.Distancia, new { htmlAttributes = new { @class = "form-control" } })
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-2">
+                    @Html.LabelFor(model => model.HoraInicio)
+                </div>
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.HoraInicio, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.HoraInicio, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-2">
+                    @Html.LabelFor(model => model.HoraFin)
+                </div>
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.HoraFin, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.HoraFin, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+        </div>
+
+        <div id="productosReporte" class="form-group @((Model.TipoReporteSeleccionado == "quiebrestock"|| Model.TipoReporteSeleccionado == "alertafrentes"|| Model.TipoReporteSeleccionado == "alertaPrecio") ? "" : "hide")">
+            <div class="row">
+                <div class="col-md-2">
+                    @Html.LabelFor(model => model.Productos)
+                </div>
+                <div class="col-md-10">
+                    <div id="ul-productos">
+                        <ul class="tree">
+                            @foreach (var m in Model.Productos.Select(p => new { p.IdMarca, p.MarcaDescr }).Distinct())
+                        {
+                            <li>
+                                <a href="#"><strong>@m.MarcaDescr</strong></a>
+                                @if (Model.Productos.Where(x => x.IdMarca == m.IdMarca).Count() > 0)
+                            {
+                                <ul>
+                                    @foreach (var q in Model.Productos.Where(c => c.IdMarca == m.IdMarca))
+                                {
+                                    <li>
+                                        @Html.Hidden(string.Format("Productos[{0}].IdProducto", Model.Productos.IndexOf(q)), q.IdProducto)
+                                        @Html.Hidden(string.Format("Productos[{0}].IdMarca", Model.Productos.IndexOf(q)), q.IdMarca)
+                                        @Html.Hidden(string.Format("Productos[{0}].MarcaDescr", Model.Productos.IndexOf(q)), q.MarcaDescr)
+                                        @Html.Hidden(string.Format("Productos[{0}].ProductoDescr", Model.Productos.IndexOf(q)), q.ProductoDescr)
+                                        @*@Html.Hidden(string.Format("Productos[{0}].Selected", Model.Productos.IndexOf(q)), q.Selected)*@
+
+
+                                        @if (q.Selected)
+                                    {
+                                        <input type="checkbox" value="true" name="@string.Format("Productos[{0}].Selected", Model.Productos.IndexOf(q))" id="@string.Format("Model_Productos_{0}_Selected", Model.Productos.IndexOf(q))" checked="checked" />
+                                }
+                                else
+                                {
+                                    <input type="checkbox" value="true" name="@string.Format("Productos[{0}].Selected", Model.Productos.IndexOf(q))" id="@string.Format("Model_Productos_{0}_Selected", Model.Productos.IndexOf(q))" />
+                            }
+
+                                        <input type="hidden" value="false" name="@string.Format("Productos[{0}].Selected", Model.Productos.IndexOf(q))">
+                                        <label for="@string.Format("Model_Productos_{0}_Selected", Model.Productos.IndexOf(q))">@q.ProductoDescr</label>
+                                    </li>
+                            }
+                                </ul>
+                        }
+                            </li>
+                    }
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    }
+</div>
+
+@section scripts{
+    <script>
+        $(document).ready(function () {
+            $('.tree li').each(function () {
+                if ($(this).children('ul').length > 0) {
+                    $(this).addClass('parent active');
+                }
+            });
+
+            $('.tree li.parent > a').click(function () {
+                $(this).parent().toggleClass('active');
+                $(this).parent().children('ul').slideToggle('fast');
+                return false;
+            });
+
+            $('#ddlTipoReporte').trigger('change');
+        });
+
+        $('#ddlTipoReporte').on('change', function () {
+          
+            var id = $(this).val();
+
+            if (id === 'reportepersonalizado') {
+                $('#camposReporte').removeClass('hide');
+            } else {
+                $('#camposReporte').addClass('hide');
+            }
+
+            if (id === 'alertafrentes' || id === 'quiebrestock' || id === 'alertaPrecioCargado') {
+                $('#productosReporte').removeClass('hide');
+            } else {
+                $('#productosReporte').addClass('hide');
+            }
+
+            if (id === 'alertainventario') {
+                $('#alertainventarioreporte').removeClass('hide');
+            } else {
+                $('#alertainventarioreporte').addClass('hide');
+            }
+
+            if (id === 'checkin' || id === 'alertadistancia') {
+                $('#alertaDistancia').removeClass('hide');
+                if (id === 'alertadistancia') {
+                    $('#distanciaTexto').html('Distancia Maxima');
+                }
+                if (id === 'checkin') {
+                    $('#distanciaTexto').html('Distancia Minima');
+                }
+
+            } else {
+                $('#alertaDistancia').addClass('hide');
+                $('#distanciaTexto').html('');
+            }
+
+
+
+            $('#ddlAccionTrigger').empty();
+            $.ajax({
+                url: '@Url.Action("GetAccionesDisparadoras", "Alertas")',
+                dataType: 'json',
+                data: { tiporeporte: id },
+                method: 'POST',
+                success: function (result) {
+                    if (result.length) {
+                        $.each(result, function (i, v) {
+                            $('#ddlAccionTrigger').append('<option value="' + v.Value + '">' + v.Text + '</option>');
+                        });
+
+                        var hddacc = $('#hddAccionSeleccionada').val();
+                        if (hddacc) {
+                            $('#ddlAccionTrigger').val(hddacc);
+                            $('#hddAccionSeleccionada').val(null);
+                        }
+
+                        $('#divtriggerseleccionado').removeClass('hide');
+                    } else {
+                        $('#divtriggerseleccionado').addClass('hide');
+                    }
+                },
+                error: function (err) {
+              
+                }
+            });
+        });
+
+        $('#chkconrepeticion').on('click', function () {
+            if ($(this).is(':checked')) {
+                $('#divrepeticion').removeClass('hide');
+            } else {
+                $('#divrepeticion').addClass('hide');
+            }
+        });
+
+        $('.chkcadena').on('click', function () {
+            var id = $(this).parent().find('.hddncadenadepdv').val();
+            var chked = $(this).is(':checked');
+      
+            var filas = $('.pdvfila');
+            $.each(filas, function (i, v) {
+                var cad = $(this).find('.hddncadenadepdv').val();
+                if (cad === id) {
+                    if (chked) {
+                        $(this).show();
+                    } else {
+                        $(this).hide();
+                    }
+                }
+            });
+        });
+
+        $('#pdvtypeahead').on('keyup', function () {
+            var str = $(this).val();
+            $('.pdvfila').hide();
+            $('.pdvfila:icontains("' + str + '")').show();
+            $('#pdvtodosninguno').removeClass('todos-on');
+        });
+
+        $('#pdvtodosninguno').on('click', function () {
+            $(this).toggleClass('todos-on');
+            if ($(this).hasClass('todos-on')) {
+                
+                $('.pdvfila:visible').find('input:checkbox').prop('checked', true);
+            } else {
+       
+                $('.pdvfila:visible').find('input:checkbox').prop('checked', false);
+            }
+
+            return false;
+        });
+
+        $('.checkModulos').find(':checkbox').change(function () {
+            var valor = this.id;
+            var idCheck = valor.substring(14, 15);
+
+            if (valor.endsWith("_esMayor")) {
+                if ($(this).is(':checked')) {
+                    $('#Model_Modulos_' + idCheck.toString() + '_esMenor').prop('checked', false);
+                }
+            }
+            if (valor.endsWith("_esMenor")) {
+                if ($(this).is(':checked')) {
+                    $('#Model_Modulos_' + idCheck.toString() + '_esMayor').prop('checked', false);
+                }
+            }
+        }); 
+    </script>
+}

@@ -1,0 +1,78 @@
+﻿@model Dictionary<int, string>
+
+
+
+<div class="UserTrackingData">
+    <div class="DateUserTracking">
+        <input id="DailyUserTrackingDate" type="date" value=""/>
+    </div>
+    <div id="UserTrackingNoData" style="color:red;font-weight:bold;" class="animated flash">
+        <p>
+            <i class="fa fa-info-circle fa-2x"></i>
+            @Reporting.Resources.Mapas.lblUserTrackingNotData
+        </p>
+    </div>
+    <div id="DailyTrackingUserList">
+        <ul>
+            @foreach (KeyValuePair<int, string> user in Model)
+            {
+            <li> 
+                <div class="imgUserProfileTracking" value="@(user.Key)">                   
+                </div>
+                <div class="nameUserProfileTracking"> @(user.Value) </div>
+            </li>
+            }
+        </ul>
+    </div>
+</div>
+<script>
+      LoadUserTProfileImage = (img, Id) =>
+        $.ajax({
+            url: "@Url.Action("GetUserImg", "Base")",
+            type: "POST",
+            dataType: "html",
+            data: { userId: Id},
+            success: (data) => $(img).html(data)
+        });    
+    
+    $('#DailyTrackingUserList > ul').on('mouseover', 'li', function () {
+        $(this).css('background-color', '#ddd');
+    });
+
+    $('#DailyTrackingUserList > ul').on('mouseout', 'li', function () {
+        $(this).css('background-color', 'white');
+    });
+
+    var userTrackingNoDataMessage = () => $("#UserTrackingNoData").show();    
+    var userTrackingWithData = () => $("#UserTrackingNoData").hide();
+
+    $('#DailyTrackingUserList > ul').on('click', 'li', function () {
+        let idUser = $(this).children('.imgUserProfileTracking').attr('value');
+        let date = $('#DailyUserTrackingDate').val().replace(/-/g, "");
+
+        $('#DailyTrackingUserList > ul > li').removeClass('selected');
+        $(this).addClass('selected');
+        if (date == _date.yyyymmdd()) {
+            showRealTimeUser(idUser);
+        }
+        getRutaDeUsuario(idUser, date);
+    });
+
+    $("#DailyUserTrackingDate").change(function () {
+        const newDate = $(this).val().replace(/-/g, "");           
+        $('#HD_DailyUserTrackingDate').val($(this).val());
+
+        getTrackingUserList(newDate);
+    });
+
+    $(document).ready(() => {
+        userTrackingWithData();
+        $(".imgUserProfileTracking").each(function () {
+            LoadUserTProfileImage(this, $(this).attr('value'));
+        });
+
+        $('#DailyUserTrackingDate').val($('#HD_DailyUserTrackingDate').val());     
+    });
+
+  
+</script>

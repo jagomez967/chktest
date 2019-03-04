@@ -1,0 +1,39 @@
+﻿@using Reporting.ViewModels
+@model ConfFiltroVM
+
+@using (Ajax.BeginForm("FiltrosFormEditarNombre", "Configuracion", new AjaxOptions() { LoadingElementId = "loading-editar-filtro", HttpMethod = "POST", InsertionMode = InsertionMode.ReplaceWith, UpdateTargetId = "form-editar-nombre-filtro", OnSuccess="NombreFiltroOnSuccess" }, htmlAttributes: new { id = "form-editar-nombre-filtro" }))
+{
+    @Html.HiddenFor(m => m.Id, htmlAttributes: new { id="hddnFiltroId"})
+    @Html.HiddenFor(m => m.Nombre)
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title" id="modal-editar-nombre-label">@Reporting.Resources.Configuracion.lblEditarNombreFiltro</h4>
+    </div>
+    <hr />
+    <div class="modal-body">
+        <div class="modal-nombre-filtro-defecto">
+            <h6>@Reporting.Resources.Configuracion.lblNombrePorDefecto <b>@Model.Nombre</b></h6>
+        </div>
+        <p>@Reporting.Resources.Configuracion.lblNombreFiltroAviso</p>
+
+        <div class="form-group">
+            @Html.TextBoxFor(m => m.NombreAsignadoPorUsuario, htmlAttributes: new { placeholder = Reporting.Resources.Configuracion.placeholderNombrePersonalizadoFiltro, id = "modal-input-nombre-filtro", @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.NombreAsignadoPorUsuario)
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button id="btn-modal-cancelar" type="button" class="btn btn-default pull-left">@Reporting.Resources.Configuracion.lblCancelar</button>
+        <button id="btn-modal-guardar" type="submit" class="btn btn-primary pull-right">@Reporting.Resources.Configuracion.lblGuardarCambios</button>
+        <div class="clearfix"></div>
+        @if (!string.IsNullOrEmpty(Model.MensajeExito))
+        {
+            <span class="label label-success" style="display:block;margin-top:10px;font-size:14px;">@Model.MensajeExito</span>
+        }
+        @if (!string.IsNullOrEmpty(Model.MensajeError))
+        {
+            <span class="label label-danger" style="display:block;margin-top:10px;font-size:14px;">@Model.MensajeError</span>
+        }
+        <p id="loading-editar-filtro">@Reporting.Resources.Configuracion.lblGuardarNombreDeFiltro</p>
+        <p class="text-danger" id="mensaje-error-nombre-filtro">@Reporting.Resources.Configuracion.lblErrNombreFiltro</p>
+    </div>
+}

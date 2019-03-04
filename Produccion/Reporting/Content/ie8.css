@@ -1,0 +1,71 @@
+.user-dropdown {
+    margin-right: -125px;
+}
+
+.user-dropdown button{
+	max-width: 35px;
+}
+
+.user-dropdown .dropdown-menu{
+	margin-right: 105px;
+} 
+
+.datos-perfil select{
+	height:inherit;
+	top:-3px;
+	padding-bottom:5px;
+	border-bottom:1px solid #ddd;
+}
+
+.ingreso input[type="text"], .ingreso input[type="password"]{
+	padding:12px 0 3px 28px;
+}
+
+#expList{
+	padding-bottom: 100px;
+}
+
+.filtro-fecha span{
+	margin-top: 0px;
+}
+
+.fecha-Tipo-D input{
+	margin-bottom: 0px;
+}
+
+ul.thumbnails.image_picker_selector li .thumbnail.selected {
+	border: 2px solid #44575D;
+}
+
+.ordenar select{
+	height:inherit;
+	background:none;
+	border: 1px solid #aaa;
+}
+
+.ordenar select:focus{
+	background:none;
+}
+
+.datos-perfil select{
+	font-weight:700;
+	color:#44575D !important;
+}
+
+.loader {
+	margin-bottom:15px;
+}
+
+.loader  span{
+	display:inline-block;
+}
+
+.loader .bar {
+	height: 16px\9 !important;
+}
+
+
+.selector-graficos select{
+width:200px;
+}
+

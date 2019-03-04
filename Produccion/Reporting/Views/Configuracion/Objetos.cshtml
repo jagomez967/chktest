@@ -1,0 +1,165 @@
+﻿@using Reporting.ViewModels
+@model ConfigurarObjetosVM
+
+@{
+    ViewBag.Title = Reporting.Resources.Configuracion.lblConfigurarObjetosTitulo;
+}
+
+@section styles
+{
+    <style>
+        #mensaje-error-nombre-objeto {
+            display: none;
+        }
+
+        #loading-editar-objeto {
+            display: none;
+        }
+    </style>
+}
+
+@Html.Partial("_SideMenu")
+
+<div class="titulo-pagina-fotos">
+    <a class="ecualiza-fotos always-visible animated slideInLeft" id="tabShowHide" href="#"></a>
+</div>
+
+<div class="modal fade" id="modal-editar-nombre" tabindex="-1" role="dialog" aria-labelledby="modal-editar-nombre-label" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content"></div>
+    </div>
+</div>
+
+<div class="container-fluid panel panel-default configurarTablero">
+    <h1>@Reporting.Resources.Configuracion.lblConfigurarObjetosTitulo2</h1>
+    <h5>@Reporting.Resources.Configuracion.lblConfigurarObjetosSubTitulo</h5>
+    <hr />
+
+    <div class="form-group">
+        @Html.TextBox("search-objeto", string.Empty, htmlAttributes: new { @id = "search-objeto", @placeholder = Reporting.Resources.Configuracion.placeholderConfigurarObjetosSearch, @class = "form-control", @style = "width:400px;" })
+    </div>
+
+    <hr />
+    <div id="div-tabla-objetos">
+        <table class="table table-responsive table-hover table-bordered">
+            <thead>
+                <tr>
+                    <th style="width:40%;">@Reporting.Resources.Configuracion.lblObjetosTablaColNombreDefecto</th>
+                    <th style="width:20%;">@Reporting.Resources.Configuracion.lblObjetosTablaColVisibilidad</th>
+                    <th colspan="2">@Reporting.Resources.Configuracion.lblObjetosTablaColNombreAsignado</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var f in Model.Familias)
+                {
+                    <tr data-familia-id="@f.Id" class="tr-familia">
+                        <td>@f.Nombre</td>
+                        <td>
+                            <table>
+                                <tbody>
+                                    @foreach (var o in f.Objetos)
+                                    {
+                                        <tr>
+                                            <td style="width:40px;">
+                                                <img src="@Url.Content("~/images/tipo"+o.TipoObjeto+".png")" title="@o.Tooltip" />
+                                            </td>
+                                            <td data-objeto-id="@o.Id">@Html.CheckBox(string.Format("objeto_t{0}_{1}", o.TipoObjeto, o.Id), o.Selected, htmlAttributes: new { @class = "objselected" })</td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </td>
+                        <td>@f.NombreAsignadoPorUsuario</td>
+                        <td style="width:50px;"><a style="width:50px;" href="#" class="btn btn-info pull-right btn-editar-nombre"><i class="fa fa-pencil fa-2x"></i></a></td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+@section scripts{
+    @Scripts.Render("~/bundles/unobstrusive")
+    <script>
+        $(document).ready(function () {
+            $('body').on('click', '#tabShowHide', function () {
+                var val = $('body, .slide-menu').css('left') === '200px' ? '0px' : '200px';
+                var _padding = $('body, .slide-menu').css('left') != '200px' ? '200px' : '0px';
+                $('body, .slide-menu').css('left', val);
+                $("body").css('padding-right', _padding);
+            });
+
+            $('#div-tabla-objetos').find('.objselected').bootstrapSwitch({
+                size: 'mini',
+                onText: "@Reporting.Resources.Configuracion.lblOnOffLabelYes",
+                offText: "@Reporting.Resources.Configuracion.lblOnOffLabelNo"
+            });
+
+            $('#div-tabla-objetos').on('click', '.btn-editar-nombre', function () {
+                var familiaid = $(this).closest('tr').attr('data-familia-id');
+
+                $.ajax({
+                    url: '@Url.Action("ObjetosFormEditarNombre", "Configuracion")',
+                    dataType: 'html',
+                    method: 'GET',
+                    data: { familiaid: familiaid },
+                    success: function (html) {
+                        if (html) {
+                            $('#modal-editar-nombre').find('.modal-content').html(html);
+
+                            var form = $('#modal-editar-nombre').find('.modal-content').find('form');
+                            $.validator.unobtrusive.parse(form);
+
+                            $('#modal-editar-nombre').modal('show');
+                        }
+                    },
+                    error: function () {
+                        alert('@Reporting.Resources.Configuracion.errObjetosCargarFormularioNombre');
+                    }
+                });
+
+                return false;
+            });
+
+            $('#modal-editar-nombre').on('click', '#btn-modal-cancelar', function () {
+                $('#modal-editar-nombre').modal('hide');
+            });
+
+            $('#div-tabla-objetos').on('switchChange.bootstrapSwitch', '.objselected', function (event, state) {
+                var familiaid = $(this).closest('.tr-familia').attr('data-familia-id');
+                var objetoid = $(this).closest('td').attr('data-objeto-id');
+
+                $.ajax({
+                    url: '@Url.Action("ObjetosToggleObjetoActivo","Configuracion")',
+                    dataType: 'json',
+                    data: { familiaid: familiaid, objetoid: objetoid, activo: state },
+                    method: 'POST',
+                    success: function (result) {
+                        if (!result) {
+                            return false;
+                        }
+                    },
+                    error: function () {
+                        console.log('Error Inesperado al cambiar estado activo de filtro');
+                    }
+                });
+            });
+
+            $('#search-objeto').on('keyup', function () {
+                var str = $(this).val();
+                $('#div-tabla-objetos').find('.tr-familia').hide();
+                $('#div-tabla-objetos').find('.tr-familia:icontains("' + str + '")').show();
+            });
+        });
+
+        function NombreObjetoOnSuccess() {
+            var familiaid = $('#modal-editar-nombre').find('#hddnFamiliaId').val();
+            var nuevonombre = $('#modal-editar-nombre').find('#modal-input-nombre-objeto').val();
+            if (nuevonombre.length > 0) {
+                $('#div-tabla-objetos tr').filter('[data-familia-id="' + familiaid + '"]').find('td:nth-child(3)').html(nuevonombre);
+            } else {
+                $('#div-tabla-objetos tr').filter('[data-familia-id="' + familiaid + '"]').find('td:nth-child(3)').html("(Utiliza Nombre por Defecto)");
+            }
+        }
+    </script>
+}

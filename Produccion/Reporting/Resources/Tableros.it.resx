@@ -1,0 +1,582 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="admAgregarTablero" xml:space="preserve">
+    <value>Aggiungi un scheda a questa lista</value>
+  </data>
+  <data name="admConfigurarObjetos" xml:space="preserve">
+    <value>Configurare gli oggetti</value>
+  </data>
+  <data name="admLabelEditar" xml:space="preserve">
+    <value>modifica</value>
+  </data>
+  <data name="admLabelEliminar" xml:space="preserve">
+    <value>rimuovere</value>
+  </data>
+  <data name="admLabelPermisos" xml:space="preserve">
+    <value>permessi</value>
+  </data>
+  <data name="admLabelVer" xml:space="preserve">
+    <value>vista</value>
+  </data>
+  <data name="admNoEliminar" xml:space="preserve">
+    <value>No, lascia lì.</value>
+  </data>
+  <data name="admPreguntaEliminar" xml:space="preserve">
+    <value>Vuoi cancellare definitivamente questa scheda?</value>
+  </data>
+  <data name="admSiEliminar" xml:space="preserve">
+    <value>Sì lo cancilo</value>
+  </data>
+  <data name="admTitulo" xml:space="preserve">
+    <value>Gestisci schede</value>
+  </data>
+  <data name="ampliar" xml:space="preserve">
+    <value>ingrandire</value>
+  </data>
+  <data name="clientenoasignado" xml:space="preserve">
+    <value>Non dispone di alcun client assegnato</value>
+  </data>
+  <data name="clientesModalCerrar" xml:space="preserve">
+    <value>vicino</value>
+  </data>
+  <data name="clientesModalGuardar" xml:space="preserve">
+    <value>Salva modifiche</value>
+  </data>
+  <data name="clientesModalTitle" xml:space="preserve">
+    <value>Cliente selezionato</value>
+  </data>
+  <data name="confFiltroErrorSetearCheck" xml:space="preserve">
+    <value>Impossibile completare l'operazione</value>
+  </data>
+  <data name="confFiltroErrorSetearNombre" xml:space="preserve">
+    <value>Impossibile impostare il nome del filtro</value>
+  </data>
+  <data name="confFiltroResetError" xml:space="preserve">
+    <value>Impossibile reimpostare il nome del filtro</value>
+  </data>
+  <data name="confFiltroSinFiltros" xml:space="preserve">
+    <value>Nessun filtro trovato</value>
+  </data>
+  <data name="configurarGrafico" xml:space="preserve">
+    <value>Imposta la tabella</value>
+  </data>
+  <data name="confObjetoErrorSetearNombre" xml:space="preserve">
+    <value>Impossibile impostare il nome dell'oggetto</value>
+  </data>
+  <data name="confObjetoResetError" xml:space="preserve">
+    <value>Impossibile reimpostare il nome dell'oggetto</value>
+  </data>
+  <data name="crearNuevoUsuarioModalTitulo" xml:space="preserve">
+    <value>Crea nuovo utente</value>
+  </data>
+  <data name="crearTableroBtnAgregarObjetos" xml:space="preserve">
+    <value>Aggiunta di oggetti alla scheda</value>
+  </data>
+  <data name="crearTableroBtnEliminar" xml:space="preserve">
+    <value>Per rimuovere</value>
+  </data>
+  <data name="crearTableroBtnSave" xml:space="preserve">
+    <value>Salva scheda</value>
+  </data>
+  <data name="crearTableroColNombre" xml:space="preserve">
+    <value>nome</value>
+  </data>
+  <data name="crearTableroColOrden" xml:space="preserve">
+    <value>ordine</value>
+  </data>
+  <data name="crearTableroColSize" xml:space="preserve">
+    <value>dimensione</value>
+  </data>
+  <data name="crearTableroColTipo" xml:space="preserve">
+    <value>tipo</value>
+  </data>
+  <data name="crearTableroDragDropOrderLabel" xml:space="preserve">
+    <value>Trascinate gli elementi per cambiare la posizione che avranno all'interno della scheda.</value>
+  </data>
+  <data name="crearTableroEliminarAceptar" xml:space="preserve">
+    <value>Sì lo cancilo</value>
+  </data>
+  <data name="crearTableroEliminarCancelar" xml:space="preserve">
+    <value>No, lascia lì.</value>
+  </data>
+  <data name="crearTableroEliminarPregunta" xml:space="preserve">
+    <value>Vuoi cancellare definitivamente questo grafico?</value>
+  </data>
+  <data name="crearTableroErrNombreVacio" xml:space="preserve">
+    <value>Devi dare al consiglio un nome</value>
+  </data>
+  <data name="crearTableroErrNoObjectSelected" xml:space="preserve">
+    <value>È necessario selezionare almeno una grafica</value>
+  </data>
+  <data name="crearTableroLabelObjDisponibles" xml:space="preserve">
+    <value>Oggetti disponibili</value>
+  </data>
+  <data name="crearTableroLabelObjSeleccionados" xml:space="preserve">
+    <value>Oggetti selezionati</value>
+  </data>
+  <data name="crearTablerolblNombre" xml:space="preserve">
+    <value>nome</value>
+  </data>
+  <data name="crearTableroSelObjetosLabel" xml:space="preserve">
+    <value>Seleziona la grafica che vuoi vedere su questa scheda</value>
+  </data>
+  <data name="crearTableroSinObjetos" xml:space="preserve">
+    <value>Non hai ancora selezionato grafici per questa scheda.</value>
+  </data>
+  <data name="crearTableroTitulo" xml:space="preserve">
+    <value>Crea nuova scheda</value>
+  </data>
+  <data name="crearTableroTituloPanel" xml:space="preserve">
+    <value>Crea tavola</value>
+  </data>
+  <data name="crearTableroVolverLabel" xml:space="preserve">
+    <value>Ritorno senza salvataggio</value>
+  </data>
+  <data name="descargarDatos" xml:space="preserve">
+    <value>Scarica i dati</value>
+  </data>
+  <data name="descargarImagen" xml:space="preserve">
+    <value>Scarica l'immagine</value>
+  </data>
+  <data name="editarTableroBtnAgregarObjetos" xml:space="preserve">
+    <value>Aggiunta di oggetti alla scheda</value>
+  </data>
+  <data name="editarTableroBtnEliminar" xml:space="preserve">
+    <value>Per rimuovere</value>
+  </data>
+  <data name="editarTableroBtnSave" xml:space="preserve">
+    <value>Salva modifiche</value>
+  </data>
+  <data name="editarTableroColNombre" xml:space="preserve">
+    <value>nome</value>
+  </data>
+  <data name="editarTableroColOrden" xml:space="preserve">
+    <value>ordine</value>
+  </data>
+  <data name="editarTableroColSize" xml:space="preserve">
+    <value>dimensione</value>
+  </data>
+  <data name="editarTableroColTipo" xml:space="preserve">
+    <value>tipo</value>
+  </data>
+  <data name="editarTableroDragDropOrderLabel" xml:space="preserve">
+    <value>Trascinate gli elementi per cambiare la posizione che avranno all'interno della scheda.</value>
+  </data>
+  <data name="editarTableroEliminarAceptar" xml:space="preserve">
+    <value>Sì lo cancilo</value>
+  </data>
+  <data name="editarTableroEliminarCancelar" xml:space="preserve">
+    <value>No, lascia lì.</value>
+  </data>
+  <data name="editarTableroEliminarPregunta" xml:space="preserve">
+    <value>Vuoi cancellare definitivamente questo grafico?</value>
+  </data>
+  <data name="editarTableroErrNombreVacio" xml:space="preserve">
+    <value>Devi dare al consiglio un nome</value>
+  </data>
+  <data name="editarTableroErrNoObjectSelected" xml:space="preserve">
+    <value>È necessario selezionare almeno una grafica</value>
+  </data>
+  <data name="editarTableroLabelObjDisponibles" xml:space="preserve">
+    <value>Oggetti disponibili</value>
+  </data>
+  <data name="editarTableroLabelObjSeleccionados" xml:space="preserve">
+    <value>Oggetti selezionati</value>
+  </data>
+  <data name="editarTablerolblNombre" xml:space="preserve">
+    <value>nome</value>
+  </data>
+  <data name="editarTableroSelObjetosLabel" xml:space="preserve">
+    <value>Seleziona la grafica che vuoi vedere su questa scheda</value>
+  </data>
+  <data name="editarTableroSinObjetos" xml:space="preserve">
+    <value>Non hai ancora selezionato grafici per questa scheda.</value>
+  </data>
+  <data name="editarTableroTitulo" xml:space="preserve">
+    <value>Modifica scheda</value>
+  </data>
+  <data name="editarTableroTituloPanel" xml:space="preserve">
+    <value>Modifica scheda</value>
+  </data>
+  <data name="editarTableroVolverLabel" xml:space="preserve">
+    <value>Ritorno senza salvataggio</value>
+  </data>
+  <data name="errClaveIncorrecta" xml:space="preserve">
+    <value>La password immessa è errata</value>
+  </data>
+  <data name="errEliminarTablero" xml:space="preserve">
+    <value>La scheda non poteva essere rimossa</value>
+  </data>
+  <data name="errFormatosImagen" xml:space="preserve">
+    <value>I formati di immagine supportati sono gif, jpg, png</value>
+  </data>
+  <data name="errGrabarPermisos" xml:space="preserve">
+    <value>Salvataggio delle autorizzazioni non riuscito</value>
+  </data>
+  <data name="errGuardarDatosUsuario" xml:space="preserve">
+    <value>Si è verificato un errore durante il tentativo di salvare i dati utente.</value>
+  </data>
+  <data name="errGuardarTipoObjetoAmpliar" xml:space="preserve">
+    <value>errore salva il nuovo tipo di oggetto - visualizza più grande</value>
+  </data>
+  <data name="errImagenFormatoInvalido" xml:space="preserve">
+    <value>L'estensione del file selezionato non è consentita</value>
+  </data>
+  <data name="errImagenSize500kb" xml:space="preserve">
+    <value>L'immagine non può superare i 500kb</value>
+  </data>
+  <data name="errOperacionNoSoportadaTipo9" xml:space="preserve">
+    <value>Funzionamento non supportato per il tipo di grafico diverso da 9</value>
+  </data>
+  <data name="lblActualiceParaVisualizar" xml:space="preserve">
+    <value>(Per visualizzare le modifiche che è necessario aggiornare la scheda)</value>
+  </data>
+  <data name="lblAplicarFiltro" xml:space="preserve">
+    <value>Applica filtro</value>
+  </data>
+  <data name="lblCambiarContraseña" xml:space="preserve">
+    <value>Cambia password</value>
+  </data>
+  <data name="lblCancelar" xml:space="preserve">
+    <value>annullare</value>
+  </data>
+  <data name="lblCargandoFiltros" xml:space="preserve">
+    <value>Caricamento dei filtri ...</value>
+  </data>
+  <data name="lblCargandoTablero" xml:space="preserve">
+    <value>Scheda di caricamento ...</value>
+  </data>
+  <data name="lblCerrar" xml:space="preserve">
+    <value>vicino</value>
+  </data>
+  <data name="lblColEscritura" xml:space="preserve">
+    <value>scrittura</value>
+  </data>
+  <data name="lblColLectura" xml:space="preserve">
+    <value>lettura</value>
+  </data>
+  <data name="lblColNombre" xml:space="preserve">
+    <value>nome</value>
+  </data>
+  <data name="lblColUsuario" xml:space="preserve">
+    <value>utente</value>
+  </data>
+  <data name="lblGuardandoCambios" xml:space="preserve">
+    <value>Salvataggio delle modifiche ...</value>
+  </data>
+  <data name="lblGuardarCambios" xml:space="preserve">
+    <value>Salva modifiche</value>
+  </data>
+  <data name="lblLosDatosSeGuardaronExito" xml:space="preserve">
+    <value>I dati utente sono stati salvati con successo</value>
+  </data>
+  <data name="lblMisDatosTitulo" xml:space="preserve">
+    <value>I miei dati del profilo</value>
+  </data>
+  <data name="lblNoPoseeObjetosTitulo" xml:space="preserve">
+    <value>Nessun oggetto</value>
+  </data>
+  <data name="lblPermisosAsignar" xml:space="preserve">
+    <value>Assegnare</value>
+  </data>
+  <data name="lblPermisosTitulo" xml:space="preserve">
+    <value>permessi</value>
+  </data>
+  <data name="lblPersistirCambiosEnTablero" xml:space="preserve">
+    <value>Cambiare persistente l'oggetto sul scheda</value>
+  </data>
+  <data name="lblSeleccionarObjetos" xml:space="preserve">
+    <value>Selezionare Oggetti</value>
+  </data>
+  <data name="lblSeleccioneUnRol" xml:space="preserve">
+    <value>Seleziona un ruolo</value>
+  </data>
+  <data name="lblSubTituloDatosPerfil" xml:space="preserve">
+    <value>È possibile modificare i dati del profilo e la lingua in cui viene visualizzato il sito</value>
+  </data>
+  <data name="lblTituloMisDatosPerfil" xml:space="preserve">
+    <value>I miei dati del profilo</value>
+  </data>
+  <data name="lblTituloNoTieneTableros" xml:space="preserve">
+    <value>Nessuna tavola</value>
+  </data>
+  <data name="lblTodoNinguno" xml:space="preserve">
+    <value>Tutti / Nessuno</value>
+  </data>
+  <data name="lblYesNoNo" xml:space="preserve">
+    <value>non</value>
+  </data>
+  <data name="lblYesNoYes" xml:space="preserve">
+    <value>se</value>
+  </data>
+  <data name="linkAbms" xml:space="preserve">
+    <value>ABMS</value>
+  </data>
+  <data name="linkAdministrarTablero" xml:space="preserve">
+    <value>Gestisci le mie schede</value>
+  </data>
+  <data name="linkConfiguracion" xml:space="preserve">
+    <value>configurazione</value>
+  </data>
+  <data name="linkConfigurarFiltros" xml:space="preserve">
+    <value>filtri</value>
+  </data>
+  <data name="linkCrearTablero" xml:space="preserve">
+    <value>Crea nuova scheda</value>
+  </data>
+  <data name="linkDatos" xml:space="preserve">
+    <value>dati</value>
+  </data>
+  <data name="linkEditarTablero" xml:space="preserve">
+    <value>Modifica scheda corrente</value>
+  </data>
+  <data name="linkImagenes" xml:space="preserve">
+    <value>immagini</value>
+  </data>
+  <data name="linkMaps" xml:space="preserve">
+    <value>mappe</value>
+  </data>
+  <data name="linkNombreObjetos" xml:space="preserve">
+    <value>Nomi degli oggetti</value>
+  </data>
+  <data name="linkTableros" xml:space="preserve">
+    <value>tavole</value>
+  </data>
+  <data name="menuClientesLabel" xml:space="preserve">
+    <value>clienti</value>
+  </data>
+  <data name="menuPerfilLabel" xml:space="preserve">
+    <value>Visualizza profilo</value>
+  </data>
+  <data name="menuSalirLabel" xml:space="preserve">
+    <value>uscita</value>
+  </data>
+  <data name="noDataFoundGrafico" xml:space="preserve">
+    <value>Nessuna informazione trovata</value>
+  </data>
+  <data name="notienecliente" xml:space="preserve">
+    <value>Non hai un cliente assegnato</value>
+  </data>
+  <data name="notieneclientesubtitulo" xml:space="preserve">
+    <value>È necessario selezionare un client per accedere a questa schermata</value>
+  </data>
+  <data name="noTieneFiltros" xml:space="preserve">
+    <value>Non hai assegnato filtri</value>
+  </data>
+  <data name="noTieneFiltrosSubTitulo" xml:space="preserve">
+    <value>È necessario assegnare almeno un filtro per accedere a questa schermata</value>
+  </data>
+  <data name="noTieneObjetos" xml:space="preserve">
+    <value>Nessun oggetto assegnato</value>
+  </data>
+  <data name="noTieneObjetosSubTitulo" xml:space="preserve">
+    <value>È necessario disporre di almeno un oggetto per accedere a questa schermata</value>
+  </data>
+  <data name="notienepermisos" xml:space="preserve">
+    <value>Non hai permessi</value>
+  </data>
+  <data name="notienepermisossubtitulo" xml:space="preserve">
+    <value>Non è consentito entrare in questa sezione</value>
+  </data>
+  <data name="notienetablerosSubTitulo" xml:space="preserve">
+    <value>Crea uno adesso!</value>
+  </data>
+  <data name="notienetablerosTitulo" xml:space="preserve">
+    <value>Non hai ancora creato un board.</value>
+  </data>
+  <data name="noTieneUsuarios" xml:space="preserve">
+    <value>Nessun utente trovato</value>
+  </data>
+  <data name="noTieneUsuariosSubTitulo" xml:space="preserve">
+    <value>Impossibile visualizzare l'elenco utenti</value>
+  </data>
+  <data name="perfilClaveActual" xml:space="preserve">
+    <value>Password corrente</value>
+  </data>
+  <data name="perfilClaveActualContent" xml:space="preserve">
+    <value>Devi inserire la tua password corrente</value>
+  </data>
+  <data name="perfilClaveActualPlaceHolder" xml:space="preserve">
+    <value>Password corrente</value>
+  </data>
+  <data name="perfilClaveLabel" xml:space="preserve">
+    <value>password</value>
+  </data>
+  <data name="perfilClaveNueva" xml:space="preserve">
+    <value>Nuova password</value>
+  </data>
+  <data name="perfilClaveNuevaConfirmarContent" xml:space="preserve">
+    <value>Devi confermare la nuova password</value>
+  </data>
+  <data name="perfilClaveNuevaConfirmarPlaceholder" xml:space="preserve">
+    <value>Conferma la tua nuova password</value>
+  </data>
+  <data name="perfilClaveNuevaContent" xml:space="preserve">
+    <value>Devi inserire una nuova password</value>
+  </data>
+  <data name="perfilClaveNuevaPlaceHolder" xml:space="preserve">
+    <value>Nuova password</value>
+  </data>
+  <data name="perfilConfirmeClaveText" xml:space="preserve">
+    <value>Conferma la tua nuova password</value>
+  </data>
+  <data name="perfilModalCerrar" xml:space="preserve">
+    <value>vicino</value>
+  </data>
+  <data name="perfilModalGuardar" xml:space="preserve">
+    <value>Salva modifiche</value>
+  </data>
+  <data name="perfilModalTitulo" xml:space="preserve">
+    <value>Informazioni sul profilo</value>
+  </data>
+  <data name="perfil_imageSizeWarning" xml:space="preserve">
+    <value>La dimensione dell'immagine non può superare i 100 kB</value>
+  </data>
+  <data name="perfil_lblClaveActualVacia" xml:space="preserve">
+    <value>Devi inserire una password</value>
+  </data>
+  <data name="perfil_lblClaveDebil" xml:space="preserve">
+    <value>La nuova password deve essere di almeno 6 caratteri</value>
+  </data>
+  <data name="perfil_lblClaveNuevaVacia" xml:space="preserve">
+    <value>Devi inserire una nuova password</value>
+  </data>
+  <data name="perfil_lblClavesNoCoinciden" xml:space="preserve">
+    <value>Le password devono corrispondere</value>
+  </data>
+  <data name="placeholderFiltrarUsuarios" xml:space="preserve">
+    <value>Filtra gli utenti ...</value>
+  </data>
+  <data name="reviseSiLosResultadosSonCorrectos" xml:space="preserve">
+    <value>Verifica se i dati sono corretti</value>
+  </data>
+  <data name="titulo" xml:space="preserve">
+    <value>scheda</value>
+  </data>
+  <data name="lblTituloNoTienePermisosTableros" xml:space="preserve">
+    <value>Modifica scheda</value>
+  </data>
+  <data name="notienePermisostablerosSubTitulo" xml:space="preserve">
+    <value>La scheda condivisa è di sola lettura, non può essere modificata</value>
+  </data>
+  <data name="notienePermisostablerosTitulo" xml:space="preserve">
+    <value>Errore: non si dispone delle autorizzazioni di modifica</value>
+  </data>
+</root>

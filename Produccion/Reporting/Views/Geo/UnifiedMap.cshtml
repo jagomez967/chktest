@@ -1,0 +1,819 @@
+﻿@using Reporting.ViewModels
+@model FiltrosViewModel
+@{
+    ViewBag.Title = Reporting.Resources.Mapas.titulo;
+    string currentDate = @DateTime.Today.ToString("yyyy-MM-dd");
+}
+
+@section styles{
+    <style>
+        body {
+            padding-top: 45px;
+            padding-left: 40px;
+            margin: 0;
+        }
+
+        html, body, #map {
+            height: 100%;
+            font: 10pt "Helvetica Neue", Arial, Helvetica, sans-serif;
+        }
+
+        #renderBody > .modal-backdrop {
+            z-index: 9000;
+        }
+
+        .header-description {
+            margin-top: 10px;
+            padding: 16px 24px 20px;
+            color: white;
+            background-color: #4285F4;
+            margin-right: 40px;
+        }
+
+        .section-header-title {
+            font-size: 18px;
+            overflow: hidden;
+            text-overflow: ellipsis
+        }
+
+        .section-header-subtitle {
+            font-size: 13px;
+            margin-top: 4px
+        }
+
+        .section-header-subtitle-badge {
+            display: inline-block;
+            font-weight: bold;
+            margin: 2px 0;
+            padding: 2px 0px;
+        }
+
+        .section-divider-bottom-line {
+            border-bottom: 1px solid #e6e6e6;
+        }
+
+        .section-divider {
+            -webkit-flex: none;
+            -ms-flex: none;
+            flex: none;
+        }
+
+        .section-info {
+            font-size: 13px;
+            -webkit-flex: none;
+            -ms-flex: none;
+            flex: none;
+            position: relative;
+        }
+
+        .section-info-action-button {
+            display: inherit;
+        }
+
+        .section-info-line {
+            padding: 5px 24px;
+            display: -ms-flexbox;
+            display: -webkit-flex;
+            display: flex;
+            -webkit-align-items: center;
+            -ms-flex-align: center;
+            align-items: center;
+            position: relative;
+            font-size: 13.5px;
+        }
+
+        .section-info-icon {
+            margin-right: 10px;
+            -webkit-flex: 0 0 24px;
+            -ms-flex: 0 0 24px;
+            flex: 0 0 24px;
+            color: #003e8b;
+        }
+
+        .section-info-text, .section-info-text .widget-pane-link {
+            color: rgba(0, 0, 0, 0.87);
+            text-align: left;
+            font-family: 'Avenir Next Medium';
+        }
+
+        .section-info-hoverable:hover {
+            background-color: rgba(0,0,0,.03);
+            cursor: pointer;
+        }
+
+        .section-last-report {
+            padding-right: 40px;
+        }
+
+        .section-photo-reports {
+            display: -webkit-box;
+            margin-right: 40px;
+            height: auto;
+            white-space: nowrap;
+            overflow: scroll;
+            -webkit-flex: none;
+            -ms-flex: none;
+            flex: none;
+            transform: translateZ(0);
+        }
+
+        .section-image-button {
+            cursor: pointer;
+            position: relative;
+            display: inline-block;
+        }
+
+        .section-image-container {
+            height: 106px;
+            position: relative;
+            overflow: hidden;
+            z-index: -1;
+            direction: ltr;
+            margin: 3px;
+            z-index: 9999999;
+        }
+
+            .section-image-container > a > img {
+                position: relative;
+                top: -1px;
+                left: 0px;
+                width: 130px;
+                height: 107px;
+                display: block;
+            }
+
+        .gm-style > div > div > div > div > img {
+            max-width: none;
+            border-radius: 25px !important;
+            border-style: ridge !important;
+            border-color: darkblue !important;
+            border-width: 2px !important;
+        }
+
+        .section-row-report {
+            font-size: 13px;
+            padding: 0 0 16px;
+            -webkit-flex: none;
+            -ms-flex: none;
+            flex: none;
+            position: relative;
+            color: rgba(0, 0, 0, 0.87);
+        }
+
+        .section-row-report-icon {
+            margin-top: 6px;
+            height: 40px;
+            width: 40px;
+            border-radius: 20px;
+            border-width: 2px;
+            border-style: solid;
+            border-color: black;
+        }
+
+        .section-row-report-content {
+            position: absolute;
+        }
+
+        .section-row-line {
+            padding-left: 55px;
+            line-height: 19px;
+            min-height: 40px;
+        }
+
+        .section-row-line-text {
+            font-family: 'Avenir Next Medium';
+            font-size: 14px;
+        }
+
+        .photoListPDV {
+            display: -webkit-box;
+        }
+
+        ._trackingUserList {
+            padding-top: 15px;
+            padding-right: 20px;
+        }
+
+        ._trackingLoader {
+            left: 250px;
+            display: block;
+            position: fixed;
+            top: 107px;
+        }
+
+        .DateUserTracking {
+            margin: 10px;
+        }
+
+        #DailyTrackingUserList > ul {
+            list-style-type: none;
+        }
+
+            #DailyTrackingUserList > ul > li {
+                display: flex;
+                margin: 4px;
+                margin-left: -35px;
+            }
+
+        .selected {
+            font-weight: bold;
+            color: darkorange;
+        }
+
+        .nameUserProfileTracking {
+            padding: 10px;
+        }
+
+        .GeoProgressbar {
+            counter-reset: step;
+            padding: 0px;
+        }
+
+            .GeoProgressbar li {
+                list-style-type: none;
+                float: left;
+                width: 22%;
+                position: relative;
+                text-align: center;
+            }
+
+                .GeoProgressbar li:before {
+                    content: counter(step);
+                    counter-increment: step;
+                    width: 25px;
+                    height: 25px;
+                    line-height: 20px;
+                    border: 1px solid #ddd;
+                    display: block;
+                    text-align: center;
+                    margin: 0 auto 10px auto;
+                    border-radius: 50%;
+                    background-color: white;
+                    font-weight: bold;
+                }
+
+                .GeoProgressbar li:after {
+                    content: '';
+                    position: absolute;
+                    width: 100%;
+                    height: 5px;
+                    background-color: #ddd;
+                    top: 10px;
+                    left: -50%;
+                    z-index: -1;
+                }
+
+                .GeoProgressbar li:first-child:after {
+                    content: none;
+                }
+
+                .GeoProgressbar li.active { /*el color del contenido del elemento li*/
+                    color: black;
+                    font-weight: bold;
+                }
+
+                .GeoProgressbar li.dateError {
+                    color: white;
+                    font-weight: bold;
+                }
+
+                .GeoProgressbar li.active:before { /*el borde de la linea del activo*/
+                    border-color: #0245F4;
+                    border-width: 3px;
+                    background-color: #4285F4;
+                }
+
+                .GeoProgressbar li.dateError:before {
+                    border-color: darkred;
+                    border-width: 2px;
+                    background-color: red;
+                }
+
+                .GeoProgressbar li.active + li:after {
+                    background-color: #4285F4;
+                }
+
+                .GeoProgressbar li.dateError + li:after {
+                    background-color: darkred;
+                }
+    </style>
+}
+
+<div id="sidebar" class="sidebar collapsed">
+    <div class="sidebar-tabs">
+        <ul role="tablist">
+            <li><a id="selectGeneralMap" href="#filterMap" role="tab"><i class="fa fa-bars"></i></a></li>
+            <li><a id="selectUserMap" href="#userMap" role="tab"><i class="fa fa-user"></i></a></li>
+        </ul>
+    </div>
+
+    <div class="sidebar-content" style="z-index: 0;">
+        <div class="sidebar-pane" id="filterMap">
+            <h1 class="sidebar-header">@Reporting.Resources.Mapas.lblFilter <span class="sidebar-close"><i class="fa fa-caret-left"></i></span></h1>
+
+            @using (Ajax.BeginForm("AplicarFiltros", "Geo", null, new AjaxOptions { OnBegin = "aplicarfiltrobegin", OnSuccess = "aplicarfiltrosuccess", OnComplete = "aplicarfiltrocomplete", InsertionMode = InsertionMode.Replace, UpdateTargetId = "filtrostablero" }))
+            {
+                @Html.AntiForgeryToken()
+                <div>
+                    <div class="filtroacciones" style="right: 10px;position: absolute;z-index: 99999;">
+                        <button type="submit" class="btn aplicarfiltro">
+                            @Reporting.Resources.Mapas.btnMapasAplicarFiltroLabel
+                            <i class="fa fa-check pull-right"></i>
+                        </button>
+                    </div>
+                    <div id="filtrostablero" class="filtroitems"></div>
+                </div>
+            }
+        </div>
+
+        <div class="sidebar-pane" id="userMap">
+            <h1 class="sidebar-header">
+                @Reporting.Resources.Mapas.lblUserTracking
+                <span class="sidebar-close"><i class="fa fa-caret-left"></i></span>
+            </h1>
+
+            <div id="TrackingUserLoad" class="_trackingLoader"></div>
+            <div id="TrackingUserList" class="_trackingUserList"></div>
+        </div>
+
+        <div class="sidebar-pane" id="infoMap">
+            <h1 class="sidebar-header">
+                @Reporting.Resources.Mapas.lblDetails
+                <span class="sidebar-close"><i class="fa fa-caret-left"></i></span>
+            </h1>
+            <div id="infoMapDetail" style="margin:-10px -20px 0;"></div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade foto-ampliada" id="modalAmpliarImagen" tabindex="-1" role="dialog" aria-labelledby="tituloModalAmpliar" style="z-index:9001">
+    <div class="modal-dialog" role="document" style="background:mintcream;width:50%">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        </div>
+        <div class="modal-body">
+            <div class="modal-content"></div>
+        </div>
+
+    </div>
+</div>
+
+<div id="menuDatosCapa" style="height: 50px;">
+    <div id="tiemporeal">
+        <input class="form-control input-sm" type="text" id="seachUserRealTime" />
+        <div id="tiemporealUsuarios">
+        </div>
+    </div>
+</div>
+<div id="map" class="sidebar-map" style="margin-top:0px;bottom: 50px;"></div>
+
+<input id="HD_DailyUserTrackingDate" type="hidden" value="@currentDate" />
+
+@section scripts{
+    @Scripts.Render("~/bundles/unobstrusive")
+    <script src="~/Scripts/jquery-sidebar.js"></script>
+    <script src="~/Scripts/firebase.js"></script>
+    <script src="~/Scripts/firebase-app.js"></script>
+    <script src="~/Scripts/firebase-auth.js"></script>
+    <script src="~/Scripts/firebase-database.js"></script>
+    <script async defer src="~/Scripts/map-icons.js"></script>
+    <script async defer src="~/Scripts/markerclusterer.js"></script>
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCYyiu28Rs1AeAvAFLp60uUkRWcw3qrgK0&callback=initMap"></script>
+    <script async defer src="~/Scripts/oms.min.js?spiderfier_callback=initMap"></script>
+
+    <script>
+        $(document).ready(() => {
+            GetFiltrosDeTablero();
+            let nowDate =$('#HD_DailyUserTrackingDate').val().replace(/-/g, "");
+            getTrackingUserList(nowDate);
+        });
+
+        const sidebar = $('#sidebar').sidebar();
+        const markersRealtime = [], markersPDV = [], markersUserTracking = [], markersUserGeo = [];
+
+        let mapLibsReady = 0;
+        let mc = null; //MARKER CLUSTER
+        let oms = null;
+
+        initMap = () => {
+            if (++mapLibsReady < 2) return;
+
+            const mapProp = {
+                center: new google.maps.LatLng(-34.603722, -58.381592),
+                zoom: 10,
+                mapTypeId: google.maps.MapTypeId.ROADMAP
+            };
+
+            map = new google.maps.Map(document.getElementById('map'), mapProp);
+
+            oms = new OverlappingMarkerSpiderfier(map, {
+                markersWontMove: true,
+                markersWontHide: true,
+                basicFormatEvents: true
+            });
+
+            getMarkersCobertura();
+            showTiempoReal();
+        }
+
+        const GetFiltrosDeTablero = () =>
+            $.ajax({
+                url: "@Url.Action("GetFiltrosPartialSimpleLayout", "Geo")",
+                type: "POST",
+                dataType: "html",
+                beforeSend: ()  => $('.filtroitems').empty().html("<h3>@Reporting.Resources.Mapas.loadingFilter</h3>"),
+                success: data => $(".filtroitems").html(data),
+                complete: () => {if (!Modernizr.inputtypes.date) setFechasDowngradeBrowsers(); }
+            });
+
+         aplicarfiltrosuccess = () => {
+            removeMarkers();
+             getMarkersCobertura();
+             showTiempoReal();
+        }
+
+         aplicarfiltrobegin = () => $('.aplicarfiltro').prop("disabled", true);
+
+         aplicarfiltrocomplete = () => {
+            $('.aplicarfiltro').prop("disabled", false);
+            GetFiltrosDeTablero();
+        }
+
+        const removeMarkers = () => {
+            markersPDV.forEach(item => item.setMap(null));
+            markersPDV.splice(0);
+
+            markersRealtime.forEach(item => item.setMap(null));
+            markersRealtime.splice(0);
+        }
+
+        const GetUsuariosCliente = () => {
+            return $.ajax({
+                url: "@Url.Action("GetUsuariosCliente", "Geo")",
+                contentType: "application/json; charset=utf-8",
+                type: 'POST',
+                async: false,
+                dataType: 'json',
+                success: data => { if (data.length == 0) data }
+            }).responseJSON;
+        };
+
+        const GetClienteDiferenciaHoraria = () => {
+            return $.ajax({
+                url: "@Url.Action("GetClienteDifHora", "Geo")",
+                contentType: "application/json; charset=utf-8",
+                type: 'POST',
+                async: false,
+                dataType: 'json',
+                success: data => { if (data.length == 0) data }
+            }).responseJSON;
+        };
+
+        const showRealTimeUser = (idUser) => {
+            const activeMarker = markersRealtime.find(m => m.idUser != idUser && m.visible == true);
+            const userMarker = markersRealtime.find(m => m.idUser == idUser);
+            if (activeMarker) activeMarker.setVisible(false);
+            if (userMarker) userMarker.setVisible(true);
+        };
+
+        const showTiempoReal = () => {
+            if (!firebase.apps.length) {
+                firebase.initializeApp(_CONFIG);
+                const auth = firebase.auth();
+                auth.signInWithEmailAndPassword("checkposdev@checkpos.com", "Test123")
+                    .catch(error => console.log("Err: " + error.code + " " + error.message));
+            }
+
+            const UserList = GetUsuariosCliente().map(u => ({
+                id: u.idUsuario,
+                name: u.nombreApellido,
+                img: u.imagen
+            }));
+
+            const clientDifHH = GetClienteDiferenciaHoraria();  
+
+            UserList.forEach(user => {
+                const db = firebase.database().ref("Pos/" + user.id);
+                let i = null;
+
+                db.on("value", snap => {
+                    if (snap.val()) {
+                        let { timestamp, lat, long } = snap.val();
+                        //Hora 3600 Segundos * 1000
+                        timestamp += clientDifHH * 3600 * 1000;
+                        const date = new Date(timestamp.toString().substring(0, 10) * 1000);
+                        const finaldate = [('00' + date.getDate()).slice(-2), ('00' + (date.getMonth() + 1)).slice(-2),
+                        date.getFullYear()].join('/') + ' ' +
+                            [date.getHours(),
+                            ('00' + date.getMinutes()).slice(-2),
+                            ('00' + date.getSeconds()).slice(-2)].join(':');
+
+                        const pos = { lat: parseFloat(lat), lng: parseFloat(long) }
+                        let UserImage    = { scaledSize: new google.maps.Size(35, 35)};
+                        let UserImageBig = { scaledSize: new google.maps.Size(50, 50)};
+
+                        if (user.img) {
+                            UserImage.url = 'data:image/png;base64,' + user.img;
+                        } else {
+                            UserImage.url = _USER_DEFAULT_IMG;
+                        }
+
+                        UserImageBig.url = UserImage.url;
+
+                        if (!user.m) {
+                            user.m = new google.maps.Marker({
+                                position: pos,
+                                map: map,
+                                idUser: user.id,
+                                icon: UserImage,
+                                optimized: false,
+                                originalIcon: UserImage,
+                                hoverIcon: UserImageBig
+                            });
+                            markersRealtime.push(user.m);
+
+                            i = new google.maps.InfoWindow({
+                                content: `<h1>${user.name}</h1></br>
+                                    <p><b>Latitud: </b><span id="map_${user.id}_lat">${lat}</span></br>
+                                    <b>Longitud:  </b><span id="map_${user.id}_long">${long}</span></br>
+                                    <b>Fecha:     </b><span id="map_${user.id}_fecha">${finaldate}</span></p>`,
+                                position: pos
+                            });
+                            i.close()
+
+                            user.m.addListener('click', () => i.open(map, user.m));
+                            user.m.addListener('mouseover', function () { this.setIcon(this.hoverIcon); });
+                            user.m.addListener('mouseout', function () { this.setIcon(this.originalIcon); });
+                        }
+                        else {
+                            user.m.setPosition(pos);
+                            user.m.setAnimation(google.maps.Animation.BOUNCE);
+                            setTimeout(function () { user.m.setAnimation(null); }, 1400);
+                            $('#map_' + user.id + '_lat').text(lat);
+                            $('#map_' + user.id + '_long').text(long);
+                            $('#map_' + user.id + '_fecha').text(finaldate);
+                        }
+                    }
+                });
+
+            });
+        };
+
+        const getMarkersCobertura = () => (
+        $.ajax({
+            url: "@Url.Action("GetPDVsCliente","Geo")",
+            contentType: "application/json; charset=utf-8",
+            type: 'POST',
+            dataType: 'json',
+            success: (data) => {
+                if (data && data.Markers && data.Markers.length > 0) {
+                    let mapbounds = new google.maps.LatLngBounds();
+
+                    $.each(data.Markers, (key,{ position, visitado, idPuntoDeVenta, icon, ultimoReporte, usuario }) => {
+                        let marker = new google.maps.Marker({
+                            position: position,
+                            map: map,
+                            visitado: visitado,
+                            idPuntoDeVenta: idPuntoDeVenta,
+                            icon: { scaledSize: new google.maps.Size(30, 30),url: "@Url.Content("~/images/")" + icon},
+                            ultimoReporte: ultimoReporte,
+                            usuario: usuario,
+                            optimized: true
+                        });
+                        mapbounds.extend(marker.position);
+                        markersPDV.push(marker);
+                        oms.addMarker(marker);
+                        google.maps.event.addListener(marker, 'spider_click', () => viewPlacesDetails(idPuntoDeVenta, usuario, ultimoReporte));
+                    });
+
+                    map.setCenter(mapbounds.getCenter());
+                    map.fitBounds(mapbounds);
+
+                    if(mc != null) mc.clearMarkers();
+                    mc = new MarkerClusterer(map, markersPDV, mcOptions);
+                }
+            }
+            })
+        )
+
+        const viewPlacesDetails = (idPuntoDeVenta,idUsuario,ultimoReporte) => {
+            if ($('#infoMap').hasClass('active')) {
+                sidebar.close('infoMap');
+                $('#infoMap').removeClass('active');
+                viewPlacesDetails(idPuntoDeVenta, idUsuario, ultimoReporte);
+            } else {
+                loadInfoPDV(idPuntoDeVenta,idUsuario,ultimoReporte);
+                sidebar.open('infoMap');
+            }
+        }
+
+        const loadInfoPDV = (idPuntoDeVenta,idUsuario,ultimoReporte) =>
+            $.ajax({
+                url: "@Url.Action("GetInfoPuntoDeVenta", "Geo")",
+                type: "POST",
+                dataType: "html",
+                data: { idPuntoDeVenta: idPuntoDeVenta, usuarioReporte: idUsuario, ultimoReporte: ultimoReporte},
+                beforeSend: () => $('#infoMapDetail').empty(),
+                success: data=> $("#infoMapDetail").html(data),
+                error: errorThrown => console.log(errorThrown)
+            });
+
+        const showGeneralMap = (condition = false) => {
+            $.each(markersRealtime, (i,m) => m.setVisible(condition));
+            $.each(markersPDV, (i, m) => m.setVisible(condition));
+            if (mc) {
+                (condition ? mc.addMarkers(markersPDV) : mc.clearMarkers());
+            }
+        }
+
+        /*-----------------------------------------------CONTROL BOTONES -----------------------------------------------*/
+        $('#selectUserMap').on('click', () => {
+            showGeneralMap(false);
+            showUserTracking(true);
+        });
+
+        $('#selectGeneralMap').on('click', () => {
+            showGeneralMap(true);
+            showUserTracking(false);
+        });
+
+
+        /*--------------------------------------------RUTAS DE USUARIO -------------------------------------------------*/
+
+        const showReportDetailWindow = (marker) => {
+            if ($('#userMap').hasClass('active'))
+                sidebar.close('userMap');
+
+            if ($('#infoMap').hasClass('active')) {
+                sidebar.close('infoMap');
+                $('#infoMap').removeClass('active');
+                showReportDetailWindow(marker);
+            } else {
+                loadInfoReport(marker);
+                sidebar.open('infoMap');
+            }
+        }
+
+        const showUserTracking = (condition = false) => {
+            $.each(markersUserTracking, (i, m) => m.setVisible(condition));
+            $.each(markersUserGeo, (i, m) => m.setVisible(condition));
+        }
+
+        const removeUserRoute = () => {
+            markersUserTracking.forEach(item => item.setMap(null));
+            markersUserTracking.splice(0);
+
+            markersUserGeo.forEach(item => item.setMap(null));
+            markersUserGeo.splice(0);
+
+            userTrackingWithData();
+        }
+
+        const setUserRoute = (data) => {
+            $.each(data, (key, { lat,lng,label}) => {
+                const marker = new google.maps.Marker({
+                    position: new google.maps.LatLng(lat, lng),
+                    map: map,
+                    icon: {
+                        path: google.maps.SymbolPath.CIRCLE,
+                        fillColor: '#66D',
+                        fillOpacity: 0.6,
+                        strokeColor: '#88F',
+                        strokeOpacity: 0.9,
+                        strokeWeight: 1,
+                        scale: 5
+                    }
+                });
+                const i = new google.maps.InfoWindow({
+                    content: `<h3>${label} HS</h3>`,
+                    position: new google.maps.LatLng(lat, lng)
+                });
+                i.close()
+
+                marker.addListener('mouseover', () => i.open(map, marker));
+                marker.addListener('mouseout', () => i.close());
+                markersUserGeo.push(marker);
+            });
+        }
+
+        const setUserRouteMarkers = (data) => {
+            $.each(data, (key, value) => {
+                const marker = new google.maps.Marker({
+                    position: value.position,
+                    map: map,
+                    icon: "@Url.Content("~/images/")" + value.icon,
+                    visitado: value.visitado,
+                    idReporte: value.idReporte,
+                    idPuntoDeVenta: value.idPuntoDeVenta,
+                    label: value.label,
+                    operacion: value.operacion,
+                    fecha: value.fecha,
+                    categoria: value.categoria
+                });
+                google.maps.event.addListener(marker, 'spider_click', () => showReportDetailWindow(marker));
+                markersUserTracking.push(marker);
+                oms.addMarker(marker);
+            });
+        }
+
+        const getTrackingUserList = (nDate) =>
+            $.ajax({
+                url: "@Url.Action("GetListUserTracking", "Geo")",
+                type: "POST",
+                dataType: "html",
+                data: { date: nDate },
+                beforeSend: () => $("._trackingLoader").html('<img src="@Url.Content("~/images/ajax-loader.gif")"/>'),
+                success: (data) => $("._trackingUserList").html(data),
+                complete: () => $("._trackingLoader").empty()
+            });
+
+        const getRutaDeUsuario = (idUsuario, newDate) => {
+
+            $.ajax({
+                url: "@Url.Action("GetRutaDeUsuario", "Geo")",
+                contentType: "application/json; charset=utf-8",
+                type: 'POST',
+                data: JSON.stringify({
+                    idUsuario: idUsuario,
+                    FechaHoy: newDate
+                }),
+                async: false,
+                beforeSend: () => removeUserRoute(),
+                success: data => {
+                    if (data && data.marcadores.length > 0) {
+                        setUserRoute(data.ruta);
+                        setUserRouteMarkers(data.marcadores);
+                        map.setCenter({ lat: data.marcadores[0].position.lat, lng: data.marcadores[0].position.lng });
+                        map.setZoom(12);
+
+                    } else {
+                        userTrackingWithData();
+                        userTrackingNoDataMessage();
+                    }
+                },
+                error: (xhr, status, errorThrown) =>  {
+                    console.log('----------------- getMarcadores ------------------');
+                    console.log(xhr);
+                    console.log(status);
+                    console.log(errorThrown);
+                    console.log('--------------------------------------------------');
+                }
+            });
+        }
+
+        const loadInfoReport = (marker)  => {
+        if (marker.operacion && marker.operacion.length > 0) {
+            infoWindow = new google.maps.InfoWindow({
+                content: `<h2>${marker.operacion}</h2><p>${marker.fecha}</p>`
+            });
+            infoWindow.open(map, marker);
+        }
+        else {
+            $.ajax({
+                url: '@Url.Action("GetInfoWindowReporte", "Geo")',
+                method: 'POST',
+                dataType: 'html',
+                data: { IdReporte: marker.idReporte },
+                beforeSend: () => $('#infoMapDetail').empty(),
+                success: data => $("#infoMapDetail").html(data),
+                error: err => console.log(err)
+            });
+        }
+        }
+
+
+
+        /*------------------------------------AMPLIAR IMAGENES, no sabia bien donde ponerlo -------------------------------------------*/
+        const zoomImageItem = (element) => {
+            let image = element.innerHTML;
+            $('#modalAmpliarImagen').find('.modal-content').html(element.innerHTML);
+            $('#modalAmpliarImagen').modal('show');
+         };
+
+        /*COSAS MUY JAVASCRIPT QUE NO DEBERIAN IR ACA */
+
+        Date.prototype.yyyymmdd = function () {
+            let mm = this.getMonth() + 1;
+            let dd = this.getDate();
+
+            return [this.getFullYear(),
+            (mm > 9 ? '' : '0') + mm,
+            (dd > 9 ? '' : '0') + dd
+            ].join('');
+        };
+
+        var _date = new Date();
+        /*---------------------------------------------  CONFIGURACION -------------------------------------------------*/
+        const _CONFIG = {
+            apiKey: "AIzaSyCB_31INQhlNUnGsfUl1tZlOsbSaE7hWQw",
+            authDomain: "checkposgeopos.firebaseapp.com",
+            databaseURL: "https://checkposgeopos.firebaseio.com",
+            projectId: "checkposgeopos",
+            storageBucket: "checkposgeopos.appspot.com",
+            messagingSenderId: "716768253072"
+        };
+        const mcOptions = { gridSize: 60, maxZoom: 14, imagePath: 'images/m' };
+        const _USER_DEFAULT_IMG = 'data:image/png;base64,/9j/4AAQSkZJRgABAQEASABIAAD/4RD0RXhpZgAATU0AKgAAAAgABAE7AAIAAAAOAAAISodpAAQAAAABAAAIWJydAAEAAAAcAAAQ0OocAAcAAAgMAAAAPgAAAAAc6gAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEFkbWluaXN0cmFkb3IAAAWQAwACAAAAFAAAEKaQBAACAAAAFAAAELqSkQACAAAAAzc2AACSkgACAAAAAzc2AADqHAAHAAAIDAAACJoAAAAAHOoAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA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Oi8vcHVybC5vcmcvZGMvZWxlbWVudHMvMS4xLyI+PGRjOmNyZWF0b3I+PHJkZjpTZXEgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj48cmRmOmxpPkFkbWluaXN0cmFkb3I8L3JkZjpsaT48L3JkZjpTZXE+DQoJCQk8L2RjOmNyZWF0b3I+PC9yZGY6RGVzY3JpcHRpb24+PC9yZGY6UkRGPjwveDp4bXBtZXRhPg0KICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICA8P3hwYWNrZXQgZW5kPSd3Jz8+/9sAQwABAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEB/9sAQwEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEB/8IAEQgAlgCWAwEiAAIRAQMRAf/EABwAAQACAwEBAQAAAAAAAAAAAAAGBwQFCAMBCf/EABgBAQEBAQEAAAAAAAAAAAAAAAACAQME/9oADAMBAAIQAxAAAAH9lB6PGAAAAAAAAAAAAAYOEbtj5AAAAAAABj0PJKjp9+FPW1alY64RGXQAAAAAA54h0viFg0Bb9s1JbcAwAAAABy3q9tqegACwr2ou9IBgAAAACJc6db820jQoyca0sW9kEAAAAAAEe2Ncap4W2nTnLF5ynjw95AAAACtiZVHAPGnp5lAAM2z6jY6uyuWr9lKBgACOc12lVlg0AAAA2esHWXtCJvzAAc9QwsGgAAAALhtcgGP/xAAlEAACAQQCAQMFAAAAAAAA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';
+    </script>
+}
+

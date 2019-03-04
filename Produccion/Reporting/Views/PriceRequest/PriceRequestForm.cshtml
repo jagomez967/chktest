@@ -1,0 +1,547 @@
+﻿@using Reporting.ViewModels
+@model PriceRequestFormViewModel
+@{
+    ViewBag.Title = Reporting.Resources.PriceRequest.RequestFormTitle;
+}
+
+@functions {
+    object AttrNum(bool Editable, string CssClass)
+    {
+        if (!Editable)
+        {
+            return new { @class = CssClass, @readonly = "readonly" };
+        }
+        return new { @class = CssClass };
+    }
+}
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
+<div class="row" style="margin-right: -11px;margin-left:-11px;">
+    <div class="panel panel-default img-rounded2">
+        <div class="panel-body img-rounded bg-danger2 nohover padding-five" id="PriceRequestMainBtn">
+            <span class="text-center dt-block">@Reporting.Resources.PriceRequest.PriceRequestForm.ToUpper()</span>
+        </div>
+    </div>
+</div>
+
+@using (Html.BeginForm("FormAction", "PriceRequest", FormMethod.Post, new { @class = "PriceRequest-Form" }))
+{
+    <div class="horizonal-gapList">
+        <input type="hidden" id="PriceRequestGUID" value="@Model.GUID" />
+        <ul class="list-inline">
+
+            @for (int frm = 0; frm < Model.PriceRequests.Count(); frm++)
+            {
+                int AccountId = Model.PriceRequests[frm].AccountId;
+                int ProductId = Model.PriceRequests[frm].Product.Id;
+                int CompetitorId = Model.PriceRequests[frm].Competitor.Id;
+                string ProductName = Model.PriceRequests[frm].Product.Name;
+                string CompetitorName = Model.PriceRequests[frm].Competitor.Name;
+                string ProductBrand = Model.PriceRequests[frm].Product.Brand;
+                string CompetitorBrand = Model.PriceRequests[frm].Competitor.Brand;
+                decimal ProductPrice = Model.PriceRequests[frm].Product.Price;
+                decimal CompetitorPrice = Model.PriceRequests[frm].Competitor.Price;
+                bool ProductEOL = Model.PriceRequests[frm].Product.EOL;
+                bool CompetitorEOL = Model.PriceRequests[frm].Competitor.EOL;
+                decimal PriceGap = Model.PriceRequests[frm].PriceGap;
+                decimal IdealGap = Model.PriceRequests[frm].IdealGap;
+
+
+                @Html.HiddenFor(m => m.PriceRequests[frm].AccountId)
+                @Html.HiddenFor(m => m.PriceRequests[frm].Product.Id)
+                @Html.HiddenFor(m => m.PriceRequests[frm].Competitor.Id)
+                @Html.HiddenFor(m => m.PriceRequests[frm].IdealGap)
+                @Html.HiddenFor(m => m.PriceRequests[frm].Product.Price)
+
+                <li>
+                    <div class="col-sm-12 col-360">
+                        <div class="panel panel-default">
+                            <div class="panel-body">
+                                <div class="row row-gap">
+                                    <div class="col-sm-4">
+                                        <span class="text-center dt-block bold">@Reporting.Resources.PriceRequest.Account</span>
+                                    </div>
+                                    <div class="col-sm-8">
+                                        <span class="gap-account text-center dt-block account_photo_@(AccountId)"
+                                              style="font-size:2.19619326vw;"
+                                              data-id="@(AccountId)">
+                                            @Model.PriceRequests[frm].Account
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="row row-gap">
+                                    <div class="col-sm-4">
+                                        <span class="text-center dt-block bold">@Reporting.Resources.PriceRequest.Brand</span>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <span class="text-center dt-block">@ProductBrand</span>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <span class="text-center dt-block">@CompetitorBrand</span>
+                                    </div>
+                                </div>
+                                <div class="row row-gap">
+                                    <div class="col-sm-4">
+                                        <span class="text-center dt-block bold">@Reporting.Resources.PriceRequest.Model</span>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <span class="text-center dt-block">@ProductName</span>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <span class="text-center dt-block ddl-gap ">@CompetitorName</span>
+                                    </div>
+                                </div>
+                                <div class="row row-gap bg-patito">
+                                    <div class="col-sm-4">
+                                        <span class="text-center dt-block bold">@Reporting.Resources.PriceRequest.UBP</span>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <span class="text-center dt-block">@string.Format("${0:0.00}", ProductPrice)</span>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <span class="text-center dt-block">@string.Format("${0:0.00}", CompetitorPrice)</span>
+                                    </div>
+                                </div>
+                                <div class="row row-gap">
+                                    <div class="col-sm-4">
+                                        <span class="text-center dt-block bold">@Reporting.Resources.PriceRequest.Inventory</span>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        @Html.TextBoxFor(m => m.PriceRequests[frm].Product.Inventory,
+                                                                                   @AttrNum(Model.Editable, "form-control input-gap"))
+                                    </div>
+                                    <div class="col-sm-4">
+                                        @Html.TextBoxFor(m => m.PriceRequests[frm].Competitor.Inventory,
+                                                                                    @AttrNum(Model.Editable, "form-control input-gap"))
+                                    </div>
+                                </div>
+                                <div class="row row-gap">
+                                    <div class="col-sm-4">
+                                        <span class="text-center dt-block bold">@Reporting.Resources.PriceRequest.Photo</span>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        @Html.HiddenFor(m => m.PriceRequests[frm].Product.Photo, new { @class = "PhotoSelected_"+AccountId+"_"+ProductId})
+                                        <button type="button"
+                                                class="btn btn-sm btn-gap btn-photo-product pr-photo-self @(string.IsNullOrEmpty(Model.PriceRequests[frm].Product.Photo) ? "bg-info2" : "bg-success2")"
+                                                onclick="getPhotosProduct(@ProductId, '@ProductPrice', @AccountId)">
+                                            @Reporting.Resources.PriceRequest.Select.ToUpper()
+                                            <i class="fa fa-camera"></i>
+                                        </button>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        @Html.HiddenFor(m => m.PriceRequests[frm].Competitor.Photo, new { @class = "PhotoSelected_" + AccountId.ToString() + "_" + CompetitorId})
+                                        <button type="button"
+                                                class="btn btn-sm btn-gap btn-photo-product @(string.IsNullOrEmpty(Model.PriceRequests[frm].Competitor.Photo) ? "bg-info2":"bg-success2")"
+                                                onclick="getPhotosProduct(@CompetitorId, '@CompetitorPrice', @AccountId)">
+                                            @Reporting.Resources.PriceRequest.Select.ToUpper()
+                                            <i class="fa fa-camera"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="row row-gap">
+                                    <div class="col-sm-4">
+                                        <span class="text-center dt-block bold">@Reporting.Resources.PriceRequest.EOL</span>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        @Html.HiddenFor(m => m.PriceRequests[frm].Product.EOL)
+                                        <button type="button"
+                                                class="btn btn-sm btn-gap @(ProductEOL ? "btn-success" : "btn-danger") "
+                                                onclick="switchEOL(this)"
+                                                @(Model.Editable ? "" : "disabled")>
+                                            @(ProductEOL ? @Reporting.Resources.PriceRequest.YES : @Reporting.Resources.PriceRequest.NO)
+                                        </button>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        @Html.HiddenFor(m => m.PriceRequests[frm].Competitor.EOL)
+                                        <button type="button"
+                                                class="btn btn-sm btn-gap @(CompetitorEOL ? "btn-success":"btn-danger")"
+                                                onclick="switchEOL(this)"
+                                                @(Model.Editable ? "" : "disabled")>
+                                            @(CompetitorEOL ? @Reporting.Resources.PriceRequest.YES : @Reporting.Resources.PriceRequest.NO)
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="panel panel-default">
+                            <div class="panel-body bg-danger2 nohover padding-five">
+                                <div class="row row-gap">
+                                    <div class="col-sm-4">
+                                        <span class="text-center dt-block bold">@Reporting.Resources.PriceRequest.PriceVariance</span>
+                                    </div>
+                                    <div class="col-sm-8">
+                                        <span class="text-center dt-block">@string.Format("${0:0.00}", (ProductPrice - CompetitorPrice))</span>
+                                    </div>
+                                </div>
+                                <div class="row row-gap">
+                                    <div class="col-sm-4">
+                                        <span class="text-center dt-block bold">@Reporting.Resources.PriceRequest.PriceGap</span>
+                                    </div>
+                                    <div class="col-sm-8">
+                                        <span class="text-center dt-block">@string.Format("{0:0.00}%", PriceGap)</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="panel panel-default">
+                            <div class="panel-body bg-ideal-gap nohover padding-five">
+                                <div class="row row-gap">
+                                    <div class="col-sm-4">
+                                        <span class="text-center dt-block bold">@Reporting.Resources.PriceRequest.IdealGap%</span>
+                                    </div>
+                                    <div class="col-sm-8">
+                                        <span class="text-center dt-block">@string.Format("{0:0.00}%", IdealGap)</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="panel panel-default">
+                            <div class="panel-body">
+                                <div class="row row-gap">
+                                    <div class="col-sm-4">
+                                        <span class="text-center dt-block bold">@Reporting.Resources.PriceRequest.UBPProposal</span>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        @Html.TextBoxFor(m => m.PriceRequests[frm].Product.UBPProposal,
+                                                                                   @AttrNum(Model.Editable, "form-control input-gap ubp-proposal-own"))
+                                    </div>
+                                    <div class="col-sm-4">
+                                        @Html.TextBoxFor(m => m.PriceRequests[frm].Competitor.Price,
+                                                                                  @AttrNum(false, "form-control input-gap ubp-proposal-comp"))
+                                    </div>
+                                </div>
+                                <div class="row row-gap">
+                                    <div class="col-sm-4">
+                                        <span class="text-center dt-block bold">@Reporting.Resources.PriceRequest.NewGap</span>
+                                    </div>
+                                    <div class="col-sm-8">
+                                        <span class="text-center dt-block bold ubp-proposal-gap">%</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="panel panel-default">
+                            <div class="panel-body">
+                                <div class="row row-gap">
+                                    <div class="col-sm-7">
+                                        <span class="text-center dt-block bold">@Reporting.Resources.PriceRequest.NetASP</span>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        @Html.TextBoxFor(m => m.PriceRequests[frm].NetAsp,
+                                                                                   @AttrNum(Model.Editable, "form-control input-gap asp-net-var"))
+                                    </div>
+                                </div>
+                                <div class="row row-gap">
+                                    <div class="col-sm-7">
+                                        <span class="text-center dt-block bold">@Reporting.Resources.PriceRequest.NetASPCondition</span>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        @Html.TextBoxFor(m => m.PriceRequests[frm].NetAspCondition,
+                                                                                     @AttrNum(Model.Editable, "form-control input-gap asp-net-cond"))
+                                    </div>
+                                </div>
+                                <div class="row row-gap">
+                                    <div class="col-sm-7">
+                                        <span class="text-center dt-block bold">@Reporting.Resources.PriceRequest.NetASPVariancePrice</span>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <span class="text-center dt-block bold asp-variance-price">$</span>
+                                    </div>
+                                </div>
+                                <div class="row row-gap">
+                                    <div class="col-sm-7">
+                                        <span class="text-center dt-block bold">@Reporting.Resources.PriceRequest.NetASPVariancePercent</span>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <span class="text-center dt-block bold asp-variance-percent">%</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+            }
+        </ul>
+    </div>
+
+
+    if(Model.Editable)
+    {
+        <div class="row" style="margin-right: -11px;margin-left:-11px;margin-top:20px; ">
+            <div class="col-xs-offset-5 col-xs-2">
+                <div class="panel panel-default img-rounded2">
+                    <div class="panel-body img-rounded bg-info2 nohover padding-five" id="SendRequestForm">
+                        <input type="submit" class="btn btn-sm btn-gap btn-info send-price-request" value="@Reporting.Resources.PriceRequest.Send">
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+    else if (Model.WaitAprrobe)
+    {
+        <div class="row" style="margin-right: -11px;margin-left:-11px;margin-top:20px; ">
+            <div class="col-xs-offset-5 col-xs-2">
+                <button type="button" class="btn btn-success" onclick="ApprovePriceRequest('@Model.GUID')">@Reporting.Resources.PriceRequest.ApproveRequest</button>
+                <button type="button" class="btn btn-danger" onclick="ShowRejectModal()">@Reporting.Resources.PriceRequest.RejectRequest</button>
+            </div>
+        </div>
+    }
+
+    <div class="modal fade" id="modalPhotoProduct" tabindex="-1" role="dialog" aria-labelledby="modalPhotoProduct-label" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="modalPhotoProduct-label"><strong><span id="modaltitle-cuenta"></span></strong></h4>
+                </div>
+                <div class="modal-body">
+                    <div class="table-responsive" id="PRPhotoProductList" style="display:inline-flex;width:-webkit-fill-available;"></div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">@Reporting.Resources.PriceRequest.Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="modalCommentaryRejectPR" tabindex="-1" role="dialog" aria-labelledby="modalComentaryRejectPR-label" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="modalComentaryRejectTitle"><strong><span id="modalTitleReject-pr">@Reporting.Resources.PriceRequest.RejectRequestTitle</span></strong></h4>
+                    <h6><span><i>@Reporting.Resources.PriceRequest.RejectRequestSubtitle</i></span></h6>
+                </div>
+                <div class="modal-body">
+                    <textarea name="Text1" cols="40" rows="5" id="txt-input-pricerequest-reject"></textarea>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" id="PRRejectbutton" onclick="RejectPriceRequest()"> @Reporting.Resources.PriceRequest.Confirm</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal"> @Reporting.Resources.PriceRequest.Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@*Lo tuve que agregar despues porque no les gustaba no tener boton. Y volver clickeando el titulo era incomodo*@
+<div id="BackButtonPR" class="backButtonPR">
+    <button type="button" class="btn btn-info" onclick="goBack()">@Reporting.Resources.PriceRequest.Back</button>
+</div>
+
+@section scripts{
+    <script>
+        /*EXTERNO */
+        const updatePhotoList = (accountId, productId, listPht) => {
+            const element = $(`.PhotoSelected_${accountId}_${productId}`);
+            $(element).val(listPht);
+            updatePhtButton(element,listPht.length);
+        };
+
+        const getPhotoList = (accountId, productId) => (
+            $(`.PhotoSelected_${accountId}_${productId}`).val().split(";")
+        )
+        const updatePhtButton = (el,phtQty) => {
+            if (phtQty > 0) {
+                $(el).siblings('button').removeClass("bg-info2");
+                $(el).siblings('button').addClass("bg-success2");
+            } else {
+                $(el).siblings('button').removeClass("bg-success2");
+                $(el).siblings('button').addClass("bg-info2");
+            }
+        };
+
+        /*-------*/
+        const getPercentDif = (a, b) => ((((a / b) * 100) - 100)); //Disfruta las matematicas.com
+
+
+        $(document).ready( () => {
+            $("#BackButtonPR").fadeIn();
+            const url = '@Url.Action("GetAccountPhoto","PriceRequest")';
+
+            $.map($('.gap-account'), (el) => {
+                let AccountId = $(el).data("id");
+                $('.account_photo_' + AccountId).load(url, { idAccount: AccountId });
+            });
+        });
+
+        const goBack = () => window.history.back();
+
+        const switchEOL = (item) => {
+            $(item).toggleClass("btn-danger btn-success", 300, "easeOutSine" );
+
+            if ($(item).text().trim() === "@(Reporting.Resources.PriceRequest.NO)") {
+                $(item).text("@Reporting.Resources.PriceRequest.YES");
+                $(item).siblings('input:hidden').val('True');
+            }
+            else {
+                $(item).text("@Reporting.Resources.PriceRequest.NO");
+                $(item).siblings('input:hidden').val('False');
+            }
+        }
+
+        $(".ubp-proposal-own").on('input', ({currentTarget : el}) => {
+            const panel = $(el).closest('.panel-body');
+            const ownUBP = $(el).val();
+            const compUBP = panel.find('.ubp-proposal-comp').val();
+            const gapLabel = panel.find('.ubp-proposal-gap'); //Odio JQUERY
+
+            const newGap = getPercentDif(ownUBP,compUBP).toFixed(2);
+            gapLabel.text( newGap + '%');
+        });
+
+        $(".asp-net-var, .asp-net-cond").on('input', ({ currentTarget: el }) => {
+            const panel = $(el).closest('.panel-body');
+            const asp = panel.find('.asp-net-var').val();
+            const aspCond = panel.find('.asp-net-cond').val();
+
+            const priceVarLabel = panel.find('.asp-variance-price');
+            const percentVarLabel = panel.find('.asp-variance-percent');
+
+            const priceDif = (asp - aspCond).toFixed(2);
+            const percentDif = getPercentDif(asp,aspCond).toFixed(2);
+
+            priceVarLabel.text('$ ' + priceDif);
+            percentVarLabel.text(percentDif + ' %');
+        });
+
+        const getPhotosProduct = (productId, price, accountId) => {
+            const photoEdit = "@Model.Editable";
+
+            $.ajax({
+                url: '@Url.Action("GetPhotosRequestForm", "PriceRequest")',
+                dataType: 'html',
+                method: 'POST',
+                data: {
+                    ProductID: productId,
+                    Price: price,
+                    IdCadena: accountId,
+                    Editable: photoEdit
+                },
+                beforeSend: () => {
+                    $('#PRPhotoProductList').empty();
+                    const headerText = (photoEdit =="True" ? '@Reporting.Resources.PriceRequest.SelectPhotoFromGalery' : '@Reporting.Resources.PriceRequest.SelectedPhotos');
+                    $('#modalPhotoProduct').find('#modaltitle-cuenta').text(headerText);
+                },
+                success: html => {
+                    if (html) {
+                        $('#PRPhotoProductList').html(html);
+                        $('#modalPhotoProduct').modal('show');
+                    }
+                },
+                error: () =>
+                    swal({
+                        title: "@Reporting.Resources.PriceRequest.PriceRequest_",
+                        text: "@Reporting.Resources.PriceRequest.ErrorOnGetPhotos",
+                        icon: "error"
+                    })
+            });
+        }
+
+        const validateNumber = (number, validations) => {
+            if (!number) validations.isValid = false;
+            if (isNaN(number)) validations.isNumber = false;
+            if (number == 0) validations.isZero = true;
+        }
+
+        const validateError = (parameter, condition) => {
+            swal({
+                title: "@Reporting.Resources.PriceRequest.PriceRequest_",
+                text: `${parameter} ${condition}`,
+                icon: "error"
+            });
+            return false;
+        }
+
+        const validatePR = () =>{
+            let validations = { isValid: true, isNumber: true, isZero: false }
+            const fields = [{ prop: '.ubp-proposal-own', name: "@Reporting.Resources.PriceRequest.UBPProposal"},
+                            { prop: '.asp-net-var', name: "@Reporting.Resources.PriceRequest.NetASP"},
+                            { prop: '.asp-net-cond', name: "@Reporting.Resources.PriceRequest.NetASPCondition"}];
+
+            for (let i = 0; i < fields.length; i++) {
+                $.map( $(fields[i].prop), (el) => validateNumber($(el).val(), validations));
+                let{ isValid, isNumber, isZero } = validations;
+
+                if (!isValid) { return validateError(fields[i].name, "@Reporting.Resources.PriceRequest.CannotBeEmpty"); }
+                if (!isNumber) { return validateError(fields[i].name, "@Reporting.Resources.PriceRequest.MustBeNumeric"); }
+                if (isZero) { return validateError(fields[i].name, "@Reporting.Resources.PriceRequest.CannotBeZero"); }
+            }
+            return true;
+        }
+
+        $('.send-price-request').on('click', () => validatePR() );    //Si devuelve False, cancela el submit
+
+        const ApprovePriceRequest = (id) => 
+        $.ajax({
+            url: '@Url.Action("ApprobePriceRequest", "PriceRequest")',
+            dataType: 'json',
+            data: { GUID: id },
+            method: 'POST',
+            beforeSend: () =>   swal({  title: "@Reporting.Resources.PriceRequest.Checking",
+                                        text: "@Reporting.Resources.PriceRequest.PleaseWait",
+                                        showConfirmButton: false,
+                                        allowOutsideClick: false,
+                                        button: false}),
+            success: result => {
+            if (result) {
+               swal("@Reporting.Resources.PriceRequest.PriceRequest_",
+                    "@Reporting.Resources.PriceRequest.SuccessOnApproveRequest",
+                   "success").
+                   then(() => goBack())
+            }
+            else {
+                swal("@Reporting.Resources.PriceRequest.PriceRequest_",
+                    "@Reporting.Resources.PriceRequest.ErrorOnAprroveRequest",
+                    "error");
+                }
+            },
+            complete: () => $('#BackButtonPR').hide,
+            error: err => 
+                swal("@Reporting.Resources.PriceRequest.PriceRequest_",
+                    "@Reporting.Resources.PriceRequest.ErrorOnAprroveRequest :"+ err ,
+                    "error")
+            });
+
+        const ShowRejectModal = () => $('#modalCommentaryRejectPR').modal('show');
+
+        const RejectPriceRequest = () => {
+            $('#modalCommentaryRejectPR').modal('hide');
+            const id = $('#PriceRequestGUID').val();
+            const message = $("#txt-input-pricerequest-reject").val();
+
+            $.ajax({
+                url: '@Url.Action("RejectPriceRequest", "PriceRequest")',
+                dataType: 'json',
+                data: { GUID: id,
+                        message: message},
+                method: 'POST',
+                beforeSend: ()  => swal({ title: "@Reporting.Resources.PriceRequest.Checking",
+                                          text: "@Reporting.Resources.PriceRequest.PleaseWait",
+                                          showConfirmButton: false,
+                                          allowOutsideClick: false,
+                                          button: false}),
+                success: result => {
+                    if (result) {
+                   swal("@Reporting.Resources.PriceRequest.PriceRequest_",
+                        "@Reporting.Resources.PriceRequest.SuccessOnRejectPR",
+                            "success").
+                       then(() => goBack())
+                    }
+                    else {
+                    swal("@Reporting.Resources.PriceRequest.PriceRequest_",
+                        "@Reporting.Resources.PriceRequest.ErrorOnRejectPR",
+                        "error")
+                    }
+                },
+                complete: () => $('#BackButtonPR').hide,
+                error: () =>    swal("@Reporting.Resources.PriceRequest.PriceRequest_",
+                                     "@Reporting.Resources.PriceRequest.ErrorOnRejectPR",
+                                     "error")
+                
+            });
+
+        }
+
+
+    </script>
+}

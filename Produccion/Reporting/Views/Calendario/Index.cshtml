@@ -1,0 +1,185 @@
+﻿
+@{
+    ViewBag.Title = Reporting.Resources.Calendario.lblTituloCalendarioIndex;
+}
+
+@section styles
+{
+    <style>
+        #wrap {
+            padding-left: 20px;
+        }
+
+        #buscartarget {
+            width: 100%;
+            display: none;
+        }
+
+        .fc-day:hover {
+            background-color: #eee;
+            cursor: pointer;
+        }
+
+        #form-evento {
+            padding: 15px 15px 15px 0;
+        }
+
+        .fc-event {
+            cursor: pointer;
+        }
+
+        .filtros > li:hover {
+            border-left: 3px solid orange;
+        }
+
+        .filtros li.collapsed.expanded {
+            border-left: 3px solid orange !important;
+        }
+
+        .listfiltrochecks li:hover {
+            margin-left: 5px;
+        }
+
+        .filtrochecks {
+            display: block !important;
+        }
+    </style>
+}
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+<div class="container-fluid panel panel-default configurarTablero">
+    <h1>@Reporting.Resources.Calendario.lblCalendarioTitulo2</h1>
+    <h5>@Reporting.Resources.Calendario.lblCalendarioSubTitulo</h5>
+    <hr />
+
+    @if (MyHelpers.IsInRole("crearCalendario"))
+    {
+        @Html.ActionLink(Reporting.Resources.Calendario.linkCrearEventoLabel, "Crear", null, new { @class = "btn btn-primary" })
+    }
+    else
+    {
+        @Html.ActionLink(Reporting.Resources.Calendario.linkCrearEventoLabel, "Crear", null, new { @class = "btn btn-primary disabled" })
+    }
+    @if (MyHelpers.IsInRole("verCalendario"))
+    {
+        @Html.ActionLink(Reporting.Resources.Calendario.linkVerPlanillaLabel, "Listado", null, new { @class = "btn btn-info" })
+    }
+    else
+    {
+        @Html.ActionLink(Reporting.Resources.Calendario.linkVerPlanillaLabel, "Listado", null, new { @class = "btn btn-info disabled" })
+    }
+    <hr />
+
+    @if (MyHelpers.IsInRole("editarCalendario"))
+    {
+        @Html.Hidden("editarCalendario", "True");
+    }
+    else
+    {
+        @Html.Hidden("editarCalendario", "False");
+    }
+
+    <div id="wrap">
+        <span id="loadingevents" style="display:none;">@Reporting.Resources.Calendario.lblCargandoEventos</span>
+        <div id="calendar"></div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="modalDetailEvent" tabindex="-1" role="dialog" aria-labelledby="modalDetailEvent-label" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="modalDetailEvent-label"><strong><span id="modaltitle-cuenta"></span></strong></h4>
+            </div>
+            <div class="modal-body">
+                <div class="table-responsive" id="modalDetailEventId"></div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">@Reporting.Resources.Calendario.lblCerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script>
+    const PermisoEdicion = $('#editarCalendario').val();
+    $(document).ready(function () {
+        $('#calendar').fullCalendar({
+            header: {
+                left: 'prev,next today',
+                center: 'title',
+                right: 'month,agendaWeek,agendaDay'
+            },
+            ignoreTimezone: true,
+            editable: false,
+            droppable: false,
+            navLinks: true,
+            timezone: 'local',
+            locale: 'es',
+            eventRender: (event, element) => {
+                element.find('.fc-content').html(null);
+                if (PermisoEdicion == 'True')
+                {
+                    element.find('.fc-content').html("<div class='fc-content'><div data-eventoid='" + event.id + "' class='infoevento pull-left' class='btnVerInfoEvento'><span class='fc-title' style='display:block;'>" + event.nombrepdv + "</span><span style='display:block;'>" + event.nombreusuario + "</span></div><div class='pull-right'><a class='btn btn-info' style='padding:5px 3px 5px 10px!important;margin:0;' class='btnEditarEvento' href='@Url.Action("Editar","Calendario")/" + event.id + "'><i class='fa fa-pencil'></i></a></div></div>");
+                } else {
+                    element.find('.fc-content').html("<div class='fc-content'><div data-eventoid='"+event.id+"' class='infoevento pull-left' class='btnVerInfoEvento'><span class='fc-title' style='display:block;'>" + event.nombrepdv + "</span><span style='display:block;'>" + event.nombreusuario + "</span></div><div class='pull-right'><a class='btn btn-info disabled' style='padding:5px 3px 5px 10px!important;margin:0;' class='btnEditarEvento' href='@Url.Action("Editar","Calendario")/" + event.id + "'><i class='fa fa-pencil'></i></a></div></div>");
+                }
+
+            },
+            events: {
+                url: '@Url.Action("GetEventsCalendar", "Calendario")',
+                type: 'POST',
+                dataType: 'json',
+                data: () => {
+                    let s = moment($('calender').fullCalendar('getView').visStart).format("YYYY-MM-DD");
+                    let e = moment($('calender').fullCalendar('getView').visEnd).format("YYYY-MM-DD");
+                    return {
+                        start: s,
+                        end: e
+                    };
+                },
+                beforeSend: ()  => {
+                    $('#loadingevents').show();
+                },
+                success:  () => {
+                },
+                complete: ()  => $('#loadingevents').hide()
+            }
+        });
+
+
+        $('body').on('click', '.infoevento', function () {
+            var eventoid = $(this).attr('data-eventoid');
+
+            $.ajax({
+            url: '@Url.Action("GetEvento", "Calendario")',
+            dataType: 'html',
+            method: 'POST',
+            data: { id: eventoid },
+            beforeSend: () =>
+                swal({
+                    title: "@Reporting.Resources.Calendario.lblDetalleEvento",
+                    text: "@Reporting.Resources.Calendario.lblLoading",
+                    showConfirmButton: false,
+                    allowOutsideClick: false,
+                    button: false
+                }),
+            success: html => {
+                if (html) {
+                    swal.close();
+                    $('#modalDetailEvent').find('#modaltitle-cuenta').text('');
+                    $('#modalDetailEventId').html(html);
+                    $('#modalDetailEvent').modal('show');
+                }
+            },
+            error: err =>
+                swal("@Reporting.Resources.Calendario.lblDetalleEvento",
+                    err.responseText,
+                    "error")
+            });            
+        });
+    });
+    </script>
+}

@@ -1,0 +1,149 @@
+﻿@using Reporting.ViewModels
+@model AmpliarObjetoViewModel
+
+@Html.Hidden("ObjetoIdInicial", Model.idObjeto)
+@Html.Hidden("NuevoObjetoSeleccionado")
+
+<div class="expandirModalTipos tipo-grafico" style="margin-bottom: 0; margin-left:10px;">
+    @Html.AntiForgeryToken()
+    <div class="tituloAmpliar">
+        @Model.nombre
+    </div>
+    
+    @foreach (var tipo in Model.tipos)
+    {
+        if (tipo.idtipo == Model.tipoSeleccionado)
+        {
+            <div class="tipoObjAmpliarDiv tipoObjAmpliarDivActive" data-idobjeto="@tipo.idobjeto">
+                <input id="@("idTipo" + tipo.idtipo)" data-idobjeto="@tipo.idobjeto" type="radio" name="tipoSeleccionado" value="@tipo.idtipo" class="@("btnTipoGrafico tipo" + tipo.idtipo)" checked="checked" />
+                <label for="@("idTipo" + tipo.idtipo)" title="@tipo.descripcion"></label>
+            </div>
+        }
+        else
+        {
+            <div class="tipoObjAmpliarDiv" data-idobjeto="@tipo.idobjeto">
+                <input id="@("idTipo" + tipo.idtipo)" data-idobjeto="@tipo.idobjeto" type="radio" name="tipoSeleccionado" value="@tipo.idtipo" class="@("btnTipoGrafico tipo" + tipo.idtipo)" />
+                <label for="@("idTipo" + tipo.idtipo)" title="@tipo.descripcion"></label>
+            </div>
+        }
+
+
+    }
+    <a href="#" id="guardarCambios" style="margin-left:20px;"><i class="fa fa-floppy-o" aria-hidden="true" style="margin-top: 10px; margin-left: 10px;"></i>@Reporting.Resources.Tableros.lblPersistirCambiosEnTablero</a><small> @Reporting.Resources.Tableros.lblActualiceParaVisualizar</small>
+    <span id="loadingAmpliar" style="display:none;">@Reporting.Resources.Tableros.lblGuardandoCambios</span>
+
+</div>
+
+<div id="vistaAmpliadaDeGrafico" class="objetoTablero" data-id="@Model.idObjeto" data-tipoobj="@Model.tipoSeleccionado">
+    <div class="panel panel-default" style="height:100%;width:100%!important;padding-bottom:15px;">
+        <div class="panel-body" style="height:100%;width:100%!important;">
+            <div class="Objloading">
+                <img src="@Url.Content("~/images/ajax-loader.gif")" />
+            </div>
+            <div class="ObjSinDatos">
+                <img src="~/images/sindatos.png">
+                <p>@Reporting.Resources.Tableros.noDataFoundGrafico</p>
+            </div>
+            <div class="ObjGrafico" style="height:100%!important;width:100%!important;"></div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $('.btnTipoGrafico').on('click', function () {
+        console.log('cambiar de grafico');
+        var objId = $(this).attr('data-idobjeto');
+        var objtipo = $(this).val();
+        $('#NuevoObjetoSeleccionado').val(objId);
+        $('#vistaAmpliadaDeGrafico').attr('data-id', objId).attr('data-tipoobj', objtipo);
+        var url = "@Url.Action("GetDataGraficoJson", "Tableros")";
+        CargarGrafico($('#vistaAmpliadaDeGrafico'), 1, '500px', 'A', url, GetTableroId());
+        $('.btnTipoGrafico').each(function () {
+            if ($(this).is(':checked')) {
+                tipoObjSel = $(this).val();
+            }
+        });
+    });
+
+    $('#guardarCambios').on('click', function () {
+        var tableroId = GetTableroId();
+        var objIdInicial = $('#ObjetoIdInicial').val();
+        var objIdNuevo = $('#NuevoObjetoSeleccionado').val();
+        var self = $(this);
+
+        $.ajax({
+            url: '@Url.Action("CambiarObjetoDeTablero", "Tableros")',
+            method: 'POST',
+            data: { TableroId: tableroId, ObjetoIdInicial: objIdInicial, NuevoObjetoSeleccionado: objIdNuevo },
+            beforeSend: function () {
+                $('#loadingAmpliar').show();
+            },
+            success: function (result) {
+                console.log('result:' + result);
+                if (result === 'True') {
+                    $('#ObjetoIdInicial').val(objIdNuevo);
+                    $('#loadingAmpliar').hide();
+                    console.log($('.tipoObjAmpliarDiv'));
+                    $('.expandirModalTipos').find('.tipoObjAmpliarDiv').removeClass('tipoObjAmpliarDivActive');
+                    $('.expandirModalTipos').find('.tipoObjAmpliarDiv[data-idobjeto="' + objIdNuevo + '"]').addClass('tipoObjAmpliarDivActive');
+                } else {
+                    $('#loadingAmpliar').hide();
+                    console.log('@Reporting.Resources.Tableros.errGuardarTipoObjetoAmpliar');
+                }
+            },
+            complete: function () {
+                $('#loadingAmpliar').hide();
+            }
+        });
+    });
+
+    /*CONTROLES DE TABLAS*/
+    $('#full-screen-box-body').on('click', '.tablefirstpage', function () {
+        var divObjeto = $(this).parents('.objetoTablero');
+
+        if ($(this).attr('disabled') === 'disabled') {
+            return false;
+        }
+        var url = "@Url.Action("GetDataGraficoJson", "Tableros")";
+        CargarGrafico(divObjeto, 1, '480px', 'A', url, GetTableroId());
+        return false;
+    });
+    $('#full-screen-box-body').on('click', '.tablepreviouspage', function () {
+        var divObjeto = $(this).parents('.objetoTablero');
+
+        if ($(this).attr('disabled') === 'disabled') {
+            return false;
+        }
+        var page = $(this).parent().find('.numpage').val();
+        var newpage = +page - 1;
+        var url = "@Url.Action("GetDataGraficoJson", "Tableros")";
+        CargarGrafico(divObjeto, newpage, '480px', 'A', url, GetTableroId());
+        return false;
+    });
+    $('#full-screen-box-body').on('click', '.tablenextpage', function () {
+        var divObjeto = $(this).parents('.objetoTablero');
+
+
+        if ($(this).attr('disabled') === 'disabled') {
+            return false;
+        }
+        var page = $(this).parent().find('.numpage').val();
+        var newpage = +page + 1;
+        var url = "@Url.Action("GetDataGraficoJson", "Tableros")";
+        CargarGrafico(divObjeto, newpage, '480px', 'A', url, GetTableroId());
+        return false;
+    });
+    $('#full-screen-box-body').on('click', '.tablelastpage', function () {
+        var divObjeto = $(this).parents('.objetoTablero');
+
+
+        var totalPages = $(this).parents('.tablaControles').find('.numpage').data('totalpages');
+        if ($(this).attr('disabled') === 'disabled') {
+            return false;
+        }
+        var url = "@Url.Action("GetDataGraficoJson", "Tableros")";
+        CargarGrafico(divObjeto, totalPages, '480px', 'A', url, GetTableroId());
+        return false;
+    });
+
+</script>

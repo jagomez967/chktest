@@ -1,0 +1,16 @@
+﻿#wrapper{
+    
+}
+
+#wrapper-header {
+    background:#232a2f;
+    opacity:0.9;
+    height:50px;
+    padding-top:7px;
+    padding-left:20px;
+    color:#ffffff;
+}
+
+#wrapper-content{
+    margin:20px;
+}

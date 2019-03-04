@@ -1,0 +1,62 @@
+﻿﻿@using Reporting.ViewModels
+@model PhotoProductGroupVM
+
+<input type="hidden" id="pr-photo-is-editable" value="@(Model.IsEditable? "true" : "false")" />
+
+@if (Model.ListPhoto.Count <= 0)
+{
+    <h5> @Reporting.Resources.PriceRequest.NoPhotoFound </h5>
+}
+else
+{
+    if (!Model.ListPhoto.First().FotoTag)
+    {
+        <div class="pr-photoFooter"> <i>@Reporting.Resources.PriceRequest.NoPhotoForProduct</i></div>
+    }
+}
+
+@foreach (var Photo in Model.ListPhoto)
+{
+    <a>
+        <div class="panel-default photo-panel-pr">
+            <div class="panel-body">
+                <input class="photo-pr-check" type="checkbox" id="@(Photo.IdImagen)" />
+                <label class="label-photo-pr" for="@(Photo.IdImagen)">
+                    <img src="data:image/png;base64,@(Photo.Base64)" style="height: 250px;" />
+                </label>
+            </div>
+            <div class="datos-fotos panel-footer">
+                <div>Fecha: @Photo.Fecha</div>
+                <div> @Photo.IdPuntoDeVenta - @Photo.PuntoDeVenta</div>
+                <div> @Photo.Direccion</div>
+                <div> Usuario: @Photo.Usuario </div>
+            </div>
+        </div>
+    </a>
+
+}
+
+<script type="text/javascript">
+    let arrPhotos = getPhotoList(@Model.AccountId,@Model.ProductId); //porque Let? , por el filter.. cuando saco una de las fotos, hago una reasignacion del array...
+
+    $(document).ready(() => {
+        if (arrPhotos && arrPhotos.length > 0) { //si tengo fotos en el array, hago un check de las seleccionadas
+            $.map($(".photo-pr-check"), el => {
+                const photoItm = $(el).attr("id");
+                if (arrPhotos.includes(photoItm)) {
+                    $(el).prop("checked", true);
+                }
+            });
+        }
+    });
+
+    $(".photo-pr-check").on('change', ({ currentTarget: el }) => {
+        const PhotoId = $(el).attr("id");
+        if ($(el).is(':checked')) { //si esta checkeado updateo el hidden (despues de hacer el push en el array). Si no esta checkeado, lo filtro y mando el nuevo array
+            arrPhotos.push(PhotoId);
+        } else {
+            arrPhotos = arrPhotos.filter(f => f !== PhotoId);
+        }
+        updatePhotoList(@Model.AccountId,@Model.ProductId,arrPhotos.join(';'));
+    });
+</script>

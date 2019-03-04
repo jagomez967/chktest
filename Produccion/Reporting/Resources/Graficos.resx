@@ -1,0 +1,810 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="lblTipoArea" xml:space="preserve">
+    <value>Area</value>
+  </data>
+  <data name="lblTipoColApiladas" xml:space="preserve">
+    <value>Columnas Apiladas</value>
+  </data>
+  <data name="lblTipoColDrilldown" xml:space="preserve">
+    <value>Columnas con DrillDown</value>
+  </data>
+  <data name="lblTipoColumna" xml:space="preserve">
+    <value>Columna</value>
+  </data>
+  <data name="lblTipoDoughnut" xml:space="preserve">
+    <value>Semicirculo</value>
+  </data>
+  <data name="lblTipoDrilldownApiladas" xml:space="preserve">
+    <value>Drilldown Apiladas</value>
+  </data>
+  <data name="lblTipoDrilldownApiladasPorc" xml:space="preserve">
+    <value>Drilldown Apiladas Porcentual</value>
+  </data>
+  <data name="lblTipoEncuesta" xml:space="preserve">
+    <value>Encuesta</value>
+  </data>
+  <data name="lblTipoLinea" xml:space="preserve">
+    <value>Linea</value>
+  </data>
+  <data name="lblTipoPie" xml:space="preserve">
+    <value>Pie</value>
+  </data>
+  <data name="lblTipoSpiderWeb" xml:space="preserve">
+    <value>Spider Web</value>
+  </data>
+  <data name="lblTipoTabla" xml:space="preserve">
+    <value>Tabla</value>
+  </data>
+  <data name="lblTipoTendencia" xml:space="preserve">
+    <value>Tendencia</value>
+  </data>
+  <data name="lblMesaure" xml:space="preserve">
+    <value>Competimeter</value>
+  </data>
+  <data name="lblSimpleKpi" xml:space="preserve">
+    <value>KPI</value>
+  </data>
+  <data name="EpsonKPI" xml:space="preserve">
+    <value>KPI Epson</value>
+  </data>
+  <data name="lblMesaure" xml:space="preserve">
+    <value>Competimeter</value>
+  </data>
+  <data name="SavantCoberturaCliente" xml:space="preserve">
+    <value>Cobertura Cliente</value>
+  </data>
+  <data name="SavantCoberturaZonaUsuario" xml:space="preserve">
+    <value>Cobertura Zona Usuario</value>
+  </data>
+  <data name="SavantCoberturaZonaUsuarioPie" xml:space="preserve">
+    <value>Cobertura Zona Usuario (Torta)</value>
+  </data>
+  <data name="SavantPdvAsignadosMes" xml:space="preserve">
+    <value>Pdv Asignados por Mes</value>
+  </data>
+  <data name="CMAcumuladoMensual" xml:space="preserve">
+    <value>Puntaje Acumulado Mensual </value>
+  </data>
+  <data name="BROTHERImg" xml:space="preserve">
+    <value>Fotos BROTHER</value>
+  </data>
+  <data name="CANONImg" xml:space="preserve">
+    <value>Fotos CANON</value>
+  </data>
+  <data name="EPSONImg" xml:space="preserve">
+    <value>Fotos EPSON</value>
+  </data>
+  <data name="HPImg" xml:space="preserve">
+    <value>Fotos HP</value>
+  </data>
+  <data name="EPSONCompetimeter" xml:space="preserve">
+    <value>Competimeter</value>
+  </data>
+  <data name="SavantFacingMarcaPropia" xml:space="preserve">
+    <value>Facing Marca Propia</value>
+  </data>
+  <data name="SavantFacingMarcaPropiaBarra" xml:space="preserve">
+    <value>Facing Marca Propia (Barras)</value>
+  </data>
+  <data name="SavantPdvDistribucionZona" xml:space="preserve">
+    <value>Puntos de Venta con Distribucion por Zona</value>
+  </data>
+  <data name="NoTrabajaPorProducto" xml:space="preserve">
+    <value>No trabaja por producto </value>
+  </data>
+  <data name="SavantProductoDistribucionZona" xml:space="preserve">
+    <value>Puntos de Venta con Distribucion por Producto/Zona</value>
+  </data>
+  <data name="SavantQuiebrePorProducto" xml:space="preserve">
+    <value>Quiebre por Producto</value>
+  </data>
+  <data name="SavantQuiebrePorProductoBarras" xml:space="preserve">
+    <value>Quiebre por Producto (Barras)</value>
+  </data>
+  <data name="SavantQuiebreEquipoMarca" xml:space="preserve">
+    <value>Quiebre por Equipo/Marca</value>
+  </data>
+  <data name="SavantQuiebreEquipoMarcaBarras" xml:space="preserve">
+    <value>Quiebre Por Equipo/Marca (Barras)</value>
+  </data>
+  <data name="SavantShelfShareMarcaPropia" xml:space="preserve">
+    <value>Shelf Share Marca Propia</value>
+  </data>
+  <data name="EpsonComparacionPreciosRegional" xml:space="preserve">
+    <value>Banda de Precios - REGION</value>
+  </data>
+  <data name="EpsonEvolucionPreciosRegional" xml:space="preserve">
+    <value>Evolucion de Precios  - REGION</value>
+  </data>
+  <data name="EpsonCadena" xml:space="preserve">
+    <value>Visitas por Retail</value>
+  </data>
+  <data name="PrecioEntradaSalidaCompetenciaCadena" xml:space="preserve">
+    <value>Precio Entrada/Salida Competencia por Cadena</value>
+  </data>
+  <data name="EddingPreciosCompetenciaCO" xml:space="preserve">
+    <value>Reporte Precios Competencia CO</value>
+  </data>
+  <data name="NoTrabajaProductoTotal" xml:space="preserve">
+    <value>No trabaja por producto Total</value>
+  </data>
+  <data name="SavantQuiebreMarcaTotal" xml:space="preserve">
+    <value>Savant Quiebre Por Marca Total</value>
+  </data>
+  <data name="SavantQuiebreMarcaTotalBarra" xml:space="preserve">
+    <value>Savant Quiebre Por Marca Total (Barras)</value>
+  </data>
+  <data name="VisitasPorRetail" xml:space="preserve">
+    <value>VisitasPorRetail</value>
+  </data>
+  <data name="DistribucionFisicaNumericaLavado" xml:space="preserve">
+    <value>Distribución Física Numérica Lavado (Barras)</value>
+  </data>
+  <data name="SavantNoTrabajaPorMarcaTotal" xml:space="preserve">
+    <value>Savant No trabaja por Marca Total</value>
+  </data>
+  <data name="DistribucionFisicaNumericaCocinas" xml:space="preserve">
+    <value>Distribución Física Numérica Cocinas (Barras)</value>
+  </data>
+  <data name="DistribucionFisicaNumericaHeladeras" xml:space="preserve">
+    <value>Distribución Física Numérica Heladeras (Barras)</value>
+  </data>
+  <data name="DistribucionFisicaNumericaProductos" xml:space="preserve">
+    <value>Distribucion Fisica Numérica Productos (Barras)</value>
+  </data>
+  <data name="SavantNoTrabajaPorMarcaTotalBarra" xml:space="preserve">
+    <value>SavantNoTrabajaPorMarcaTotalBarra</value>
+  </data>
+  <data name="Cob_distSinExh" xml:space="preserve">
+    <value>COB-DIST SIN EXH-QUIEBRE</value>
+  </data>
+  <data name="DistribucionFisicaNumerica" xml:space="preserve">
+    <value>Distribucion Fisica Numérica (Barras)</value>
+  </data>
+  <data name="aventFarmacityQuiebreFrente" xml:space="preserve">
+    <value>Quiebre y Frentes por Productos</value>
+  </data>
+  <data name="DistribucionFisicaNumericaCompetencia" xml:space="preserve">
+    <value>Distribucion Fisica Numérica Competencia (Barras)</value>
+  </data>
+  <data name="Epson_PSIHistoricoVsActual" xml:space="preserve">
+    <value>PSI Histórico vs Actual</value>
+  </data>
+  <data name="WhirlPoolFloorShare" xml:space="preserve">
+    <value>Floor Share</value>
+  </data>
+  <data name="CantDeBandejasF" xml:space="preserve">
+    <value>Cant. de bandejas de flanes</value>
+  </data>
+  <data name="CantDeBandejasP" xml:space="preserve">
+    <value>Cant. de bandejas de postres</value>
+  </data>
+  <data name="CantDeBandejasYD" xml:space="preserve">
+    <value>Cant. de bandejas de yogurt descremado</value>
+  </data>
+  <data name="CantDeBandejasYE" xml:space="preserve">
+    <value>Cant. de bandejas de yogurt entero</value>
+  </data>
+  <data name="Epson_ProposalF19" xml:space="preserve">
+    <value>Propuesta F19</value>
+  </data>
+  <data name="WhirlPoolEvolucionPorPlataforma" xml:space="preserve">
+    <value>Evolución por Plataforma</value>
+  </data>
+  <data name="WhirlPoolEvolucionPorPlataformaTabla" xml:space="preserve">
+    <value>Evolucion por Plataforma (Tabla)</value>
+  </data>
+  <data name="CobDistSinExhquiebretabla" xml:space="preserve">
+    <value>Cob-Dist-SinExh-quiebre(tabla)</value>
+  </data>
+  <data name="AventPdvDistribucionFamilia" xml:space="preserve">
+    <value>Puntos de Venta con Distribucion por Familia</value>
+  </data>
+  <data name="WhirlPoolEvolucionPrecios" xml:space="preserve">
+    <value>Evolución de Precios</value>
+  </data>
+  <data name="CantDeGondolasDetalle" xml:space="preserve">
+    <value>Cant.de gondolas ARSA-DANONE-OTRAS MARCAS</value>
+  </data>
+  <data name="EPSON_ChannelSellIn_T12" xml:space="preserve">
+    <value>Channel Sell-In Dist/Ret</value>
+  </data>
+  <data name="CantidadDeVariedad" xml:space="preserve">
+    <value>Cantidad de variedad</value>
+  </data>
+  <data name="WhirlPoolEvolucionPrecioAccionado" xml:space="preserve">
+    <value>Evolucion de Precio Accionado</value>
+  </data>
+  <data name="PreguntasGondolasPorCategoria" xml:space="preserve">
+    <value>Las 3 Categ. ARSA, están al lado de DANONE?</value>
+  </data>
+  <data name="PreguntasGondolasPorMarca" xml:space="preserve">
+    <value>Comunicación de marca con POP?</value>
+  </data>
+  <data name="PreguntasGondolasPorProductos" xml:space="preserve">
+    <value>Productos ARSA precio en el fleje segun ubic.</value>
+  </data>
+  <data name="EPSON_PSISimulation_T19" xml:space="preserve">
+    <value>PSI Simulation</value>
+  </data>
+  <data name="WhirlPoolGapPrecios" xml:space="preserve">
+    <value>Gap Precios</value>
+  </data>
+  <data name="CantidadDeVariedadesEnGondolas" xml:space="preserve">
+    <value>Cantidad de variedades en gondolas </value>
+  </data>
+  <data name="WhirlPoolEstadoRepuesto" xml:space="preserve">
+    <value>Estado Respuestos</value>
+  </data>
+  <data name="WhirlPoolEstadoRetiroProducto" xml:space="preserve">
+    <value>Estado Retiro Producto</value>
+  </data>
+  <data name="WhirlPoolEstadoService" xml:space="preserve">
+    <value>Estado Service</value>
+  </data>
+  <data name="PreguntasPunterasEstado" xml:space="preserve">
+    <value>Estado del ploteo o revestimiento ARSA</value>
+  </data>
+  <data name="PreguntasPunterasMarca" xml:space="preserve">
+    <value>¿Las punteras tienen ploteos o revestimientos marca ARSA?</value>
+  </data>
+  <data name="PreguntasPunterasProductos" xml:space="preserve">
+    <value>¿Las punteras existentes tienen prod.ARSA?</value>
+  </data>
+  <data name="PreguntasGondolasVencimiento" xml:space="preserve">
+    <value>Productos Arsa con fecha de venc. menor a 8 dias</value>
+  </data>
+  <data name="PreguntasPunterasArsa" xml:space="preserve">
+    <value>Cuantas Punteras hay con yog\post\flanes de ARSA?</value>
+  </data>
+  <data name="PreguntasPunterasTotal" xml:space="preserve">
+    <value>Cuantas Punteras hay con yog\post\flan en TOTAL?</value>
+  </data>
+  <data name="AGDShelfShareFamilia" xml:space="preserve">
+    <value>Shelf Share por Familia</value>
+  </data>
+  <data name="DetallePreguntaspunteras" xml:space="preserve">
+    <value>Detalle preguntas punteras</value>
+  </data>
+  <data name="DetalleDeRespuestaDePreguntasGondolas" xml:space="preserve">
+    <value>Detalle de respuesta sobre las preguntas Gondolas</value>
+  </data>
+  <data name="DetalleProductosConEstados" xml:space="preserve">
+    <value>Detalle de productos en buen estado y mal estado</value>
+  </data>
+  <data name="EPSON_PerformanceClienteVendedor_T26" xml:space="preserve">
+    <value>Forecast Accuracy | Sales Team</value>
+  </data>
+  <data name="DistribucionFisicaNumericaCadena" xml:space="preserve">
+    <value>Distribución Física Numérica Cadena</value>
+  </data>
+  <data name="DistribucionFisicaNumericaCadenaMes" xml:space="preserve">
+    <value>Distribución Física Numérica Cadena por Mes</value>
+  </data>
+  <data name="WhirlPoolEvolucionPrecio1y2" xml:space="preserve">
+    <value>Evolución Precio vs Accionado</value>
+  </data>
+  <data name="WhirlPoolCobMensual" xml:space="preserve">
+    <value>Cobertura Mensual</value>
+  </data>
+  <data name="GapPreciosPropiosSugerido" xml:space="preserve">
+    <value>Gap Precios propios y sugeridos</value>
+  </data>
+  <data name="DistribucionFisicaNumericaCocinasPY" xml:space="preserve">
+    <value>Distribución Física Numérica Cocinas (PY)</value>
+  </data>
+  <data name="DistribucionFisicaNumericaHeladerasPY" xml:space="preserve">
+    <value>Distribución Física Numérica Heladeras (PY)</value>
+  </data>
+  <data name="DistribucionFisicaNumericaLavadoPY" xml:space="preserve">
+    <value>Distribución Física Numérica Lavado (PY)</value>
+  </data>
+  <data name="WhirlPoolFloorSharePY" xml:space="preserve">
+    <value>Floor Share (PY)</value>
+  </data>
+  <data name="Whirpool_Capacitaciones" xml:space="preserve">
+    <value>Target vs Capacitados</value>
+  </data>
+  <data name="EPSONCompetimeterConsumibles" xml:space="preserve">
+    <value>Epson Competimeter Consumibles</value>
+  </data>
+  <data name="EpsonFacturacionPSI" xml:space="preserve">
+    <value>Facturación</value>
+  </data>
+  <data name="WhirpoolCapacitacionesTargetAlcance" xml:space="preserve">
+    <value>Target vs Capacitados por Referentes y Asesor</value>
+  </data>
+  <data name="EpsonUnidadesHW" xml:space="preserve">
+    <value>Unidades (HW)</value>
+  </data>
+  <data name="EpsonInventarioHW" xml:space="preserve">
+    <value>Inventario (HW)</value>
+  </data>
+  <data name="WhirpoolReferentesAsesores" xml:space="preserve">
+    <value>Referentes y Asesores</value>
+  </data>
+  <data name="CapacitacionesPorCategoria" xml:space="preserve">
+    <value>Capacitaciones por Categoria</value>
+  </data>
+  <data name="CapacitadosPorCadena" xml:space="preserve">
+    <value>Capacitados por TP</value>
+  </data>
+  <data name="EpsonChannelMixHW" xml:space="preserve">
+    <value>Channel Mix (HW)</value>
+  </data>
+  <data name="RepuestoSolicitadoVsResuelto" xml:space="preserve">
+    <value>Repuesto Solicitado Vs Resuelto</value>
+  </data>
+  <data name="PedidoDeServices" xml:space="preserve">
+    <value>Pedido de Services solicitado Vs Resuelto</value>
+  </data>
+  <data name="RetiroDeProductos" xml:space="preserve">
+    <value>Retiro de Productos Solicitados Vs Resuelto</value>
+  </data>
+  <data name="EpsonFitRatio" xml:space="preserve">
+    <value>Fit-Ratio (CONS)</value>
+  </data>
+  <data name="RepuestosSolicitadosPorCategoria" xml:space="preserve">
+    <value>Repuestos Solicitados por Categoria</value>
+  </data>
+  <data name="RepuestosSolicitadosPorProyecto" xml:space="preserve">
+    <value>Repuestos Solicitados por Proyecto</value>
+  </data>
+  <data name="CambioDeProductoPorProyecto" xml:space="preserve">
+    <value>Cambio de Producto por Proyecto</value>
+  </data>
+  <data name="ServicesPorProyecto" xml:space="preserve">
+    <value>Services por Proyecto</value>
+  </data>
+  <data name="CambioDeProductosPorCategoria" xml:space="preserve">
+    <value>Cambio de Productos por Categoria</value>
+  </data>
+  <data name="PedidoDeServicesPorCategoria" xml:space="preserve">
+    <value>Pedido de Services por Categoria</value>
+  </data>
+  <data name="EpsonChannelMixCONS" xml:space="preserve">
+    <value>Channel Mix (CONS)</value>
+  </data>
+  <data name="EpsonInventarioCONS" xml:space="preserve">
+    <value>Inventario (CONS)</value>
+  </data>
+  <data name="EpsonMarketShare" xml:space="preserve">
+    <value>Market Share</value>
+  </data>
+  <data name="EpsonMarketShareYTD" xml:space="preserve">
+    <value>Market Share YTD</value>
+  </data>
+  <data name="EpsonUnidadesCONS" xml:space="preserve">
+    <value>Unidades (CONS)</value>
+  </data>
+  <data name="DetalleDeLaCompetencia" xml:space="preserve">
+    <value>Detalle de la Competencia</value>
+  </data>
+  <data name="EpsonMarketShareConversion" xml:space="preserve">
+    <value>Conversion</value>
+  </data>
+  <data name="EvaluacionDeAuditoriaDeDesempeño" xml:space="preserve">
+    <value>Evaluacion de Desempeño del Equipo</value>
+  </data>
+  <data name="WhirpoolDistribucionFisica" xml:space="preserve">
+    <value>Evaluacion de Desempeño(Distribucion Fisica)</value>
+  </data>
+  <data name="WhirpoolDesempeñoLimpieza" xml:space="preserve">
+    <value>Evaluacion de Desempeño(Limpieza)</value>
+  </data>
+  <data name="WhirpoolDesempeñoExhibicion" xml:space="preserve">
+    <value>Evaluacion de Desempeño(Exhibición)</value>
+  </data>
+  <data name="WhirpoolDesempeñoAsesor" xml:space="preserve">
+    <value>Evaluacion de Desempeño(Relacionamiento Asesor?)</value>
+  </data>
+  <data name="WhirpoolDesempeñoPOP" xml:space="preserve">
+    <value>Evaluacion de Desempeño(Ejecución POP)</value>
+  </data>
+  <data name="DetalleRelevo" xml:space="preserve">
+    <value>Detalle relevo</value>
+  </data>
+  <data name="AGDShelfShareAceitesMaiz" xml:space="preserve">
+    <value>Shelf Share Aceites Maiz</value>
+  </data>
+  <data name="AGDShelfShareAceitesTrad" xml:space="preserve">
+    <value>Shelf Share Aceites Tradicionalas</value>
+  </data>
+  <data name="AGDShelfShareKetchup" xml:space="preserve">
+    <value>Shelf Share Ketchup</value>
+  </data>
+  <data name="AGDShelfShareMayonesas" xml:space="preserve">
+    <value>Shelf Share Mayonesas</value>
+  </data>
+  <data name="AGDShelfShareMostaza" xml:space="preserve">
+    <value>Shelf Share Mostaza</value>
+  </data>
+  <data name="AGDShelfShareOlivados" xml:space="preserve">
+    <value>Shelf Share Olivados</value>
+  </data>
+  <data name="AGDShelfShareOlivasExtra" xml:space="preserve">
+    <value>Shelf Share Olivas Extra Virgen</value>
+  </data>
+  <data name="AGDShelfShareRocios" xml:space="preserve">
+    <value>Shelf Share Rocios</value>
+  </data>
+  <data name="AGDShelfShareSalsaGolf" xml:space="preserve">
+    <value>Shelf Share Salsa Golf</value>
+  </data>
+  <data name="EpsonFitRatioHistorico" xml:space="preserve">
+    <value>Fit-Ratio Interactivo</value>
+  </data>
+  <data name="StockPorMarcaYProducto" xml:space="preserve">
+    <value>Stock por Marca y Producto</value>
+  </data>
+  <data name="VentasYStockPorProducto" xml:space="preserve">
+    <value>Ventas y Stock por Producto</value>
+  </data>
+  <data name="DetalleCheckinCheckOut" xml:space="preserve">
+    <value>Detalle Check in-Check Out</value>
+  </data>
+  <data name="IsdinDetalleContactos" xml:space="preserve">
+    <value>Detalle Contactos</value>
+  </data>
+  <data name="Geometry_Instalacion" xml:space="preserve">
+    <value>¿Logró instalar la pieza satisfactoriamente?</value>
+  </data>
+  <data name="Geometry_Pop" xml:space="preserve">
+    <value>¿Le gusta el POP al tendero?</value>
+  </data>
+  <data name="Geometry_Productos" xml:space="preserve">
+    <value>¿Actualmente el tendero cuenta con producto B&amp;W?</value>
+  </data>
+  <data name="EpsonFitRatioDetalle" xml:space="preserve">
+    <value>Fit Ratio Detalle</value>
+  </data>
+  <data name="PerfomanceVentasPorUsuario" xml:space="preserve">
+    <value>Perfomance ventas por usuario</value>
+  </data>
+  <data name="Distribucion_Fisica_Producto" xml:space="preserve">
+    <value>Distribución Fisica Numérica Producto</value>
+  </data>
+  <data name="Detalle_Perfomance_ventas_por_Usuario" xml:space="preserve">
+    <value>Detalle Perfomance ventas por Usuario</value>
+  </data>
+  <data name="EpsonTradeDistribucionFisica" xml:space="preserve">
+    <value>Distribución Física</value>
+  </data>
+  <data name="Whirpool_FloorShare_Encuesta_Completa" xml:space="preserve">
+    <value>Detalle Auditoria Whirlpool</value>
+  </data>
+  <data name="epsoninfonodo" xml:space="preserve">
+    <value>Info Nodo</value>
+  </data>
+  <data name="epsontradecapacitacion" xml:space="preserve">
+    <value>Capacitacion Epson Trade</value>
+  </data>
+  <data name="epsonventasporpdv" xml:space="preserve">
+    <value>Ventas por PDV</value>
+  </data>
+  <data name="epsonventasproducto" xml:space="preserve">
+    <value>Ventas por Producto</value>
+  </data>
+  <data name="Detalle_de_Quiebre_de_Stock" xml:space="preserve">
+    <value>Detalle de Quiebre de Stock</value>
+  </data>
+  <data name="DistribucionFisicaPorFamilia" xml:space="preserve">
+    <value>DF x Proyecto y Usuario</value>
+  </data>
+  <data name="WhirlPool_DF_Por_Sku_y_Usuario" xml:space="preserve">
+    <value>DF x Sku y Usuario</value>
+  </data>
+  <data name="Whirpool_FS_Por_Categoria_Cocina" xml:space="preserve">
+    <value>FS categoria x Usuario</value>
+  </data>
+  <data name="EpsonSellInCISS" xml:space="preserve">
+    <value>Sell-In CISS</value>
+  </data>
+  <data name="EpsonSellInCISSMoM" xml:space="preserve">
+    <value>Sell-In CISS MoM</value>
+  </data>
+  <data name="EpsonSellInIC" xml:space="preserve">
+    <value>Sell-In IC</value>
+  </data>
+  <data name="EpsonSellInICMoM" xml:space="preserve">
+    <value>Sell-In IC MoM</value>
+  </data>
+  <data name="EpsonSellInIjp" xml:space="preserve">
+    <value>Sell-In IJP</value>
+  </data>
+  <data name="EpsonSellInIjpMoM" xml:space="preserve">
+    <value>Sell-In IJP MoM</value>
+  </data>
+  <data name="EpsonSellOutCISS" xml:space="preserve">
+    <value>Sell-Out CISS</value>
+  </data>
+  <data name="EpsonSellOutCISSMoM" xml:space="preserve">
+    <value>Sell-Out CISS MoM</value>
+  </data>
+  <data name="EpsonSellOutIC" xml:space="preserve">
+    <value>Sell-Out IC</value>
+  </data>
+  <data name="EpsonSellOutICMoM" xml:space="preserve">
+    <value>Sell-Out IC MoM</value>
+  </data>
+  <data name="EpsonSellOutIjp" xml:space="preserve">
+    <value>Sell-Out IJP</value>
+  </data>
+  <data name="EpsonSellOutIjpMoM" xml:space="preserve">
+    <value>Sell-Out IJP MoM</value>
+  </data>
+  <data name="EpsonSellInCISSYoY" xml:space="preserve">
+    <value>Sell-In CISS YoY</value>
+  </data>
+  <data name="EpsonSellInCISSYTD" xml:space="preserve">
+    <value>Sell-In CISS YTD</value>
+  </data>
+  <data name="EpsonSellInICYoY" xml:space="preserve">
+    <value>Sell-In IC YoY</value>
+  </data>
+  <data name="EpsonSellInICYTD" xml:space="preserve">
+    <value>Sell-In IC YTD</value>
+  </data>
+  <data name="EpsonSellInIjpYoY" xml:space="preserve">
+    <value>Sell-In IJP YoY</value>
+  </data>
+  <data name="EpsonSellInIjpYTD" xml:space="preserve">
+    <value>Sell-In IJP YTD</value>
+  </data>
+  <data name="EpsonSellOutCISSYoY" xml:space="preserve">
+    <value>Sell-Out CISS YoY</value>
+  </data>
+  <data name="EpsonSellOutCISSYTD" xml:space="preserve">
+    <value>Sell-Out CISS YTD</value>
+  </data>
+  <data name="EpsonSellOutICYoY" xml:space="preserve">
+    <value>Sell-Out IC YoY</value>
+  </data>
+  <data name="EpsonSellOutICYTD" xml:space="preserve">
+    <value>Sell-Out IC YTD</value>
+  </data>
+  <data name="EpsonSellOutIjpYoY" xml:space="preserve">
+    <value>Sell-Out IJP YoY</value>
+  </data>
+  <data name="EpsonSellOutIjpYTD" xml:space="preserve">
+    <value>Sell-Out IJP YTD</value>
+  </data>
+  <data name="EpsonVarSellInSellOutDist" xml:space="preserve">
+    <value>Var Sell-In Sell-Out DIST</value>
+  </data>
+  <data name="EpsonVarSellInSellOutRet" xml:space="preserve">
+    <value>Var Sell-In Sell-Out RET</value>
+  </data>
+  <data name="Relevo_MD" xml:space="preserve">
+    <value>Relevo MD</value>
+  </data>
+  <data name="Detalle_Pop_Cobertura_Objetivo" xml:space="preserve">
+    <value>Detalle Pop-Cobertura-Objetivos</value>
+  </data>
+  <data name="Mueble_Whirlpool" xml:space="preserve">
+    <value>Mueble Whirlpool</value>
+  </data>
+  <data name="Pop_Cobertura_Objetivo" xml:space="preserve">
+    <value>Pop-Cobertura-Objetivos</value>
+  </data>
+  <data name="ShelfShareMarcapropiavsCompetenciaFrentes1" xml:space="preserve">
+    <value>Shelf Share - Marca propia vs Competencia Frentes1</value>
+  </data>
+  <data name="Shelf_Share_Producto_Propio" xml:space="preserve">
+    <value>Shelf Share - Marca y Producto propio</value>
+  </data>
+  <data name="EpsonDistribucionFisicaDat" xml:space="preserve">
+    <value>Distribucion Fisica</value>
+  </data>
+  <data name="Epson_CoberturaObjetivoRetail" xml:space="preserve">
+    <value>Cobertura y objetivo por cadena </value>
+  </data>
+  <data name="BaytonDetallePop" xml:space="preserve">
+    <value>Detalle Pop antes y despues de visita</value>
+  </data>
+  <data name="Hay_alguna_referencia_de_Sancor_Bebe" xml:space="preserve">
+    <value>Hay alguna referencia de Sancor Bebe 4?</value>
+  </data>
+  <data name="Ingreso_Autorizado_Al_Local" xml:space="preserve">
+    <value>Ingreso autorizado al local</value>
+  </data>
+  <data name="Presente_En_Simultáneo_La_Etapa" xml:space="preserve">
+    <value>Está Presente en la Etapa 1, 2 y 3 de Sancor Bebe?</value>
+  </data>
+  <data name="Sancor_Bebe_Simultáneo" xml:space="preserve">
+    <value>Hay Sancor Bebe 1L, 500 Ml y 200 Ml en simultáneo?</value>
+  </data>
+  <data name="Se_Pudo_Colocar_POP_De_Paw_Patrol" xml:space="preserve">
+    <value>Se pudo colocar POP de Paw Patrol?</value>
+  </data>
+  <data name="AndromacoPermanenciaPDV2doNivel" xml:space="preserve">
+    <value>Detalle de Permanencia</value>
+  </data>
+  <data name="PdvsSiTieneFoto" xml:space="preserve">
+    <value>Puntos de Venta Si Tiene Foto</value>
+  </data>
+  <data name="PopXMarcaConMes" xml:space="preserve">
+    <value>Pop x Marca Con Mes</value>
+  </data>
+  <data name="DetallePrecioPropio3" xml:space="preserve">
+    <value>Detalle Precio Propio 3</value>
+  </data>
+  <data name="POP_Por_Cadena_Marca" xml:space="preserve">
+    <value>POP por cadena y Marca</value>
+  </data>
+  <data name="Isdin_LAM_ReporteNuevo" xml:space="preserve">
+    <value>Isdin LAM ReporteNuevo</value>
+  </data>
+  <data name="EncuestaCompletaBaytonTarjetaNaranja" xml:space="preserve">
+    <value>Encuesta Completa BaytonTarjetaNaranja</value>
+  </data>
+  <data name="Detalle_Exhibidores" xml:space="preserve">
+    <value>Porcentaje de Exhibidores</value>
+  </data>
+  <data name="DetalleDePermanencia" xml:space="preserve">
+    <value>Detalle de Permanencia</value>
+  </data>
+  <data name="Cobertura_cumplimiento_calendario" xml:space="preserve">
+    <value>Cobertura  y cumplimiento calendario</value>
+  </data>
+  <data name="Evolucion_de_Precio_Promocional" xml:space="preserve">
+    <value>Evolución de Precio Promocional</value>
+  </data>
+  <data name="Evolucion_Precio_propio_y_competencia" xml:space="preserve">
+    <value>Evolución de Precio Lista</value>
+  </data>
+  <data name="ElectroLux_Floor_Space" xml:space="preserve">
+    <value>ElectroLux Floor Space</value>
+  </data>
+  <data name="SodimacCumplimientoPlanograma" xml:space="preserve">
+    <value>Sodimac Cumplimiento Planograma</value>
+  </data>
+  <data name="Cumplimiento_Planograma" xml:space="preserve">
+    <value>Cumplimiento Planograma</value>
+  </data>
+  <data name="VentaPorMarcaYProducto" xml:space="preserve">
+    <value>Venta por Marca y Producto</value>
+  </data>
+  <data name="Electrolux_Floor_Space_Freezer1" xml:space="preserve">
+    <value>Electrolux Floor Space Freezer</value>
+  </data>
+  <data name="Electrolux_Floor_Space_Ranges" xml:space="preserve">
+    <value>Electrolux Floor Space Ranges</value>
+  </data>
+  <data name="Electrolux_Floor_Space_Refrigerators" xml:space="preserve">
+    <value>Electrolux Floor Space Refrigerators</value>
+  </data>
+  <data name="Electrolux_Floor_Space_Washers" xml:space="preserve">
+    <value>Electrolux Floor Space Washers</value>
+  </data>
+  <data name="QuiebreExhibicionVsExhibido" xml:space="preserve">
+    <value>Quiebre Exhibicion Vs Exhibido</value>
+  </data>
+  <data name="EpsonCountryAccuracy" xml:space="preserve">
+    <value>Country Sell-In Accuracy</value>
+  </data>
+  <data name="EpsonDistAccuracy" xml:space="preserve">
+    <value>Distribuidor Sell-In Accuracy</value>
+  </data>
+  <data name="EpsonRetailAccuracy" xml:space="preserve">
+    <value>Retail Sell-In Accuracy</value>
+  </data>
+</root>

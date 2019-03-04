@@ -1,0 +1,444 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="aceptar" xml:space="preserve">
+    <value>Accept</value>
+  </data>
+  <data name="aceptar1" xml:space="preserve">
+    <value>Aceptar</value>
+  </data>
+  <data name="cadena" xml:space="preserve">
+    <value>Cadena</value>
+  </data>
+  <data name="cadena1" xml:space="preserve">
+    <value>Cadena</value>
+  </data>
+  <data name="canal" xml:space="preserve">
+    <value>Canal</value>
+  </data>
+  <data name="canal1" xml:space="preserve">
+    <value>Canal</value>
+  </data>
+  <data name="canales_seleccionados" xml:space="preserve">
+    <value>Channel:</value>
+  </data>
+  <data name="cancelar" xml:space="preserve">
+    <value>Cancelar</value>
+  </data>
+  <data name="cancelar1" xml:space="preserve">
+    <value>Cancelar</value>
+  </data>
+  <data name="cargando_formularios" xml:space="preserve">
+    <value>Cargando formularios...</value>
+  </data>
+  <data name="cargando_formularios1" xml:space="preserve">
+    <value>Cargando formularios...</value>
+  </data>
+  <data name="categoria" xml:space="preserve">
+    <value>Category</value>
+  </data>
+  <data name="categoria1" xml:space="preserve">
+    <value>Categoría</value>
+  </data>
+  <data name="cliente" xml:space="preserve">
+    <value>Cliente</value>
+  </data>
+  <data name="cliente1" xml:space="preserve">
+    <value>Cliente</value>
+  </data>
+  <data name="confirmado" xml:space="preserve">
+    <value>Confirmado</value>
+  </data>
+  <data name="confirmado1" xml:space="preserve">
+    <value>Confirmado</value>
+  </data>
+  <data name="confirmar" xml:space="preserve">
+    <value>Confirmar</value>
+  </data>
+  <data name="confirmar1" xml:space="preserve">
+    <value>Confirmar</value>
+  </data>
+  <data name="confirmar_mes" xml:space="preserve">
+    <value>Confirmar Forecast</value>
+  </data>
+  <data name="confirmar_mes1" xml:space="preserve">
+    <value>Confirmar Forecast</value>
+  </data>
+  <data name="cuenta" xml:space="preserve">
+    <value>Cuenta</value>
+  </data>
+  <data name="cuenta1" xml:space="preserve">
+    <value>Cuenta</value>
+  </data>
+  <data name="cuentas_seleccionadas" xml:space="preserve">
+    <value>Cuentas seleccionadas:</value>
+  </data>
+  <data name="cuentas_seleccionadas1" xml:space="preserve">
+    <value>Cuentas seleccionadas:</value>
+  </data>
+  <data name="debe_seleccionar_canal" xml:space="preserve">
+    <value>Debe seleccionar un canal</value>
+  </data>
+  <data name="debe_seleccionar_canal1" xml:space="preserve">
+    <value>Debe seleccionar un canal</value>
+  </data>
+  <data name="debe_seleccionar_cuenta" xml:space="preserve">
+    <value>Debe seleccionar al menos una cuenta</value>
+  </data>
+  <data name="debe_seleccionar_cuenta1" xml:space="preserve">
+    <value>Debe seleccionar al menos una cuenta</value>
+  </data>
+  <data name="debe_seleccionar_producto" xml:space="preserve">
+    <value>Debe seleccionar al menos un producto</value>
+  </data>
+  <data name="debe_seleccionar_producto1" xml:space="preserve">
+    <value>Debe seleccionar al menos un producto</value>
+  </data>
+  <data name="desbloquear" xml:space="preserve">
+    <value>Desbloquear</value>
+  </data>
+  <data name="desbloquear1" xml:space="preserve">
+    <value>Desbloquear</value>
+  </data>
+  <data name="error_al_intentar_guardar_datos_de_formulario" xml:space="preserve">
+    <value>Error al intentar guardar los datos de forecasting</value>
+  </data>
+  <data name="error_al_intentar_guardar_datos_de_formulario1" xml:space="preserve">
+    <value>Error al intentar guardar los datos de forecasting</value>
+  </data>
+  <data name="exportar_xls" xml:space="preserve">
+    <value>Exportar xls</value>
+  </data>
+  <data name="exportar_xls1" xml:space="preserve">
+    <value>Exportar xls</value>
+  </data>
+  <data name="facturacion" xml:space="preserve">
+    <value>Facturación</value>
+  </data>
+  <data name="facturacion1" xml:space="preserve">
+    <value>Facturación</value>
+  </data>
+  <data name="fecha" xml:space="preserve">
+    <value>Fecha</value>
+  </data>
+  <data name="fecha1" xml:space="preserve">
+    <value>Fecha</value>
+  </data>
+  <data name="fecha_confirmacion" xml:space="preserve">
+    <value>Confirm Date</value>
+  </data>
+  <data name="fecha_confirmacion1" xml:space="preserve">
+    <value>Fecha Confirmación</value>
+  </data>
+  <data name="guardando_datos_de_formulario" xml:space="preserve">
+    <value>Guardando datos de formulario...</value>
+  </data>
+  <data name="guardando_datos_de_formulario1" xml:space="preserve">
+    <value>Guardando datos de formulario...</value>
+  </data>
+  <data name="guardar_cambios" xml:space="preserve">
+    <value>Guardar Cambios</value>
+  </data>
+  <data name="guardar_cambios1" xml:space="preserve">
+    <value>Guardar Cambios</value>
+  </data>
+  <data name="historial" xml:space="preserve">
+    <value>Historial</value>
+  </data>
+  <data name="historial1" xml:space="preserve">
+    <value>Historial</value>
+  </data>
+  <data name="ingreso_de_datos_para_sales_in_out" xml:space="preserve">
+    <value>Ingreso de datos para Sales In/Sales out</value>
+  </data>
+  <data name="ingreso_de_datos_para_sales_in_out1" xml:space="preserve">
+    <value>Ingreso de datos para Sales In/Sales out</value>
+  </data>
+  <data name="lista_de_psi_confirmados_por_vendedores" xml:space="preserve">
+    <value>Lista de CAP confirmados por vendedores, puede ingresar a cada uno y ver los valores de Sales In y Sales Out ingresados y/o desbloquear el registro para poder editar estos valores.</value>
+  </data>
+  <data name="lista_de_psi_confirmados_por_vendedores1" xml:space="preserve">
+    <value>Lista de CAP confirmados por vendedores, puede ingresar a cada uno y ver los valores de Sales In y Sales Out ingresados y/o desbloquear el registro para poder editar estos valores.</value>
+  </data>
+  <data name="mostrar_detalle" xml:space="preserve">
+    <value>Mostrar Detalle</value>
+  </data>
+  <data name="mostrar_detalle1" xml:space="preserve">
+    <value>Mostrar Detalle</value>
+  </data>
+  <data name="mostrar_futuro" xml:space="preserve">
+    <value>Show Future</value>
+  </data>
+  <data name="mostrar_historico" xml:space="preserve">
+    <value>Show History</value>
+  </data>
+  <data name="mostrar_historico1" xml:space="preserve">
+    <value>Mostrar Histórico</value>
+  </data>
+  <data name="mostrar_totales" xml:space="preserve">
+    <value>Mostrar totales</value>
+  </data>
+  <data name="mostrar_totales1" xml:space="preserve">
+    <value>Mostrar totales</value>
+  </data>
+  <data name="ningun_dato_de_channel_inv_puede_ser_menor_a_0" xml:space="preserve">
+    <value>Channel inv can not be less than zero</value>
+  </data>
+  <data name="ningun_dato_de_channel_inv_puede_ser_menor_a_01" xml:space="preserve">
+    <value>Ningún dato de Channel Inv puede ser menor a 0</value>
+  </data>
+  <data name="no" xml:space="preserve">
+    <value>NO</value>
+  </data>
+  <data name="no1" xml:space="preserve">
+    <value>NO</value>
+  </data>
+  <data name="no_puede_ser_vacio" xml:space="preserve">
+    <value>No puede ser vacío</value>
+  </data>
+  <data name="no_puede_ser_vacio1" xml:space="preserve">
+    <value>No puede ser vacío</value>
+  </data>
+  <data name="no_sales_out" xml:space="preserve">
+    <value>Sell-OUT no puede ser 0 si hay inventario en el ultimo mes</value>
+  </data>
+  <data name="no_se_encontraron_formularios" xml:space="preserve">
+    <value>No se encontraron formularios de modelos para continuar</value>
+  </data>
+  <data name="no_se_encontraron_formularios1" xml:space="preserve">
+    <value>No se encontraron formularios de modelos para continuar</value>
+  </data>
+  <data name="no_se_encontro_ningun_canal_asociado" xml:space="preserve">
+    <value>No se encontro ningun canal asociado a su usuario en base a los clientes que tiene asignados.</value>
+  </data>
+  <data name="no_se_encontro_ningun_canal_asociado1" xml:space="preserve">
+    <value>No se encontró ningún canal asociado a su usuario en base a los clientes que tiene asignados.</value>
+  </data>
+  <data name="no_se_pudieron_cargar_formularios" xml:space="preserve">
+    <value>No se pudieron cargar los formularios.</value>
+  </data>
+  <data name="no_se_pudieron_cargar_formularios1" xml:space="preserve">
+    <value>No se pudieron cargar los formularios.</value>
+  </data>
+  <data name="no_tiene_canales_asignados" xml:space="preserve">
+    <value>No tiene Canales asignados</value>
+  </data>
+  <data name="no_tiene_canales_asignados1" xml:space="preserve">
+    <value>No tiene Canales asignados</value>
+  </data>
+  <data name="observaciones" xml:space="preserve">
+    <value>Observaciones</value>
+  </data>
+  <data name="observaciones1" xml:space="preserve">
+    <value>Observaciones</value>
+  </data>
+  <data name="ocultar_detalle" xml:space="preserve">
+    <value>Ocultar Detalle</value>
+  </data>
+  <data name="ocultar_detalle1" xml:space="preserve">
+    <value>Ocultar Detalle</value>
+  </data>
+  <data name="ocultar_futuro" xml:space="preserve">
+    <value>Hide Future</value>
+  </data>
+  <data name="ocultar_historico" xml:space="preserve">
+    <value>Hide History</value>
+  </data>
+  <data name="ocultar_historico1" xml:space="preserve">
+    <value>Ocultar Histórico</value>
+  </data>
+  <data name="operacion" xml:space="preserve">
+    <value>Operación</value>
+  </data>
+  <data name="operacion1" xml:space="preserve">
+    <value>Operación</value>
+  </data>
+  <data name="producto" xml:space="preserve">
+    <value>Product</value>
+  </data>
+  <data name="producto1" xml:space="preserve">
+    <value>Producto</value>
+  </data>
+  <data name="psi_confirmados" xml:space="preserve">
+    <value>CAP Confirmados</value>
+  </data>
+  <data name="psi_confirmados1" xml:space="preserve">
+    <value>CAP Confirmados</value>
+  </data>
+  <data name="revenue_total" xml:space="preserve">
+    <value>Revenue Total</value>
+  </data>
+  <data name="revenue_total1" xml:space="preserve">
+    <value>Revenue Total</value>
+  </data>
+  <data name="si" xml:space="preserve">
+    <value>SI</value>
+  </data>
+  <data name="si1" xml:space="preserve">
+    <value>SI</value>
+  </data>
+  <data name="subtitle" xml:space="preserve">
+    <value>Por favor seleccione una cuenta para ingresar los valores de Sales In y Sales Out</value>
+  </data>
+  <data name="subtitle1" xml:space="preserve">
+    <value>Por favor seleccione una cuenta para ingresar los valores de Sales In y Sales Out</value>
+  </data>
+  <data name="titulo" xml:space="preserve">
+    <value>CAP</value>
+  </data>
+  <data name="titulo1" xml:space="preserve">
+    <value>CAP</value>
+  </data>
+  <data name="todos" xml:space="preserve">
+    <value>Todos</value>
+  </data>
+  <data name="todos1" xml:space="preserve">
+    <value>Todos</value>
+  </data>
+  <data name="total" xml:space="preserve">
+    <value>Total</value>
+  </data>
+  <data name="total1" xml:space="preserve">
+    <value>Total</value>
+  </data>
+  <data name="usuario" xml:space="preserve">
+    <value>Usuario</value>
+  </data>
+  <data name="usuario1" xml:space="preserve">
+    <value>Usuario</value>
+  </data>
+  <data name="varios" xml:space="preserve">
+    <value>Varios</value>
+  </data>
+  <data name="varios1" xml:space="preserve">
+    <value>Varios</value>
+  </data>
+  <data name="ver" xml:space="preserve">
+    <value>Ver</value>
+  </data>
+  <data name="ver1" xml:space="preserve">
+    <value>Ver</value>
+  </data>
+  <data name="volver" xml:space="preserve">
+    <value>Volver</value>
+  </data>
+  <data name="volver1" xml:space="preserve">
+    <value>Volver</value>
+  </data>
+</root>

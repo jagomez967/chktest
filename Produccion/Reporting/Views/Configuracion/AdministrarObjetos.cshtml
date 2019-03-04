@@ -1,0 +1,110 @@
+﻿@using Reporting.ViewModels
+@model ConfigurarObjetosVM
+
+@{
+    ViewBag.Title = Reporting.Resources.Configuracion.lblAsignarObjetosTitulo;
+}
+
+@Html.Partial("_SideMenu")
+
+<div class="titulo-pagina-fotos">
+    <a class="ecualiza-fotos always-visible animated slideInLeft" id="tabShowHide" href="#"></a>
+</div>
+
+<div class="container-fluid panel panel-default configurarTablero">
+    <h1>@Reporting.Resources.Configuracion.lblAsignacionObjetosTitulo2</h1>
+    <h5>@Reporting.Resources.Configuracion.lblAsignacionObjetosSubTitulo</h5>
+    <hr />
+
+    <div class="form-group">
+        @Html.TextBox("search-objeto", string.Empty, htmlAttributes: new { @id = "search-objeto", @placeholder = @Reporting.Resources.Configuracion.placeholderAsignacionObjetosBuscar, @class = "form-control", @style = "width:400px;" })
+    </div>
+
+    <hr />
+    <div id="div-tabla-objetos">
+        <table class="table table-responsive table-hover table-bordered">
+            <thead>
+                <tr>
+                    <th style="display:none;">@Reporting.Resources.Configuracion.lblTablaColCategoriaAsignacionObjetos</th>
+                    <th style="width:40%;">@Reporting.Resources.Configuracion.lblTablaColNombreAsignacionObjetos</th>
+                    <th style="width:20%;">@Reporting.Resources.Configuracion.lblTablaColAsignadoAsignacionObjetos</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var f in Model.Familias)
+                {
+                    <tr data-familia-id="@f.Id">
+                        <th style="display:none;">@f.Categoria</th>
+                        <td>
+                            <span style="display:block;">@f.Nombre</span>
+                            @if (f.EsAdHoc)
+                            {
+                                <span style="display:block;padding-left:20px;">
+                                    <small class="text-danger"><em>@Reporting.Resources.Configuracion.lblAdHoc @f.Categoria</em></small>
+                                </span>
+                            }
+                            @if (!string.IsNullOrEmpty(f.NombreAsignadoPorUsuario))
+                            {
+                                <span style="display:block;padding-left:20px;">
+                                    <small><em>@f.NombreAsignadoPorUsuario</em></small>
+                                </span>
+                            }
+                        </td>
+                        <td>@Html.CheckBox(string.Format("familia_t{0}", f.Id), f.Asignado, htmlAttributes: new { @class = "fliaselected" })</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+@section scripts{
+    @Scripts.Render("~/bundles/unobstrusive")
+    <script>
+    $(document).ready(function () {
+        $('body').on('click', '#tabShowHide', function () {
+            var val = $('body, .slide-menu').css('left') === '200px' ? '0px' : '200px';
+            var _padding = $('body, .slide-menu').css('left') != '200px' ? '200px' : '0px';
+            $('body, .slide-menu').css('left', val);
+            $("body").css('padding-right', _padding);
+        });
+
+        $('#div-tabla-objetos').find('.fliaselected').bootstrapSwitch({
+            size: 'mini',
+            onText: "@Reporting.Resources.Configuracion.lblOnOffLabelYes",
+                offText: "@Reporting.Resources.Configuracion.lblOnOffLabelNo"
+            });
+
+
+
+            $('#modal-editar-nombre').on('click', '#btn-modal-cancelar', function () {
+                $('#modal-editar-nombre').modal('hide');
+            });
+
+            $('#div-tabla-objetos').on('switchChange.bootstrapSwitch', '.fliaselected', function (event, state) {
+                var familiaid = $(this).closest('tr').attr('data-familia-id');
+
+                $.ajax({
+                    url: '@Url.Action("AdmFliaObjCliente", "Configuracion")',
+                dataType: 'json',
+                data: { familiaid: familiaid, activo: state },
+                method: 'POST',
+                success: function (result) {
+                    if (!result) {
+                        return false;
+                    }
+                },
+                error: function () {
+                    console.log('Error Inesperado al cambiar estado activo de filtro');
+                }
+            });
+        });
+
+        $('#search-objeto').on('keyup', function () {
+            var str = $(this).val();
+            $('#div-tabla-objetos').find('tr').hide();
+            $('#div-tabla-objetos').find('tr:icontains("' + str + '")').show();
+        });
+    });
+    </script>
+}

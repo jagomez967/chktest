@@ -1,0 +1,175 @@
+﻿@using Reporting.ViewModels
+@model GeoInfoReport
+
+@{
+    DateTime initReport = DateTime.Parse(Model.CreationDate);
+    DateTime endReport = DateTime.Parse(Model.CloseDate);
+    DateTime receptionReport = DateTime.Parse(Model.ReceptionDate);
+
+    string PDVTime = endReport.Subtract(initReport).ToString("hh\\:mm\\:ss");
+}
+
+<div class="header-description">
+    <h1 class="section-header-title">
+        @Model.Name - @Model.IdPDV.ToString()
+    </h1>
+    @if (Model.Categorie != string.Empty)
+    {
+        <h2 class="section-header-subtitle">
+            <span class="section-header-subtitle-badge">
+                @Model.Categorie
+            </span>
+        </h2>
+    }
+    <div class="section-header-description-container">
+        <div class="section-rating-line">
+            @Model.Direction
+        </div>
+        <div class="section-rating-line">
+            <i>@Model.Chain</i>
+        </div>
+    </div>
+</div>
+
+<div class="section-divider section-divider-bottom-line" style="height:8px"></div>
+<div class="section-divider" style="height:15px"></div>
+
+@* DATOS DE REPORTE *@
+<div class="section-info section-info-hoverable">
+    <div class="section-info-action-hoverable">
+        <div class="section-info-line">
+            <div class="section-info-icon"><i class="fa fa-user"></i></div>
+            <span class="section-info-text">@Model.UserName</span>
+        </div>
+    </div>
+</div>
+<div class="section-info section-info-hoverable">
+    <div class="section-info-action-hoverable">
+        <div class="section-info-line">
+            <div class="section-info-icon"><i class="fa fa-info-circle"></i></div>
+            <span class="section-info-text">@Reporting.Resources.Mapas.lblReportID: @Model.idReporte.ToString()</span>
+        </div>
+    </div>
+</div>
+<div class="section-info section-info-hoverable">
+    <div class="row">
+        <div class="col-xs-offset-1 col-xs-11" style="margin:5px">
+            <i><b>@Reporting.Resources.Mapas.TimeInPos:</b> @PDVTime</i>
+        </div>
+    </div>
+</div>
+@if (Model.CreationDate != string.Empty)
+{
+    <div class="section-info section-info-hoverable">
+        <div class="row">
+            <div class="col-xs-offset-1 col-xs-3">
+                <strong>@Reporting.Resources.Mapas.CreationDate:</strong>
+            </div>
+            <div class="col-xs-8">
+                <i>@Model.CreationDate</i>
+            </div>
+        </div>
+    </div>
+}
+
+@if (Model.CloseDate != string.Empty)
+{
+    <div class="section-info section-info-hoverable">
+        <div class="row">
+            <div class="col-xs-offset-1 col-xs-3">
+                <strong>@Reporting.Resources.Mapas.CloseDate:</strong>
+            </div>
+            <div class="col-xs-8">
+                <i>@Model.CloseDate</i>
+            </div>
+        </div>
+    </div>
+}
+@if (Model.SendDate != string.Empty)
+{
+    <div class="section-info section-info-hoverable">
+        <div class="row">
+            <div class="col-xs-offset-1 col-xs-3">
+                <strong>@Reporting.Resources.Mapas.SendDate:</strong>
+            </div>
+            <div class="col-xs-8">
+                <i>@Model.SendDate</i>
+            </div>
+        </div>
+    </div>
+}
+@if (Model.ReceptionDate != string.Empty)
+{
+    <div class="section-info section-info-hoverable">
+        <div class="row">
+            <div class="col-xs-offset-1 col-xs-3">
+                <strong>@Reporting.Resources.Mapas.ReceptionDate:</strong>
+            </div>
+            <div class="col-xs-8">
+                <i>@Model.ReceptionDate</i>
+            </div>
+        </div>
+    </div>
+}
+@if (Model.UpdateDate != string.Empty)
+{
+    <div class="section-info section-info-hoverable">
+        <div class="row">
+            <div class="col-xs-offset-1 col-xs-3">
+                <strong>@Reporting.Resources.Mapas.UpdateDate:</strong>
+            </div>
+            <div class="col-xs-8">
+                <i>@Model.UpdateDate</i>
+            </div>
+        </div>
+    </div>
+}
+
+<div class="section-divider section-divider-bottom-line" style="height:8px"></div>
+<div class="section-divider" style="height:15px"></div>
+@*Seccion Info de Fotografias. Cargo dos o tres ultimas del reporte y las muestro aca*@
+<div class="section-photo-reports">
+    <div id="loadingPhotosPDV" style="display:none;">
+        <strong>@Reporting.Resources.Mapas.lblLoadingPhotos</strong>
+    </div>
+    <div id="PhotoListPDV_" class="photoListPDV"></div>
+</div>
+
+@*Si existen reportes cargados muestro un timeline con los ultimos*@
+@if (Model.Signature)
+{
+    <div class="section-divider section-divider-bottom-line" style="height:8px"></div>
+    <div class="section-divider" style="height:15px"></div>
+    <h3> @Reporting.Resources.Mapas.Signature </h3>
+    <div class="section-timeline-reports">
+        <div id="signatureReport_" class="signatureReport"></div>
+    </div>
+}
+<script>
+    GetImagesFromReport = () =>
+        $.ajax({
+            url: "@Url.Action("GetImagesFromReport", "Geo")",
+            type: "POST",
+            dataType: "html",
+            data: { idReporte: @Model.idReporte.ToString()},
+            beforeSend: () => $('#loadingPhotosPDV').show(),
+            success: (data) => $(".photoListPDV").html(data),
+            complete: () => $('#loadingPhotosPDV').hide()
+        });
+
+    GetSignatureFromReport = () =>
+        $.ajax({
+            url: "@Url.Action("GetSignatureFromReport", "Geo")",
+            type: "POST",
+            dataType: "html",
+            data: { idReporte: @Model.idReporte.ToString()},
+            success: (data) => $(".signatureReport").html(data),
+        });
+
+    $(document).ready( () => {
+        GetImagesFromReport();
+         if ($('.signatureReport').length > 0) {
+             GetSignatureFromReport();
+        }
+    });
+</script>

@@ -1,0 +1,408 @@
+﻿@model Reporting.ViewModels.SalesInOutFormViewModel
+
+@{
+    var DateFrom = new DateTime(DateTime.Now.Year, 4, 1);
+    var DateTo = new DateTime(DateTime.Now.Year+1, 4, 1);
+    var FYPOSellIn = Model.SalesInOut.Where(s=>s.Fecha>=DateFrom && s.Fecha<DateTo).Sum(s => s.POSellIn);
+    var FYPOSellOut = Model.SalesInOut.Where(s=>s.Fecha>=DateFrom && s.Fecha<DateTo).Sum(s => s.POSellOut);
+    var FYPOVarSellIn = Model.SalesInOut.Where(s=>s.Fecha>=DateFrom && s.Fecha<DateTo).Sum(s => s.POVarSellIn);
+    var FYPOVarSellOut = Model.SalesInOut.Where(s=>s.Fecha>=DateFrom && s.Fecha<DateTo).Sum(s => s.POVarSellOut);
+    var FYPVSellIn = Model.SalesInOut.Where(s=>s.Fecha>=DateFrom && s.Fecha<DateTo).Sum(s => s.PVSellIn);
+    var FYPVSellOut = Model.SalesInOut.Where(s=>s.Fecha>=DateFrom && s.Fecha<DateTo).Sum(s => s.PVSellOut);
+    var FYPVVarSellIn = Model.SalesInOut.Where(s=>s.Fecha>=DateFrom && s.Fecha<DateTo).Sum(s => s.PVVarSellIn);
+    var FYPVVarSellOut = Model.SalesInOut.Where(s=>s.Fecha>=DateFrom && s.Fecha<DateTo).Sum(s => s.PVVarSellOut);
+    var FYSalesIn = Model.SalesInOut.Where(s=>s.Fecha>=DateFrom && s.Fecha<DateTo).Sum(s => s.SalesIn);
+    var FYSalesOut = Model.SalesInOut.Where(s=>s.Fecha>=DateFrom && s.Fecha<DateTo).Sum(s => s.SalesOut);
+    var FYChannelInv = Model.SalesInOut.Where(s=>s.Fecha>=DateFrom && s.Fecha<DateTo).Sum(s => s.ChannelInv);
+    var FYYoY = (Model.SalesInOut.Where(s => s.Fecha >= DateFrom && s.Fecha < DateTo).Sum(s => s.YoY) / 12);
+    var FYDOCI = Model.SalesInOut.Where(s=>s.Fecha>=DateFrom && s.Fecha<DateTo).Sum(s => s.DOCI);
+}
+
+@using (Ajax.BeginForm("GuardarForecastingform", "Forecasting", null, new AjaxOptions
+{
+    HttpMethod = "POST",
+    OnBegin = "beginFormPost",
+    OnSuccess = "successFormPost",
+    OnFailure = "failureFormPost",
+    OnComplete = "completeFormPost",
+    LoadingElementId = string.Format("loadingform-{0}-{1}", Model.IdCadena, Model.IdProducto)
+}))
+{
+    <input type="hidden" name="IdCadena" value="@Model.IdCadena" />
+    <input type="hidden" name="IdProducto" value="@Model.IdProducto" />
+    <input type="hidden" class="hdnconfirmado" name="Confirmado" value="@Model.Confirmado.ToString().ToLower()" />
+
+
+    foreach (var f in Model.Meses)
+    {
+        var e = Model.SalesInOut.FirstOrDefault(v => v.Fecha.Month == f.Month && v.Fecha.Year == f.Year);
+        @Html.Hidden(string.Format("SalesInOut[{0}].Id", Model.Meses.IndexOf(f)), e != null ? e.Id : 0)
+        @Html.Hidden(string.Format("SalesInOut[{0}].Fecha", Model.Meses.IndexOf(f)), f)
+    }
+
+    <div class="formsiso-content">
+        <div class="psi-table-fixedcols">
+            <table class="table-salesinout-fixed" data-confirmado="@Model.Confirmado.ToString().ToLower()" data-istotal="@Model.IsTotal.ToString().ToLower()">
+                <thead style="border:2px solid black;">
+                    <tr>
+                        <th style="background-color:#595959;color:#ffffff;text-transform:uppercase;font-weight:400;border-right:2px solid black;" data-value="@string.Format("{0} - {1} [{2}]", Model.Orden, Model.Producto, Model.IdExterno)">@string.Format("{0} - {1} [{2}]", Model.Orden, Model.Producto, Model.IdExterno)</th>
+                    </tr>
+                </thead>
+                <tbody style="border:2px solid black;">
+                    @*<tr data-field="revenue">
+            <td style="background-color:#c6e0b4;" data-value="@string.Format("Revenue ({0})", Model.Currency)">Revenue (<strong>@Model.Currency</strong>)</td>
+        </tr>*@
+                    @*<tr data-field="wholesaleprice" style="border-bottom:2px solid black;">
+            <td data-value="Wholesale Price" style="">Wholesale Price</td>
+        </tr>*@
+                    <tr class="detail-row" data-field="planoriginalsi" style="font-size:large;">
+                        <td data-value="Plan Original - SI" style="background-color:#fff2cc;"><strong>Plan</strong> | Sell-IN</td>
+                    </tr>
+                    <tr class="detail-row" data-field="planoriginalso" style="font-size:large;">
+                        <td data-value="Plan Original - SO" style="background-color:#fff2cc;"><strong>Plan</strong> | Sell-OUT</td>
+                    </tr>
+                    <tr class="detail-row" data-field="planoriginalvarsi">
+                        <td data-value="VAR Sell In" style="background-color:#d9d9d9;">VAR SI</td>
+                    </tr>
+                    <tr class="detail-row" data-field="planoriginalvarso">
+                        <td data-value="VAR Sell Out" style="background-color:#d9d9d9;">VAR SO</td>
+                    </tr>
+                    <tr class="detail-row" data-field="planvendedorsi" style="font-size:large;">
+                        <td data-value="Plan Vendedor - SI" style="background-color:#ddebf7;"><strong>SALES</strong> | Sell-IN</td>
+                    </tr>
+                    <tr class="detail-row" data-field="planvendedorso" style="font-size:large;">
+                        <td data-value="Plan Vendedor - SO" style="background-color:#ddebf7;"><strong>SALES</strong> | Sell-OUT</td>
+                    </tr>
+                    <tr class="detail-row" data-field="planvendedorvarsi">
+                        <td data-value="VAR Sell In" style="background-color:#d9d9d9;">VAR SI</td>
+                    </tr>
+                    <tr class="detail-row" data-field="planvendedorvarso" style="border-bottom:2px solid black;">
+                        <td data-value="VAR Sell Out" style="background-color:#d9d9d9;">VAR SO</td>
+                    </tr>
+                    <tr data-field="salesin" style="font-size:large;">
+                        <td data-value="Sales In">Sell-IN</td>
+                    </tr>
+                    <tr data-field="salesout" style="font-size:large;">
+                        <td data-value="Sales Out">Sell-OUT</td>
+                    </tr>
+                    <tr data-field="channelinv">
+                        <td data-value="Channel Inv" style="background-color:#d9d9d9;">Channel Inventory</td>
+                    </tr>
+                    @*
+                    <tr data-field="sorr">
+                        <td data-value="SORR" style="background-color:#d9d9d9;">SORR</td>
+                    </tr>
+                    *@
+                    <tr data-field="yoy">
+                        <td data-value="Sell-Out YoY" style="background-color:#d9d9d9;">Sell-Out YoY</td>
+                    </tr>
+                    <tr data-field="doci">
+                        <td data-value="DOCI" style="background-color:#a6a6a6;">DOCI</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <table class="table-salesinout table2export sisodatos" id="table@(Guid.NewGuid().ToString().Replace("-",""))" data-table-title="@string.Format("{0} [{1}]", Model.Producto, Model.IdExterno)" data-categoria="@Model.IdCategoria" data-canal="@Model.IdCanal" data-currency="$" data-confirmado="@Model.Confirmado.ToString().ToLower()" data-sku="@string.Format("{0};{1}",Model.Producto,Model.IdExterno)">
+            <thead style="border:2px solid black;">
+                <tr class="SIRow">
+                    <th class="SIHeader" style="background-color:#595959;color:#ffffff;text-transform:uppercase;font-weight:400;border-right:2px solid black;" data-sku="@(string.Format("[{0}]",Model.IdExterno))" data-value="@(Model.IsTotal?Model.Producto:string.Format("{0} - {1} [{2}]", Model.Orden, Model.Producto, Model.IdExterno))">@string.Format("{0} - {1}", Model.Orden, Model.Producto)</th>
+                    @foreach (var f in Model.Meses)
+                    {
+                        var hdn = (f.Month < DateTime.Now.Month && f.Year == DateTime.Now.Year) || f.Year < DateTime.Now.Year;
+                        bool isFuture = (f > DateTime.Now.AddYears(1).AddMonths(-1) && f <= DateTime.Now.AddYears(1).AddMonths(6));
+                        var indicador = Model.Indicadores.First(i => i.Mes == f.Month).Indicador;
+                        <th class="@(hdn?"fchddncol":"")@(isFuture?" futurecol":"")" style="@(hdn||isFuture?"display:none;background-color: #ffe699;color:#000000;font-weight:400;":"background-color:#595959;color:#ffffff;text-transform:uppercase;font-weight:400;")" data-month="@f.Month" data-year="@f.Year" data-indicador="@indicador" data-value="@string.Format("{0} ({1})",f.ToString("MM-yyyy").Replace(".", "").ToUpper(),indicador)">@f.ToString("MMM").Replace(".", "").ToUpper()<sub>@indicador</sub></th>
+                    }
+                    <th class="sifyttl" style="background-color:#595959;color:#ffffff;text-transform:uppercase;font-weight:400;" data-value="@string.Format("Total FY {0}", DateTime.Now.ToString("yy"))">@string.Format("Total FY {0}", DateTime.Now.ToString("yy"))</th>
+                </tr>
+            </thead>
+            <tbody style="border:2px solid black;">
+                @*<tr data-field="revenue">
+            <td style="background-color:#c6e0b4;border-right:2px solid black;" data-value="@string.Format("Revenue ({0})", Model.Currency)">Revenue (<strong>@Model.Currency</strong>)</td>
+            @foreach (var f in Model.Meses)
+            {
+                var e = Model.SalesInOut.FirstOrDefault(v => v.Fecha.Month == f.Month && v.Fecha.Year == f.Year);
+                var hdn = (f.Month < DateTime.Now.Month && f.Year == DateTime.Now.Year) || f.Year < DateTime.Now.Year;
+                <td style="background-color:#c6e0b4; @(hdn?"display:none;":"") @(f.Month%3==0?"border-right:1px dashed black;":"")" data-value="@(e != null ? Math.Round(e.Revenue).ToString() : "0")" class="@(hdn?"fchddncol":"")">@(e != null ? string.Format("{0} {1}", "$", Math.Round(e.Revenue).ToString("#,##0")) : string.Format("{0} {1}", "$", "0"))</td>
+            }
+            <td style="background-color:#c6e0b4;border-left:2px solid black;" data-value="@Math.Round(FYRevenue)">@string.Format("{0} {1}", "$", Math.Round(FYRevenue).ToString("#,##0"))</td>
+        </tr>
+        <tr data-field="wholesaleprice" style="border-bottom:2px solid black;">
+            <td data-value="Wholesale Price" style="border-right:2px solid black;">Wholesale Price</td>
+            @foreach (var f in Model.Meses)
+            {
+                var e = Model.SalesInOut.FirstOrDefault(v => v.Fecha.Month == f.Month && v.Fecha.Year == f.Year);
+                var hdn = (f.Month < DateTime.Now.Month && f.Year == DateTime.Now.Year) || f.Year < DateTime.Now.Year;
+                <td class="@(hdn?"fchddncol":"")" style="@(hdn?"display:none;background-color:#d9d9d9;":"") @(f.Month%3==0?"border-right:1px dashed black;":"")" data-value="@(e != null ? Math.Round(e.WholeSalePrice).ToString("0,##") : "0")">@(e != null ? string.Format("{0} {1}", "$", Math.Round(e.WholeSalePrice).ToString("#,##0,##")) : string.Format("{0} {1}","$", "0"))</td>
+            }
+            <td data-value="" style="border-left:2px solid black;"></td>
+        </tr>*@
+                <tr class="detail-row xls-detail" data-field="planoriginalsi" style="font-size:large;">
+                    <td data-value="Plan Original - SI" style="background-color:#fff2cc;border-right:2px solid black;"><strong>Plan</strong> | Sell-IN</td>
+                    @foreach (var f in Model.Meses)
+                    {
+                        var e = Model.SalesInOut.FirstOrDefault(v => v.Fecha.Month == f.Month && v.Fecha.Year == f.Year);
+                        var hdn = (f.Month < DateTime.Now.Month && f.Year == DateTime.Now.Year) || f.Year < DateTime.Now.Year;
+                        bool isFuture = (f > DateTime.Now.AddYears(1).AddMonths(-1) && f <= DateTime.Now.AddYears(1).AddMonths(6));
+                        <td class="@(hdn?"fchddncol":"") @(isFuture?" futurecol":"")" style="background-color:#fff2cc; @(hdn||isFuture?"display:none;":"") @(f.Month%3==0?"border-right:1px dashed black;":"")" data-value="@(e != null ? e.POSellIn : 0)" class="@hdn">@(e != null ? e.POSellIn.ToString("#,##0").Replace(".", ",") : "0")</td>
+                    }
+                    <td style="background-color:#fff2cc;border-left:2px solid black;" data-value="@FYPOSellIn">@FYPOSellIn.ToString("#,##0").Replace(".", ",")</td>
+                </tr>
+                <tr class="detail-row xls-detail" data-field="planoriginalso" style="font-size:large;">
+                    <td data-value="Plan Original - SO" style="background-color:#fff2cc;border-right:2px solid black;"><strong>Plan</strong> | Sell-OUT</td>
+                    @foreach (var f in Model.Meses)
+                    {
+                        var e = Model.SalesInOut.FirstOrDefault(v => v.Fecha.Month == f.Month && v.Fecha.Year == f.Year);
+                        var hdn = (f.Month < DateTime.Now.Month && f.Year == DateTime.Now.Year) || f.Year < DateTime.Now.Year;
+                        bool isFuture = (f > DateTime.Now.AddYears(1).AddMonths(-1) && f <= DateTime.Now.AddYears(1).AddMonths(6));
+                        <td class="@(hdn?"fchddncol":"") @(isFuture?" futurecol":"")" style="background-color:#fff2cc; @(hdn||isFuture?"display:none;":"") @(f.Month%3==0?"border-right:1px dashed black;":"")" data-value="@(e != null ? e.POSellOut : 0)">@(e != null ? e.POSellOut.ToString("#,##0").Replace(".", ",") : "0")</td>
+                    }
+                    <td style="background-color:#fff2cc;border-left:2px solid black;" data-value="@FYPOSellOut">@FYPOSellOut.ToString("#,##0")</td>
+                </tr>
+                <tr class="detail-row xls-detail" data-field="planoriginalvarsi">
+                    <td data-value="VAR Sell In" style="background-color:#d9d9d9;border-right:2px solid black;">VAR SI</td>
+                    @foreach (var f in Model.Meses)
+                    {
+                        var e = Model.SalesInOut.FirstOrDefault(v => v.Fecha.Month == f.Month && v.Fecha.Year == f.Year);
+                        var hdn = (f.Month < DateTime.Now.Month && f.Year == DateTime.Now.Year) || f.Year < DateTime.Now.Year;
+                        bool isFuture = (f > DateTime.Now.AddYears(1).AddMonths(-1) && f <= DateTime.Now.AddYears(1).AddMonths(6));
+                        <td class="@(hdn?"fchddncol":"") @(isFuture?" futurecol":"") @(e.POVarSellIn<0?"text-danger":"")" style="background-color:#d9d9d9; @(hdn||isFuture?"display:none;":"") @(f.Month%3==0?"border-right:1px dashed black;":"")" data-value="@(e != null ? e.POVarSellIn : 0)">@(e != null ? e.POVarSellIn.ToString("#,##0").Replace(".", ",") : "0")</td>
+                    }
+                    <td style="background-color:#d9d9d9;border-left:2px solid black;" data-value="@FYPOVarSellIn">@FYPOVarSellIn.ToString("#,##0").Replace(".", ",")</td>
+                </tr>
+                <tr class="detail-row xls-detail" data-field="planoriginalvarso">
+                    <td data-value="VAR Sell Out" style="background-color:#d9d9d9;border-right:2px solid black;">VAR SO</td>
+                    @foreach (var f in Model.Meses)
+                    {
+                        var e = Model.SalesInOut.FirstOrDefault(v => v.Fecha.Month == f.Month && v.Fecha.Year == f.Year);
+                        var hdn = (f.Month < DateTime.Now.Month && f.Year == DateTime.Now.Year) || f.Year < DateTime.Now.Year;
+                        bool isFuture = (f > DateTime.Now.AddYears(1).AddMonths(-1) && f <= DateTime.Now.AddYears(1).AddMonths(6));
+                        <td class="@(hdn?"fchddncol":"") @(isFuture?" futurecol":"") @(e.POVarSellOut<0?"text-danger":"")" style="background-color:#d9d9d9; @(hdn||isFuture?"display:none;":"") @(f.Month%3==0?"border-right:1px dashed black;":"")" data-value="@(e != null ? e.POVarSellOut : 0)">@(e != null ? e.POVarSellOut.ToString("#,##0").Replace(".", ",") : "0")</td>
+                    }
+                    <td style="background-color:#d9d9d9;border-left:2px solid black;" data-value="@FYPOVarSellOut">@FYPOVarSellOut.ToString("#,##0").Replace(".", ",")</td>
+                </tr>
+                <tr class="detail-row xls-detail" data-field="planvendedorsi" style="font-size:large;">
+                    <td data-value="Plan Vendedor - SI" style="background-color:#ddebf7;border-right:2px solid black;"><strong>SALES</strong> | Sell-IN</td>
+                    @foreach (var f in Model.Meses)
+                    {
+                        var e = Model.SalesInOut.FirstOrDefault(v => v.Fecha.Month == f.Month && v.Fecha.Year == f.Year);
+                        var hdn = (f.Month < DateTime.Now.Month && f.Year == DateTime.Now.Year) || f.Year < DateTime.Now.Year;
+                        bool isFuture = (f > DateTime.Now.AddYears(1).AddMonths(-1) && f <= DateTime.Now.AddYears(1).AddMonths(6));
+                        <td class="@(hdn?"fchddncol":"") @(isFuture?" futurecol":"")" style="@(hdn||isFuture?"background-color:#fff2cc;display:none;":"background-color:#ddebf7;") @(f.Month%3==0?"border-right:1px dashed black;":"")" data-value="@(e != null ? e.PVSellIn : 0)">@(e != null ? e.PVSellIn.ToString("#,##0").Replace(".", ",") : "0")</td>
+                    }
+                    <td style="background-color:#ddebf7;border-left:2px solid black;" data-value="@FYPVSellIn">@FYPVSellIn.ToString("#,##0").Replace(".", ",")</td>
+                </tr>
+                <tr class="detail-row xls-detail" data-field="planvendedorso" style="font-size:large;">
+                    <td data-value="Plan Vendedor - SO" style="background-color:#ddebf7;border-right:2px solid black;"><strong>SALES</strong> | Sell-OUT</td>
+                    @foreach (var f in Model.Meses)
+                    {
+                        var e = Model.SalesInOut.FirstOrDefault(v => v.Fecha.Month == f.Month && v.Fecha.Year == f.Year);
+                        var hdn = (f.Month < DateTime.Now.Month && f.Year == DateTime.Now.Year) || f.Year < DateTime.Now.Year;
+                        bool isFuture = (f > DateTime.Now.AddYears(1).AddMonths(-1) && f <= DateTime.Now.AddYears(1).AddMonths(6));
+                        <td class="@(hdn?"fchddncol":"") @(isFuture?" futurecol":"")" style="@(hdn||isFuture?"background-color:#fff2cc;display:none;":"background-color:#ddebf7;") @(f.Month%3==0?"border-right:1px dashed black;":"")" data-value="@(e != null ? e.PVSellOut : 0)">@(e != null ? e.PVSellOut.ToString("#,##0").Replace(".", ",") : "0")</td>
+                    }
+                    <td style="background-color:#ddebf7;border-left:2px solid black;" data-value="@FYPVSellOut">@FYPVSellOut.ToString("#,##0").Replace(".", ",")</td>
+                </tr>
+                <tr class="detail-row xls-detail" data-field="planvendedorvarsi">
+                    <td data-value="VAR Sell In" style="background-color:#d9d9d9;border-right:2px solid black;">VAR SI</td>
+                    @foreach (var f in Model.Meses)
+                    {
+                        var e = Model.SalesInOut.FirstOrDefault(v => v.Fecha.Month == f.Month && v.Fecha.Year == f.Year);
+                        var hdn = (f.Month < DateTime.Now.Month && f.Year == DateTime.Now.Year) || f.Year < DateTime.Now.Year;
+                        bool isFuture = (f > DateTime.Now.AddYears(1).AddMonths(-1) && f <= DateTime.Now.AddYears(1).AddMonths(6));
+                        <td class="@(hdn?"fchddncol":"") @(isFuture?" futurecol":"") @(e.PVVarSellIn<0?"text-danger":"")" style="background-color:#d9d9d9; @(hdn||isFuture?"display:none;":"") @(f.Month%3==0?"border-right:1px dashed black;":"")" data-value="@(e != null ? e.PVVarSellIn : 0)">@(e != null ? e.PVVarSellIn.ToString("#,##0").Replace(".", ",") : "0")</td>
+                    }
+                    <td style="background-color:#d9d9d9;border-left:2px solid black;" data-value="@FYPVVarSellIn">@FYPVVarSellIn.ToString("#,##0").Replace(".", ",")</td>
+                </tr>
+                <tr class="detail-row xls-detail" data-field="planvendedorvarso" style="border-bottom:2px solid black;">
+                    <td data-value="VAR Sell Out" style="background-color:#d9d9d9;border-right:2px solid black;">VAR SO</td>
+                    @foreach (var f in Model.Meses)
+                    {
+                        var e = Model.SalesInOut.FirstOrDefault(v => v.Fecha.Month == f.Month && v.Fecha.Year == f.Year);
+                        var hdn = (f.Month < DateTime.Now.Month && f.Year == DateTime.Now.Year) || f.Year < DateTime.Now.Year;
+                        bool isFuture = (f > DateTime.Now.AddYears(1).AddMonths(-1) && f <= DateTime.Now.AddYears(1).AddMonths(6));
+                        <td class="@(hdn?"fchddncol":"") @(isFuture?" futurecol":"") @(e.PVVarSellOut<0?"text-danger":"")" style="background-color:#d9d9d9; @(hdn||isFuture?"display:none;":"") @(f.Month%3==0?"border-right:1px dashed black;":"")" data-value="@(e != null ? e.PVVarSellOut : 0)">@(e != null ? e.PVVarSellOut.ToString("#,##0").Replace(".", ",") : "0")</td>
+                    }
+                    <td style="background-color:#d9d9d9;border-left:2px solid black;" data-value="@FYPVVarSellOut">@FYPVVarSellOut.ToString("#,##0").Replace(".", ",")</td>
+                </tr>
+                <tr class="SIRow" data-field="salesin" style="font-size:large;">
+                    <td class="" data-value="Sales In" style="border-right:2px solid black;">Sell-IN</td>
+                    @foreach (var f in Model.Meses)
+                    {
+                        var e = Model.SalesInOut.FirstOrDefault(v => v.Fecha.Month == f.Month && v.Fecha.Year == f.Year);
+                        if (f.Year > DateTime.Now.Year || (f.Year == DateTime.Now.Year && f.Month >= DateTime.Now.Month))
+                        {
+                            if (Model.Confirmado || Model.IsTotal)
+                            {
+                                bool isFuture = (f > DateTime.Now.AddYears(1).AddMonths(-1) && f <= DateTime.Now.AddYears(1).AddMonths(6));
+                                <td class="@(isFuture?"futurecol":"")" style="@(f.Month%3==0?"border-right:1px dashed black;":"") @(isFuture?"display:none;":"")" data-value="@(e != null ? e.SalesIn : 0)">
+                                    @(e != null ? e.SalesIn.ToString("#,##0").Replace(".", ",") : "0")
+                                </td>
+                            }
+                            else
+                            {
+                                bool isFuture = (f > DateTime.Now.AddYears(1).AddMonths(-1) && f <= DateTime.Now.AddYears(1).AddMonths(6));
+                                <td class="@(isFuture?"futurecol":"")" style="@(f.Month%3==0?"border-right:1px dashed black;":"") @(isFuture?"display:none;":"")" data-value="@(e != null ? e.SalesIn : 0)">
+                                    <div class="form-group">
+                                        @Html.TextBox(string.Format("SalesInOut[{0}].SalesIn", Model.Meses.IndexOf(f)), e != null ? e.SalesIn : 0, new { type = "text", @class = "inputSaleIn inputSaleInOut onlyinteger form-control", @autocomplete = "off" })
+                                    </div>
+                                </td>
+                            }
+                        }
+                        else
+                        {
+                            <td class="fchddncol" style="display:none;background-color:#fff2cc; @(f.Month%3==0?"border-right:1px dashed black;":"")" data-value="@(e != null ? e.SalesIn : 0)">
+                                @(e != null ? e.SalesIn.ToString("#,##0").Replace(".", ",") : "0")
+                            </td>
+                        }
+                    }
+                    <td class ="sifyttl" style="border-left:2px solid black;" data-value="@FYSalesIn">@FYSalesIn.ToString("#,##0").Replace(".", ",")</td>
+                </tr>
+                <tr data-field="salesout" style="font-size:large;">
+                    <td data-value="Sales Out" style="border-right:2px solid black;">Sell-OUT</td>
+                    @foreach (var f in Model.Meses)
+                    {
+                        var e = Model.SalesInOut.FirstOrDefault(v => v.Fecha.Month == f.Month && v.Fecha.Year == f.Year);
+                        if (f.Year > DateTime.Now.Year || (f.Year == DateTime.Now.Year && f.Month >= DateTime.Now.Month))
+                        {
+                            if (Model.Confirmado || Model.IsTotal)
+                            {
+                                bool isFuture = (f > DateTime.Now.AddYears(1).AddMonths(-1) && f <= DateTime.Now.AddYears(1).AddMonths(6));
+                                <td class="@(isFuture?"futurecol":"")" style="@(f.Month%3==0?"border-right:1px dashed black;":"") @(isFuture?"display:none;":"")" data-value="@(e != null ? e.SalesOut : 0)">
+                                    @(e != null ? e.SalesOut.ToString("#,##0").Replace(".", ",") : "0")
+                                </td>
+                            }
+                            else
+                            {
+                                bool isFuture = (f > DateTime.Now.AddYears(1).AddMonths(-1) && f <= DateTime.Now.AddYears(1).AddMonths(6));
+                                bool lastmonth = (f.Date.Month == DateTime.Now.AddMonths(11).Month && f.Date.Year == DateTime.Now.AddMonths(11).Year);
+                                <td class="@(isFuture?"futurecol":"")@(lastmonth?"lastmonthso":"")" style="@(f.Month%3==0?"border-right:1px dashed black;":"")  @(isFuture?"display:none;":"")" data-value="@(e != null ? e.SalesOut : 0)">
+                                    <div class="form-group">
+                                        @Html.TextBox(string.Format("SalesInOut[{0}].SalesOut", Model.Meses.IndexOf(f)), e != null ? e.SalesOut : 0, new { type = "text", @class = "inputSaleInOut onlyinteger form-control", @autocomplete = "off" })
+                                    </div>
+                                </td>
+                            }
+                        }
+                        else
+                        {
+                            <td class="fchddncol" style="display:none;background-color:#fff2cc; @(f.Month%3==0?"border-right:1px dashed black;":"")" data-value="@(e != null ? e.SalesOut : 0)">
+                                @(e != null ? e.SalesOut.ToString("#,##0").Replace(".", ",") : "0")
+                            </td>
+                        }
+                    }
+                    <td style="border-left:2px solid black;" data-value="@FYSalesOut">@FYSalesOut.ToString("#,##0").Replace(".", ",")</td>
+                </tr>
+                <tr data-field="channelinv">
+                    <td data-value="Channel Inv" style="background-color:#d9d9d9;border-right:2px solid black;">Channel Inventory</td>
+                    @foreach (var f in Model.Meses)
+                    {
+                        var e = Model.SalesInOut.FirstOrDefault(v => v.Fecha.Month == f.Month && v.Fecha.Year == f.Year);
+                        if (f.Date <= DateTime.Now.AddMonths(-1) && f.Date >= DateTime.Now.AddMonths(-2))
+                        {
+                            if (Model.Confirmado || Model.IsTotal)
+                            {
+                                var hdn = (f.Month < DateTime.Now.Month && f.Year == DateTime.Now.Year) || f.Year < DateTime.Now.Year;
+                                bool isFuture = (f > DateTime.Now.AddYears(1).AddMonths(-1) && f <= DateTime.Now.AddYears(1).AddMonths(6));
+                                <td class="@(hdn?"fchddncol":"")@(isFuture?" futurecol":"")@(e.ChannelInv<0?" text-danger":"")" style="background-color:#d9d9d9; @(hdn||isFuture?"display:none;":"") @(f.Month%3==0?"border-right:1px dashed black;":"")" data-no-negative="@(hdn||isFuture?"false":"true")" data-value="@(e != null ? e.ChannelInv : 0)">
+                                    <span>@(e != null ? e.ChannelInv.ToString("#,##0").Replace(".", ",") : "0")</span>
+                                    @Html.Hidden(string.Format("SalesInOut[{0}].ChannelInv", Model.Meses.IndexOf(f)), e.ChannelInv)
+                                </td>
+
+                            }
+                            else
+                            {
+                                var hdn = (f.Month < DateTime.Now.Month && f.Year == DateTime.Now.Year) || f.Year < DateTime.Now.Year;
+                                bool isFuture = (f > DateTime.Now.AddYears(1).AddMonths(-1) && f <= DateTime.Now.AddYears(1).AddMonths(6));
+                                <td class="@(hdn?"fchddncol":"")@(isFuture?" futurecol":"")" style="background-color:#d9d9d9; @(f.Month%3==0?"border-right:1px dashed black;":"")  @(hdn||isFuture?"display:none;":"")" data-value="@(e != null ? e.ChannelInv : 0)">
+                                    <div class="form-group">
+                                        @Html.TextBox(string.Format("SalesInOut[{0}].ChannelInv", Model.Meses.IndexOf(f)), e != null ? e.ChannelInv : 0, new { type = "text", @class = "inputSaleInOut onlyinteger form-control", @autocomplete = "off" })
+                                    </div>
+                                </td>
+                            }
+
+                        }
+                        else
+                        {
+                            var hdn = (f.Month < DateTime.Now.Month && f.Year == DateTime.Now.Year) || f.Year < DateTime.Now.Year;
+                            bool isFuture = (f > DateTime.Now.AddYears(1).AddMonths(-1) && f <= DateTime.Now.AddYears(1).AddMonths(6));
+                            bool lastmonth = (f.Date.Month == DateTime.Now.AddMonths(11).Month && f.Date.Year == DateTime.Now.AddMonths(11).Year);
+                            <td class="@(hdn?"fchddncol":"")@(isFuture?" futurecol":"")@(e.ChannelInv<0?" text-danger":"")@(lastmonth?" lastmonthcinv":"")" style="background-color:#d9d9d9; @(hdn||isFuture?"display:none;":"") @(f.Month%3==0?"border-right:1px dashed black;":"")" data-no-negative="@(hdn||isFuture?"false":"true")" data-value="@(e != null ? e.ChannelInv : 0)">
+                                <span>@(e != null ? e.ChannelInv.ToString("#,##0").Replace(".", ",") : "0")</span>
+                                @Html.Hidden(string.Format("SalesInOut[{0}].ChannelInv", Model.Meses.IndexOf(f)), e.ChannelInv)
+                            </td>
+                        }
+
+                    }
+                    <td style="background-color:#d9d9d9;border-left:2px solid black;" data-value="@(FYChannelInv/12)">@((FYChannelInv / 12).ToString("#,##0").Replace(".", ","))</td>
+                </tr>
+                @*
+                <tr data-field="sorr" class="xls-detail">
+                    <td data-value="SORR" style="background-color:#d9d9d9;border-right:2px solid black;">SORR</td>
+                    @foreach (var f in Model.Meses)
+                    {
+                        var e = Model.SalesInOut.FirstOrDefault(v => v.Fecha.Month == f.Month && v.Fecha.Year == f.Year);
+                        var hdn = (f.Month < DateTime.Now.Month && f.Year == DateTime.Now.Year) || f.Year < DateTime.Now.Year;
+                        bool isFuture = (f > DateTime.Now.AddYears(1).AddMonths(-1) && f <= DateTime.Now.AddYears(1).AddMonths(6));
+                        <td class="@(hdn?"fchddncol":"") @(isFuture?" futurecol":"") @(e.SORR<0?"text-danger":"")" style="background-color:#d9d9d9; @(hdn||isFuture?"display:none;":"") @(f.Month%3==0?"border-right:1px dashed black;":"")" data-value="@(e != null ? Math.Round(e.SORR) : 0)">
+                            <span>@(e != null ? Math.Round(e.SORR).ToString("#,##0").Replace(".", ",") : "0")</span>
+                            @Html.Hidden(string.Format("SalesInOut[{0}].SORR", Model.Meses.IndexOf(f)), Math.Round(e.SORR))
+                        </td>
+                    }
+                    <td style="background-color:#d9d9d9;border-left:2px solid black;" data-value="@Math.Round(FYSORR/12)">@Math.Round(FYSORR / 12).ToString("#,##0").Replace(".", ",")</td>
+                </tr>
+                *@
+                <tr data-field="yoy" >
+                    <td data-value="Sell-Out YoY" style="background-color:#d9d9d9;border-right:2px solid black;">Sell-Out YoY</td>
+                    @foreach (var f in Model.Meses)
+                    {
+                        var e = Model.SalesInOut.FirstOrDefault(v => v.Fecha.Month == f.Month && v.Fecha.Year == f.Year);
+                        var hdn = (f.Month < DateTime.Now.Month && f.Year == DateTime.Now.Year) || f.Year < DateTime.Now.Year;
+                        bool isFuture = (f > DateTime.Now.AddYears(1).AddMonths(-1) && f <= DateTime.Now.AddYears(1).AddMonths(6));
+                        <td class="@(hdn?"fchddncol":"") @(isFuture?" futurecol":"")" style="background-color:#d9d9d9; @(hdn||isFuture?"display:none;":"") @(f.Month%3==0?"border-right:1px dashed black;":"")" data-value="@(e != null ? Math.Round(e.YoY) : 0)">
+                            <span>@(e != null ? Math.Round(e.YoY).ToString("#,##0") + " %" : "0")</span>
+                            @Html.Hidden(string.Format("SalesInOut[{0}].YoY", Model.Meses.IndexOf(f)), Math.Round(e.YoY))
+                        </td>
+                    }
+                    <td style="background-color:#d9d9d9;border-left:2px solid black;" data-value="@FYYoY">@(FYYoY.ToString("#,##0") + " %")</td>
+                </tr>
+                <tr data-field="doci">
+                    <td data-value="DOCI" style="background-color:#a6a6a6;border-right:2px solid black;">DOCI</td>
+                    @foreach (var f in Model.Meses)
+                    {
+                        var e = Model.SalesInOut.FirstOrDefault(v => v.Fecha.Month == f.Month && v.Fecha.Year == f.Year);
+                        var hdn = (f.Month < DateTime.Now.Month && f.Year == DateTime.Now.Year) || f.Year < DateTime.Now.Year;
+                        bool isFuture = (f > DateTime.Now.AddYears(1).AddMonths(-1) && f <= DateTime.Now.AddYears(1).AddMonths(6));
+                        <td class="@(hdn?"fchddncol":"") @(isFuture?" futurecol":"") @(e.DOCI<0?"text-danger":"")" style="@(e.DOCI>e.LimiteDoci?"color:#000000;background-color:#ff7e79;font-weight:700;":"background-color:#a6a6a6;font-weight:400;") @(hdn||isFuture?"display:none;":"") @(f.Month%3==0?"border-right:1px dashed black;":"")" data-value="@(e != null ? e.DOCI : 0)" data-limite-doci="@e.LimiteDoci">
+                            <span>@(e != null ? e.DOCI.ToString("#,##0").Replace(".", ",") : "0")</span>
+                            @Html.Hidden(string.Format("SalesInOut[{0}].DOCI", Model.Meses.IndexOf(f)), e.DOCI)
+                        </td>
+                    }
+                    <td style="background-color:#a6a6a6;border-left:2px solid black;" data-value="@(FYDOCI/12)">@((FYDOCI / 12).ToString("#,##0").Replace(".", ","))</td>
+                </tr>
+            </tbody>
+        </table>
+
+        @if (!Model.Confirmado)
+        {
+            <div class="row form-opciones">
+                <div class="col-sm-12">
+                    <div class="form-group">
+                        <input type="submit" class="btn btn-xs btn-primary btnguardar" name="savebtn" value="@Reporting.Resources.Forecasting.guardar_cambios" />
+                        <div class="loadingformpost" style="display:none;">
+                            <p><i class="fa fa-spin fa-spinner"></i> @Reporting.Resources.Forecasting.guardando_datos_de_formulario</p>
+                        </div>
+                        <div class="errormessage" style="display:none;">
+                            <p><span class="text-danger">@Reporting.Resources.Forecasting.error_al_intentar_guardar_datos_de_formulario</span></p>
+                        </div>
+                        <div class="chinvneg" style="display:none;">
+                            <p><span class="text-danger">@Reporting.Resources.Forecasting.ningun_dato_de_channel_inv_puede_ser_menor_a_0</span></p>
+                        </div>
+                        <div class="noSalesOut" style="display:none;">
+                            <p><span class="text-danger">@Reporting.Resources.Forecasting.no_sales_out</span></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+}

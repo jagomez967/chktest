@@ -1,0 +1,204 @@
+﻿@using Reporting.ViewModels
+@model FiltrosViewModel
+@{
+    ViewBag.Title = Reporting.Resources.Imagenes.titulo;
+}
+
+<style>
+    div#loading {
+        display: none;
+    }
+</style>
+
+<div class="modal fade foto-ampliada" id="modalAmpliarImagen" tabindex="-1" role="dialog" aria-labelledby="tituloModalAmpliar">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content"></div>
+    </div>
+</div>
+
+
+@using (Ajax.BeginForm("AplicarFiltros", "Imagenes", null, new AjaxOptions { OnBegin = "aplicarfiltrobegin", OnSuccess = "aplicarfiltrosuccess", OnComplete = "aplicarfiltrocomplete", InsertionMode = InsertionMode.Replace, UpdateTargetId = "filtrostablero" }))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="filtroReporting">
+        <div class="filtroacciones">
+            <button type="submit" class="btn aplicarfiltro">@Reporting.Resources.Imagenes.lblImagenesIndexAplicarFiltro <i class="fa fa-check pull-right"></i></button>
+        </div>
+        <div id="loadingfiltros" style="display:none;">
+            <strong>@Reporting.Resources.Imagenes.lblImagenesIndexCargandoFiltros</strong>
+        </div>
+        <div id="filtrostablero" class="filtroitems"></div>
+    </div>
+}
+
+<div class="titulo-pagina-fotos">
+    <a class="ecualiza-fotos always-visible animated slideInLeft" id="tabShowHide" href="#"></a>
+    @if (MyHelpers.IsInRole("descargarImagenes"))
+    {
+        <a id="descargarFotos" href="#" class="azul descargar-fotos pull-right" style="padding-top:15px;"><i class="fa fa-arrow-down"></i><span>@Reporting.Resources.Imagenes.DescargarFotosResultado</span></a>
+    }
+</div>
+
+<div class="container-fluid fotos">
+    <div id="imagenes" class="row"></div>
+    <div id="loading">
+        <img src="@Url.Content("~/images/ajax-loader.gif")" /><p><b>@Reporting.Resources.Imagenes.loadingLabel &hellip;</b></p>
+    </div>
+    <div class="nohayfotos">
+        <p>@Reporting.Resources.Imagenes.noFotosFound</p>
+    </div>
+</div>
+
+@section scripts{
+
+@Scripts.Render("~/bundles/unobstrusive")
+
+    <script>
+        var urlGetFotosThumb  = '@Url.Action("GetFotosThumb", "Imagenes")';
+        $(document).ready(function () {
+            $('.marcablanca').hide();
+            GetFiltrosDeTablero();
+            loadMoreToInfiniteScrollUl(true);
+        })
+
+        $(window).scroll(ulScrollHandler);
+
+        function GetFiltrosDeTablero(callback) {
+            $.ajax({
+                url: "@Url.Action("GetFiltrosPartialView", "Imagenes")",
+            cache: false,
+            type: "POST",
+            dataType: "html",
+            beforeSend: function () {
+                $('.filtroitems').empty();
+                $('#loadingfiltros').show();
+            },
+            success: function (data, textStatus, XMLHttpRequest) {
+                $(".filtroitems").html(data);
+                if (callback) {
+                    callback();
+                }
+            },
+            complete: function () {
+                $('#loadingfiltros').hide();
+                
+                if (!Modernizr.inputtypes.date) {
+                    setFechasDowngradeBrowsers();
+                }
+            }
+        });
+        }
+
+        $('body').on('click', '#tabShowHide', function () {
+            var val = $('body, .slide-menu').css('left') === '200px' ? '0px' : '200px';
+            var _padding = $('body, .slide-menu').css('left') != '200px' ? '200px' : '0px';
+            $('body, .slide-menu').css('left', val);
+            $("body").css('padding-right', _padding);
+        });
+
+        function aplicarfiltroerror() {
+            console.log('----------------- Error al aplicar filtros -----------------');
+            console.log('------------------------------------------------------------');
+        }
+
+        function aplicarfiltrosuccess() {
+            realizarBusqueda();
+        }
+
+        function aplicarfiltrobegin() {
+            $('.aplicarfiltro').prop("disabled", true);
+        }
+
+        function aplicarfiltrocomplete() {
+            $('.aplicarfiltro').prop("disabled", false);
+            
+            if (!Modernizr.inputtypes.date) {
+                setFechasDowngradeBrowsers();
+            }
+        }
+
+        $('#descargarImagen').on('click', function () {
+            var a = document.getElementById('a-imagenAmpliada');
+            a.click();
+        })
+
+        $('body').on('click', 'a.imagen', function () {
+            var id = $(this).attr('id');
+
+            $.ajax({
+                url: '@Url.Action("GetFotoPorId", "Imagenes")',
+                data: { idFoto: id },
+                type: 'POST',
+                success: function (data) {
+                    if(data)
+                    {
+                        $('#modalAmpliarImagen').find('.modal-content').html(data);
+                    }
+                    $('#modalAmpliarImagen').modal('show');
+                },
+                error: function (xhr, status, errorThrown) {
+                    console.log('----------------- GetFotoPorId ------------------');
+                    console.log(xhr);
+                    console.log(status);
+                    console.log(errorThrown);
+                    console.log('--------------------------------------------------');
+                }
+            });
+
+            return false;
+        });
+
+        function realizarBusqueda() {
+            $('#imagenes').empty();
+            $('.nohayfotos').hide();
+
+            loadMoreToInfiniteScrollUl(true);
+        };
+
+        $('#descargarFotos').on('click', function () {
+
+            if ($("#descargarFotos").attr("disabled") == "disabled") {
+                return false;
+            }
+
+            $('#descargarFotos').find('span').text('@Reporting.Resources.Imagenes.lblImagenesIndexGenerandoArchivo');
+            $('#descargarFotos').attr('disabled', 'disabled');
+
+            $.ajax({
+                url: '@Url.Action("GetFotosResultadoBusqueda", "Imagenes")',
+                type: 'POST',
+                contentType: "application/json; charset=utf-8",
+                success: function (result) {
+                    if (result.length <= 0) {
+                        window.alert('@Reporting.Resources.Imagenes.noFotosFound');
+                        return;
+                    }
+
+                    var link = document.createElement("a");
+                    link.href = "@Url.Action("DownloadFileByToken", "Imagenes")" + "?token=" + result;
+                    link.style = "visibility:hidden";
+                    link.download = result + '.zip';
+                    link.onclick = 'return false;';
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+
+                    $('#descargarFotos').find('span').text('@Reporting.Resources.Imagenes.DescargarFotosResultado');
+                    $("#descargarFotos").removeAttr("disabled");
+                },
+                error: function (xhr, status, errorThrown) {
+                    console.log('--------------- GenerarFotos ---------------');
+                    console.log(xhr);
+                    console.log(status);
+                    console.log(errorThrown);
+                    console.log('--------------------------------------------------');
+                },
+                complete: function () {
+                    $('#descargarFotos').find('span').text('@Reporting.Resources.Imagenes.DescargarFotosResultado');
+                    $("#descargarFotos").removeAttr("disabled");
+                }
+            });
+        });
+    </script>
+}

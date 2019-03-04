@@ -1,0 +1,174 @@
+﻿@using Reporting.ViewModels
+@using System.Threading
+@model EventoVM
+
+@{
+    ViewBag.Title = Reporting.Resources.Calendario.lblCrearEventoTitulo;
+}
+
+<div class="container-fluid panel panel-default formulario-abm">
+    <h1>@Reporting.Resources.Calendario.lblCrearEventoTitulo2</h1>
+    <hr />
+    @using (Html.BeginForm("Crear", "Calendario", FormMethod.Post))
+    {
+        @Html.AntiForgeryToken()
+        @Html.HiddenFor(m => m.Id)
+
+        <div class="row">
+            <div class="col-xs-12 col-sm-6">
+                <div class="form-group">
+                    @Html.LabelFor(m => m.IdUsuario, htmlAttributes: new { @class = "control-label" })
+                    @Html.DropDownListFor(m => m.IdUsuario, new SelectList(Model.Usuarios, "Value", "Text", string.Empty), htmlAttributes: new { @class = "form-control ddlusuarios" })
+                    @Html.ValidationMessageFor(model => model.IdUsuario, "", new { @class = "text-danger" })
+                    <span id="loadingpuntosdeventa" style="display:none;">@Reporting.Resources.Calendario.lblCargandoPuntosDeVenta</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-xs-12 col-sm-6">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.IdPuntoDeVenta, htmlAttributes: new { @class = "control-label" })
+                    @Html.DropDownListFor(m => m.IdPuntoDeVenta, new SelectList(Model.PuntosDeVenta, "Value", "Text", string.Empty), htmlAttributes: new { @class = "form-control ddlpuntosdeventa" })
+                    @Html.ValidationMessageFor(model => model.IdPuntoDeVenta, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-xs-12 col-sm-6">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.ConceptoId, htmlAttributes: new { @class = "control-label" })
+                    @Html.DropDownListFor(m => m.ConceptoId, new SelectList(Model.Conceptos, "Value", "Text", string.Empty), htmlAttributes: new { @class = "form-control ddlconceptos" })
+                    @Html.ValidationMessageFor(model => model.ConceptoId, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-xs-12 col-sm-6">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.EventDate, htmlAttributes: new { @class = "control-label" })
+                    <input type="date" name="EventDate" class="date-filtro-day form-control" data-language="@Thread.CurrentThread.CurrentCulture.Name" value="@DateTime.Now" />
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-xs-12 col-sm-6">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.EventTime, htmlAttributes: new { @class = "control-label" })
+                    <input type="time" id="EventTimeID" name="EventTime" class="form-control"/>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-xs-12 col-sm-6">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Observaciones, htmlAttributes: new { @class = "control-label" })
+                    @Html.EditorFor(model => model.Observaciones, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Observaciones, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-xs-12 col-sm-6">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.CodigoEvento, htmlAttributes: new { @class = "control-label" })
+                    @Html.EditorFor(model => model.CodigoEvento, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.CodigoEvento, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>
+
+        <hr />
+        <div class="form-group">
+            <input type="submit" value="@Reporting.Resources.Calendario.btnCrearEventoLabel" class="btn btn-primary"/>
+        </div>
+    }
+</div>
+
+
+
+@section scripts{
+    <script>
+
+
+
+
+
+        $(document).ready(function () {
+
+            if (!Modernizr.inputtypes.date) {
+                setFechasDowngradeBrowsers();
+            }
+
+            $(this).submit(function (event) {
+                if ($('#EventTimeID').val() == '') {
+                    $('#EventTimeID').val('00:00');
+                }
+                return;
+            });
+
+
+            $('.ddlusuarios').select2({
+                placeholder: "@Reporting.Resources.Calendario.placeholderSeleccioneUsuario",
+                allowClear: true
+            });
+
+            $('.ddlpuntosdeventa').select2({
+                placeholder: "@Reporting.Resources.Calendario.placeholderSeleccionePdv",
+                allowClear: true
+            });
+
+            $('.ddlconceptos').select2({
+                placeholder: "@Reporting.Resources.Calendario.placeholderSeleccioneConcepto",
+                allowClear: true
+            });
+
+            $('.ddlusuarios').on('change', function () {
+                getPuntosDeVenta();
+            });
+            
+            getPuntosDeVenta();
+
+            function getPuntosDeVenta() {
+                var userid = $('.ddlusuarios').val();
+                //console.log('userid: ' + userid);
+                $('.ddlpuntosdeventa')
+                                .find('option')
+                                .remove()
+                                .end()
+                                .append('<option></option>');
+
+                if (userid) {
+                    $.ajax({
+                        url: '@Url.Action("GetPuntosDeVentaDeUsuario", "Calendario")',
+                        method: 'POST',
+                        dataType: 'json',
+                        data: { userId: userid },
+                        beforeSend: function () {
+                            $('#loadingpuntosdeventa').show();
+                        },
+                        success: function (data) {
+                            if (data && data.length > 0) {
+                                $.each(data, function (idx, itm) {
+                                    $('.ddlpuntosdeventa').append('<option value="' + itm.Id + '">' + itm.Nombre + '</option>');
+                                });
+                            }
+                        },
+                        error: function (error) {
+                            console.log(error);
+                        },
+                        complete: function () {
+                            $('#loadingpuntosdeventa').hide();
+                        }
+                    });
+                }
+            }
+        });
+    </script>
+}
+

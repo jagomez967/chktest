@@ -1,0 +1,42 @@
+﻿@using Reporting.ViewModels
+@model PriceRequestSendDetails
+@{
+    ViewBag.Title = Reporting.Resources.PriceRequest.RequestSent;
+}
+<div class="panel panel-default col-md-6 col-md-offset-3 gap-send" style="text-align:center;">
+
+    <h2>@Reporting.Resources.PriceRequest.RequestSendSuccesfull</h2>
+
+    <div class="row">
+        <div class="col-sm-4 col-sm-offset-2">
+            <div class="row">
+                <div class="col-xs-5 text-left"><strong>@Reporting.Resources.PriceRequest.Country :</strong></div>
+                <div class="col-xs-7 text-left">@Model.Country</div>
+            </div>
+            <div class="row">
+                <div class="col-xs-5 text-left"><strong>@Reporting.Resources.PriceRequest.Date :</strong></div>
+                <div class="col-xs-7 text-left">@Model.Date</div>
+            </div>
+            <div class="row">
+                <div class="col-xs-5 text-left"><strong>@Reporting.Resources.PriceRequest.UserName :</strong></div>
+                <div class="col-xs-7 text-left">@Model.User</div>
+            </div>
+            <div class="row">
+                <div class="col-xs-5 text-left"><strong>@Reporting.Resources.PriceRequest.Id :</strong></div>
+                <div class="col-xs-7 text-left">@Model.Id</div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="row">
+        <div class="col-xs-offset-5 col-xs-2">
+            <div class="panel panel-default img-rounded2">
+                <div class="panel-body img-rounded bg-info2 nohover padding-five" id="SendRequestForm">
+                    <span class="text-center dt-block" onclick="@("window.location.href='" + @Url.Action("Index", "PriceRequest") + "'");">@Reporting.Resources.PriceRequest.Back</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>

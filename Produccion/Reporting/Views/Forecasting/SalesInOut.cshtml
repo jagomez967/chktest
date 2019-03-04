@@ -1,0 +1,1567 @@
+﻿@model Reporting.ViewModels.SalesInOutViewModel
+
+@{
+    ViewBag.Title = Reporting.Resources.Forecasting.titulo;
+}
+
+@section styles{
+    <style>
+        html, body, .wrapper-psi {
+            height: 100%;
+        }
+
+        body {
+            background-size: cover;
+        }
+
+        .top-psi {
+            height: 150px;
+            max-height: 150px;
+            position: fixed;
+            width: 100%;
+            z-index: 1;
+        }
+
+        .center-psi {
+            padding-top: 165px; /*235px;*/
+            height: 100%;
+        }
+
+        .scrollable-content {
+            overflow: scroll;
+            height: 100%;
+        }
+
+        .psi-content-forms {
+            margin: 0 15px 0 15px;
+        }
+
+        .form-opciones {
+            height: 30px;
+        }
+
+        .btnguardar {
+            position: absolute;
+            margin-top: 2px;
+        }
+
+        .formsiso-content {
+            margin-bottom: 5px;
+        }
+
+        .formsiso-content-facturacion {
+            margin-bottom: 5px;
+        }
+
+        .chinvneg, .errormessage, .loadingformpost, .noSalesOut {
+            position: absolute;
+            left: 130px;
+            margin-top: 2px;
+        }
+           
+
+        #fcformslist {
+            height: 100%;
+        }
+
+        .panel-facturacion {
+            height: 105px;
+            position: absolute;
+            margin: 0 15px 0 15px;
+            padding: 10px;
+            top: 180px;
+            width: 100%;
+            overflow: hidden;
+        }
+
+        .panel-facturacion table {
+            position: absolute;
+        }
+
+        .modal-totales .modal-body {
+            overflow: auto;
+            max-height: 500px;
+            padding: 10px;
+        }
+    </style>
+}
+
+<div id="optionsmenu">
+    <div style="padding-left:10%; padding-right:10%;">
+        @using (Ajax.BeginForm("GetForecastingForms", "Forecasting", null, new AjaxOptions
+        {
+            InsertionMode = InsertionMode.Replace,
+            HttpMethod = "POST",
+            UpdateTargetId = "fcformslist",
+            OnBegin = "beginSearch",
+            OnSuccess = "successSearch",
+            OnFailure = "failureSearch",
+            OnComplete = "completeSearch",
+            LoadingElementId = "loadingforms"
+        }))
+        {
+        <div style="padding: 25px 25px 25px 25px; margin: 15px; background-color: white; ">
+            @*<h1>@Reporting.Resources.Forecasting.titulo</h1>
+            <p>@Reporting.Resources.Forecasting.subtitle</p>*@
+            <p><img src="~/images/CapLogo.png" padding-right: 10px;" /></p>
+            <div style="display:table; width: -webkit-fill-available;">
+                <div style="display:table-column; width: 50%;"></div>
+                <div style="display:table-column; width: 50%;"></div>
+                <div style="display:table-row">
+                    <div style="display:table-cell">
+                        <div style="border-width: 1px; border-color: black; border-style: solid; padding: 10px; margin-bottom: 5px; height: 74px;" @(Model.Canales.Count > 1 ? "display:block;" : "display:none;") ">
+                            <label>@Reporting.Resources.Forecasting.canal.ToUpper()</label><br />
+                            <div style="column-count: 4; display: inline;">
+                                @*Html.DropDownList("IdCanal", Model.Canales, "(Todos)", htmlAttributes: new { @id = "ddlcanal" })*@
+                                @foreach (var c in Model.Canales)
+                                {
+                                    <label><input class="chkCanal" style="padding: 10px;" type="checkbox" name="lstCanales" value="@c.Value" data-name="@c.Text.ToUpper()" /> @c.Text.ToUpper()</label>
+                                }
+                            </div>
+                            <label id="canalerror" class="label label-danger" style="display:none;">@Reporting.Resources.Forecasting.debe_seleccionar_canal</label>
+                        </div>
+                        <div style="border-width: 1px; border-color: black; border-style: solid; padding: 10px; margin-bottom: 5px; height: 74px;" @(Model.Canales.Count > 1 ? "display:block;" : "display:none;") ">
+                            <label>@Reporting.Resources.Forecasting.categoria.ToUpper()</label><br />
+                            <div style="column-count: 4; display: inline;">
+                                @*Html.DropDownList("lstCategorias", Model.Categorias, null, htmlAttributes: new { @id = "ddlcategoria", @multiple="multiple", @class="b-multiselect" })*@
+                                @foreach (SelectListItem c in Model.Categorias)
+                                {
+                                    <label><input class="chkCategoria" style="padding: 10px;" type="checkbox" name="lstCategorias" value="@c.Value" data-name="@c.Text.ToUpper()" /> @c.Text.ToUpper()</label>
+                                }
+                            </div>
+                        </div>
+                        <div style="border-width: 1px; border-color: black; border-style: solid; padding: 10px; margin-bottom: 5px; height: 380px;">
+                            <label>@Reporting.Resources.Forecasting.cuenta.ToUpper()</label><br />
+                            <div id="lstCuenta" style="column-count: 4; display: table-caption;">
+                                @*Html.DropDownList("lstCadenas", Model.Cadenas, null, htmlAttributes: new { @id = "ddlcuenta", @multiple = "multiple", @class = "b-multiselect" })*@
+                                @foreach (SelectListItem c in Model.Cadenas)
+                                {
+                                    <label class="lstCuentaItem"><input class="chkCuenta" type="checkbox" name="lstCadenas" value="@c.Value" data-name="@c.Text.ToUpper()" /> @c.Text.ToUpper()</label>
+                                }
+                            </div>
+                            <label id="cuentaerror" class="label label-danger" style="display:none;">@Reporting.Resources.Forecasting.debe_seleccionar_cuenta</label>
+                        </div>
+                    </div>
+                    <div style="display:table-cell; ">
+                        <div style="border-width: 1px; border-color: black; border-style: solid; padding: 10px; margin-bottom: 5px; height: 538px; margin-left: 5px">
+                            <label>@Reporting.Resources.Forecasting.producto.ToUpper()</label>
+                            <div style="column-count: 3; padding-top: 5%;">
+                                @*Html.DropDownList("lstProductos", Model.Productos, null, htmlAttributes: new { @id = "ddlproducto", @multiple = "multiple", @class = "b-multiselect" })*@
+                                <ul id="lstProducto" style="list-style: none; padding-left: 10%;">
+                                    @for (int i = 0; i < Model.Productos.Count; i++)
+                                    {
+                                    <li class="lstProductoItem"><label style="color: @(Model.Productos[i].HasInv?"#000000":"#CCCCCC")"><input class="chkProducto" type="checkbox" name="lstProductos" value="@Model.Productos[i].Value" data-name="@Model.Productos[i].Text.ToUpper().Replace("EPSON ", "")" /> @((i + 1).ToString() + ") " + Model.Productos[i].Text.ToUpper().Replace("EPSON ", ""))</label></li>
+                                    }
+                                </ul>
+                            </div>
+                            <label id="productoerror" class="label label-danger" style="display:none;">@Reporting.Resources.Forecasting.debe_seleccionar_producto</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div style="text-align: right;">
+                <input id="btnAceptar" type="submit" value="@Reporting.Resources.Forecasting.aceptar" />
+                <div id="loadingforms" style="display:none;">
+                    <p><i class="fa fa-spin fa-spinner"></i> @Reporting.Resources.Forecasting.cargando_formularios</p>
+                </div>
+            </div>
+
+        </div>
+        }
+    </div>
+</div>
+
+<div id="forecasting" class="wrapper-psi" style="display:none;">
+    <div class="top-psi">
+        <div class="container-fluid panel panel-default crear-tablero salesinout-box">
+            <p><img src="~/images/CapLogo.png" style="float: left; padding-right: 10px;" /></p>
+
+            @*
+        <h1>@Reporting.Resources.Forecasting.titulo</h1>
+        <p>@Reporting.Resources.Forecasting.ingreso_de_datos_para_sales_in_out</p>
+            *@
+            <p>@Reporting.Resources.Forecasting.canales_seleccionados <strong><span id="lblCanales"></span></strong>, @Reporting.Resources.Forecasting.cuentas_seleccionadas <strong><span id="lblcuenta"></span></strong>, @Reporting.Resources.Forecasting.categoria <strong><span id="lblcategoria"></span></strong>, @Reporting.Resources.Forecasting.producto <strong><span id="lblproducto" style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;"></span></strong></p>
+
+
+            <a id="volver" class="btn btn-danger">@Reporting.Resources.Forecasting.volver</a>
+            <a id="mostrartotales" class="btn btn-default">@Reporting.Resources.Forecasting.mostrar_totales</a>
+            <a id="mostrarhistorico" data-str-mostrar-historico="@Reporting.Resources.Forecasting.mostrar_historico" data-str-ocultar-historico="@Reporting.Resources.Forecasting.ocultar_historico" class="btn btn-default">@Reporting.Resources.Forecasting.mostrar_historico</a>
+            <a id="mostrardetalles" data-str-mostrar-detalle="@Reporting.Resources.Forecasting.mostrar_detalle" data-str-ocultar-detalle="@Reporting.Resources.Forecasting.ocultar_detalle" class="btn btn-default">@Reporting.Resources.Forecasting.mostrar_detalle</a>
+            @if (Model.ShowFuture)
+            {
+                <a id="mostrarfuturo" data-str-mostrar-futuro="@Reporting.Resources.Forecasting.mostrar_futuro" data-str-ocultar-futuro="@Reporting.Resources.Forecasting.ocultar_futuro" class="btn btn-default">@Reporting.Resources.Forecasting.mostrar_futuro</a>
+            }
+
+            <button id="confirmar" class="btn btn-primary"><i class="fa fa-exclamation"></i> @Reporting.Resources.Forecasting.confirmar_mes</button>
+
+            <a class="dropdown-toggle pull-right btn btn-default" data-toggle="dropdown" aria-expanded="false">
+                <i class="fa fa-file-excel-o"></i> @Reporting.Resources.Forecasting.exportar_xls
+            </a>
+
+            <ul class="dropdown-menu config pull-right" role="menu">
+                <li><a id="exportar" style="cursor: pointer">Con Detalle</a></li>
+                <li><a id="exportarSimple" style="cursor: pointer">Simple</a></li>
+                <li><a id="exportarPM" style="cursor: pointer">SOAR</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <div id="fcformslist"></div>
+</div>
+
+<div class="modal fade" id="modalconfirmar" tabindex="-1" role="dialog" aria-labelledby="modalconfirmar-label" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">@Reporting.Resources.Forecasting.confirmar_mes</h4>
+            </div>
+            <div class="modal-body">
+                @using (Ajax.BeginForm("ConfirmarPSI", "Forecasting", null, new AjaxOptions
+                {
+                    HttpMethod = "POST",
+                    OnBegin = "beginConfirmar",
+                    OnSuccess = "successConfirmar",
+                    OnFailure = "failureConfirmar",
+                    OnComplete = "completeConfirmar",
+                    LoadingElementId = "loadingConfirmar"
+                }))
+                {
+                    <input type="hidden" id="confirmidcadena" name="IdCadena" value="0" />
+                    <div class="form-group">
+                        <label style="display:block;" for="observaciones">@Reporting.Resources.Forecasting.observaciones</label>
+                        @Html.TextArea("observaciones", new { @placeholder = string.Format("{0}{1}", @Reporting.Resources.Forecasting.observaciones,"..."), @id = "txtobservaciones", @style = "display:block;width:100%;height:150px;" })
+                        <label id="observacioneserror" class="label label-danger" style="display:none;">@Reporting.Resources.Forecasting.no_puede_ser_vacio</label>
+                    </div>
+                    <div class="col-sm-12 text-center">
+                        <button id="confirmfcpsi" class="btn btn-primary" type="submit"><i id="loadingConfirmar" class="fa fa-spin fa-spinner" style="display:none;"></i>@Reporting.Resources.Forecasting.confirmar</button>
+                    </div>
+                    <div class="col-sm-12 text-center">
+                        <a id="modalconfirmarcerrar" class="text-danger" style="margin-top:15px;">@Reporting.Resources.Forecasting.cancelar</a>
+                    </div>
+                }
+            </div>
+            <div class="modal-footer"></div>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    @Scripts.Render("~/bundles/unobstrusive")
+    <script src="~/Scripts/numeral.min.js"></script>
+    <script>
+
+        if ($('#fcformslist').find('.table-salesinout').find('.futurecol').count == 0) {
+            $('#mostrarfuturo').hide();
+        }
+        //$('#fcformslist').find('.table-salesinout-facturacion').find('.futurecol').show();
+
+        var exportTablesToExcel;
+        $(document).ready(function () {
+            var backUrl = document.URL.split("/");
+            backUrl.pop();
+            backUrl.pop();
+            $("body")[0].background = backUrl.join("/") + "/images/CapBackground.jpg";
+
+            $("#lstProducto").sortable({
+                update: function (event, ui) {
+                    for (var i = 0; i < $('.lstProductoItem').length; i++) {
+                        //$('.lstProductoItem')[i].children[0].children[0].innerHTML = i + ')' + $('.lstProductoItem')[i].children[0].children[0].innerHTML;
+                        $('.lstProductoItem')[i].children[0].innerHTML = $('.lstProductoItem')[i].children[0].innerHTML.split('>')[0].trim() + '> ' + (i + 1) + ') ' + $('.lstProductoItem')[i].children[0].children[0].attributes['data-name'].value
+                    }
+                }
+            });
+
+            $('.b-multiselect').multiselect({
+                includeSelectAllOption: true,
+                enableFiltering: true,
+                buttonWidth: '40%',
+                maxHeight: 250,
+                enableCaseInsensitiveFiltering: true
+            });
+
+            $('#exportar').on('click', function (event) {
+                event.preventDefault();
+                ActualizarTotales();
+                var tablastotales = $('#fcformslist').find('.table-salesinout-total');
+                var tables = $('#fcformslist').find('table.table2export');
+                var arrids = [];
+                var arrsheetnames = [];
+                $.each(tablastotales, function (i, t) {
+                    arrids.push($(t).attr('id'));
+                    arrsheetnames.push($(t).attr('data-table-title'));
+                });
+                $.each(tables, function (i, t) {
+                    arrids.push($(t).attr('id'));
+                    arrsheetnames.push($(t).attr('data-table-title'));
+                });
+                var today = moment().format('D MMM, YYYY');
+                exportTablesToExcel("@Url.Action("ExportacionCAP", "Forecasting")", "@Url.Action("DownloadFileByToken", "Datos")", arrids, 'CAP', 'CAP_' + today, true, false);
+            });
+
+            $('#exportarSimple').on('click', function (event) {
+                event.preventDefault();
+                ActualizarTotales();
+                var tablastotales = $('#fcformslist').find('.table-salesinout-total');
+                var tables = $('#fcformslist').find('table.table2export');
+                var arrids = [];
+                var arrsheetnames = [];
+                $.each(tablastotales, function (i, t) {
+                    arrids.push($(t).attr('id'));
+                    arrsheetnames.push($(t).attr('data-table-title'));
+                });
+                $.each(tables, function (i, t) {
+                    arrids.push($(t).attr('id'));
+                    arrsheetnames.push($(t).attr('data-table-title'));
+                });
+                var today = moment().format('D MMM, YYYY');
+                exportTablesToExcel("@Url.Action("ExportacionCAP", "Forecasting")", "@Url.Action("DownloadFileByToken", "Datos")", arrids, 'CAP', 'CAP_' + today, false);
+            });
+
+            $('#exportarPM').on('click', function (event) {
+                event.preventDefault();
+                ActualizarTotales();
+                //var tablastotales = $('#fcformslist').find('.table-salesinout-total');
+                var tables = $('#fcformslist').find('table.table2export');
+                var arrids = [];
+                var arrsheetnames = [];
+                /*$.each(tablastotales, function (i, t) {
+                    arrids.push($(t).attr('id'));
+                    arrsheetnames.push($(t).attr('data-table-title'));
+                });*/
+                $.each(tables, function (i, t) {
+                    arrids.push($(t).attr('id'));
+                    arrsheetnames.push($(t).attr('data-table-title'));
+                });
+                var today = moment().format('D MMM, YYYY');
+                exportTablesToExcel("@Url.Action("ExportacionCAP", "Forecasting")", "@Url.Action("DownloadFileByToken", "Datos")", arrids, 'CAP', 'CAP_' + today, false, true);
+            });
+
+            window.addEventListener("popstate", function (event) {
+                event.preventDefault();
+
+                if (window.location.toString().slice(-1) == '#') {
+                    return;
+                }
+
+                var back = confirm('Desea abandonar el sitio?');
+                if (back) {
+                    $('#forecasting').fadeOut('fast', function () {
+                        OcultarDetalle();
+                        OcultarHistorico();
+                        OcultarFuturo();
+                        $('#fcformslist').html(null);
+                        $('#optionsmenu').fadeIn();
+                    });
+                }
+                else {
+                    window.location += '#';
+                }
+            });
+
+            document.getElementById("volver").addEventListener("click", function () {
+                var back = confirm('Desea abandonar el sitio?');
+                if (back) {
+                    $('#forecasting').fadeOut('fast', function () {
+                        OcultarDetalle();
+                        OcultarHistorico();
+                        OcultarFuturo();
+                        $('#fcformslist').html(null);
+                        $('#optionsmenu').fadeIn();
+                    });
+                }
+            });
+
+            function OcultarDetalle() {
+                $('#fcformslist').find('.table-salesinout').find('tr.detail-row').hide();
+                $('#fcformslist').find('.table-salesinout-fixed').find('tr.detail-row').hide();
+                var text = $('#mostrardetalles').attr('data-str-mostrar-detalle');
+                $('#mostrardetalles').removeClass('detopen').removeClass('btn-warning').addClass('btn-default').text(text);
+                setfixedcolstableheighttodatatable();
+            }
+
+            function MostrarDetalle() {
+                $('#fcformslist').find('.table-salesinout').find('tr.detail-row').show();
+                $('#fcformslist').find('.table-salesinout-fixed').find('tr.detail-row').show();
+                var text = $('#mostrardetalles').attr('data-str-ocultar-detalle');
+                $('#mostrardetalles').addClass('btn-warning').removeClass('btn-default').addClass('detopen').text(text);
+                setfixedcolstableheighttodatatable();
+            }
+
+            function OcultarHistorico() {
+                $('#fcformslist').find('.table-salesinout').find('.fchddncol').hide();
+                $('#fcformslist').find('.table-salesinout-facturacion').find('.fchddncol').hide();
+                var text = $('#mostrarhistorico').attr('data-str-mostrar-historico');
+                $('#mostrarhistorico').removeClass('btn-warning').addClass('btn-default').removeClass('detopen').text(text);
+            }
+
+            function MostrarHistorico() {
+                $('#fcformslist').find('.table-salesinout').find('.fchddncol').show();
+                $('#fcformslist').find('.table-salesinout-facturacion').find('.fchddncol').show();
+                var text = $('#mostrarhistorico').attr('data-str-ocultar-historico');
+                $('#mostrarhistorico').addClass('btn-warning').removeClass('btn-default').addClass('detopen').text(text);
+            }
+
+            function OcultarFuturo() {
+                $('#fcformslist').find('.table-salesinout').find('.futurecol').hide();
+                $('#fcformslist').find('.table-salesinout-facturacion').find('.futurecol').hide();
+                var text = $('#mostrarfuturo').attr('data-str-mostrar-futuro');
+                $('#mostrarfuturo').removeClass('btn-warning').addClass('btn-default').removeClass('detopen').text(text);
+            }
+
+            function MostrarFuturo() {
+                $('#fcformslist').find('.table-salesinout').find('.futurecol').show();
+                $('#fcformslist').find('.table-salesinout-facturacion').find('.futurecol').show();
+                var text = $('#mostrarfuturo').attr('data-str-ocultar-futuro');
+                $('#mostrarfuturo').addClass('btn-warning').removeClass('btn-default').addClass('detopen').text(text);
+            }
+
+            function OcultarDetalleTotal() {
+                $('#modaltotales').find('.table-salesinout-total').find('tr.detail-row').hide();
+                $('#modaltotales').find('.table-salesinout-fixed-total').find('tr.detail-row').hide();
+                $('#mostrardetallestotal').removeClass('detopen').removeClass('btn-warning').addClass('btn-default');
+            }
+
+            function MostrarDetalleTotal() {
+                $('#modaltotales').find('.table-salesinout-total').find('tr.detail-row').show();
+                $('#modaltotales').find('.table-salesinout-fixed-total').find('tr.detail-row').show();
+                $('#mostrardetallestotal').addClass('btn-warning').removeClass('btn-default').addClass('detopen');
+            }
+
+            function OcultarHistoricoTotal() {
+                $('#modaltotales').find('.table-salesinout-total').find('.fchddncol').hide();
+                $('#mostrarhistoricototal').removeClass('btn-warning').addClass('btn-default').removeClass('detopen');
+            }
+
+            function MostrarHistoricoTotal() {
+                $('#modaltotales').find('.table-salesinout-total').find('.fchddncol').show();
+                $('#mostrarhistoricototal').addClass('btn-warning').removeClass('btn-default').addClass('detopen');
+            }
+
+            function OcultarFuturoTotal() {
+                $('#modaltotales').find('.table-salesinout-total').find('.futurecol').hide();
+                $('#mostrarfuturototal').removeClass('btn-warning').addClass('btn-default').removeClass('detopen');
+            }
+
+            function MostrarFuturoTotal() {
+                $('#modaltotales').find('.table-salesinout-total').find('.futurecol').show();
+                $('#mostrarfuturototal').addClass('btn-warning').removeClass('btn-default').addClass('detopen');
+            }
+
+
+            $('#mostrardetalles').on('click', function () {
+                var self = $(this);
+                if (self.hasClass('detopen')) {
+                    OcultarDetalle();
+                } else {
+                    MostrarDetalle();
+                }
+            });
+
+            $('#mostrarhistorico').on('click', function () {
+                var self = $(this);
+                if (self.hasClass('detopen')) {
+                    OcultarHistorico();
+                } else {
+                    MostrarHistorico();
+                }
+            });
+
+            $('#mostrarfuturo').on('click', function () {
+                var self = $(this);
+                if (self.hasClass('detopen')) {
+                    OcultarFuturo();
+                } else {
+                    MostrarFuturo();
+                }
+            });
+
+            $('#fcformslist').on('click','#mostrardetallestotal', function () {
+                var self = $(this);
+                if (self.hasClass('detopen')) {
+                    OcultarDetalleTotal();
+                } else {
+                    MostrarDetalleTotal();
+                }
+            });
+
+            $('#fcformslist').on('click', '#mostrarhistoricototal', function () {
+                var self = $(this);
+                if (self.hasClass('detopen')) {
+                    OcultarHistoricoTotal();
+                } else {
+                    MostrarHistoricoTotal();
+                }
+            });
+
+            $('#fcformslist').on('click', '#mostrarfuturototal', function () {
+                var self = $(this);
+                if (self.hasClass('detopen')) {
+                    OcultarFuturoTotal();
+                } else {
+                    MostrarFuturoTotal();
+                }
+            });
+
+            $('#mostrartotales').on('click', function () {
+                ActualizarTotales();
+                $('#modaltotales').modal('show');
+            });
+
+            function ActualizarTotales() {
+                var canales = [];
+                var tablastotales = $('#modaltotales').find('.sisototal');
+                $.each(tablastotales, function (i, v) {
+                    var cn = parseInt($(v).attr('data-canal'));
+                    if (cn > 0) {
+                        canales.push(cn);
+                    }
+                });
+
+                var recalctotals = true;
+
+                if (canales.length > 0) {
+                    var currcn = canales[0];
+                    for (var i = 1; i < canales.length; i++) {
+                        if (currcn != canales[i]) {
+                            recalctotals = false;
+                            break;
+                        }
+                    }
+                }
+
+                if (recalctotals) {
+                    var cuentas = $('#ddlcuenta option:selected');
+                    if (cuentas.length > 1) {
+                        recalctotals = false;
+                    }
+
+                    var tablasdatos = $('#fcformslist').find('.sisodatos');
+                    for (var i = 0; i < tablasdatos.length; i++) {
+                        var tbl = $(tablasdatos[i]);
+                        var conf = tbl.attr('data-confirmado');
+                        if (conf === 'true') {
+                            recalctotals = false;
+                            break;
+                        }
+                    }
+                }
+
+                if (!recalctotals) {
+                    return;
+                }
+
+                $.each(tablastotales, function (x, t) {
+                    var idcanal = $(t).attr('data-canal');
+                    var idcategoria = $(t).attr('data-categoria');
+                    var currency = $(t).attr('data-currency');
+
+                    var tablasdatos;
+                    if (idcategoria > 0) {
+                        tablasdatos = $('#fcformslist').find('.sisodatos[data-categoria="' + idcategoria + '"]');
+                    } else {
+                        tablasdatos = $('#fcformslist').find('.sisodatos[data-canal="' + idcanal + '"]');
+                    }
+
+                    var TRevenue = 0;
+                    var TPOSellIn = 0;
+                    var TPOSellOut = 0;
+                    var TPOVarSellIn = 0;
+                    var TPOVarSellOut = 0;
+                    var TPVSellIn = 0;
+                    var TPVSellOut = 0;
+                    var TPVVarSellIn = 0;
+                    var TPVVarSellOut = 0;
+                    var TSalesIn = 0;
+                    var TSalesOut = 0;
+                    var TChannelInv = 0;
+                    var TSORR = 0;
+                    var TDOCI = 0;
+
+                    for (var i = 14; i < 27; i++) {
+                        var indicador = $(t).find('thead th:nth-child(' + i + ')').attr('data-indicador');
+                        var revenue = tablasdatos.find('tbody tr[data-field="revenue"] td:nth-child(' + i + ')');
+                        $.each(revenue, function (r, rv) {
+                            var val = $(rv).attr('data-value');
+                            if (isNaN(val) || val === "" || val == null) {
+                                val = 0;
+                            }
+                            TRevenue += Math.round(val);
+                        });
+
+                        var planoriginalsi = tablasdatos.find('tbody tr[data-field="planoriginalsi"] td:nth-child(' + i + ')');
+                        $.each(planoriginalsi, function (r, rv) {
+                            var val = $(rv).attr('data-value');
+                            if (isNaN(val) || val === "" || val == null) {
+                                val = 0;
+                            }
+                            TPOSellIn += Math.round(val);
+                        });
+
+                        var planoriginalso = tablasdatos.find('tbody tr[data-field="planoriginalso"] td:nth-child(' + i + ')');
+                        $.each(planoriginalso, function (r, rv) {
+                            var val = $(rv).attr('data-value');
+                            if (isNaN(val) || val === "" || val == null) {
+                                val = 0;
+                            }
+                            TPOSellOut += Math.round(val);
+                        });
+
+                        var planoriginalvarsi = tablasdatos.find('tbody tr[data-field="planoriginalvarsi"] td:nth-child(' + i + ')');
+                        $.each(planoriginalvarsi, function (r, rv) {
+                            var val = $(rv).attr('data-value');
+                            if (isNaN(val) || val === "" || val == null) {
+                                val = 0;
+                            }
+                            TPOVarSellIn += Math.round(val);
+                        });
+
+                        var planoriginalvarso = tablasdatos.find('tbody tr[data-field="planoriginalvarso"] td:nth-child(' + i + ')');
+                        $.each(planoriginalvarso, function (r, rv) {
+                            var val = $(rv).attr('data-value');
+                            if (isNaN(val) || val === "" || val == null) {
+                                val = 0;
+                            }
+                            TPOVarSellOut += Math.round(val);
+                        });
+
+                        var planvendedorsi = tablasdatos.find('tbody tr[data-field="planvendedorsi"] td:nth-child(' + i + ')');
+                        $.each(planvendedorsi, function (r, rv) {
+                            var val = $(rv).attr('data-value');
+                            if (isNaN(val) || val === "" || val == null) {
+                                val = 0;
+                            }
+                            TPVSellIn += Math.round(val);
+                        });
+
+                        var planvendedorso = tablasdatos.find('tbody tr[data-field="planvendedorso"] td:nth-child(' + i + ')');
+                        $.each(planvendedorso, function (r, rv) {
+                            var val = $(rv).attr('data-value');
+                            if (isNaN(val) || val === "" || val == null) {
+                                val = 0;
+                            }
+                            TPVSellOut += Math.round(val);
+                        });
+
+                        var planvendedorvarsi = tablasdatos.find('tbody tr[data-field="planvendedorvarsi"] td:nth-child(' + i + ')');
+                        $.each(planvendedorvarsi, function (r, rv) {
+                            var val = $(rv).attr('data-value');
+                            if (isNaN(val) || val === "" || val == null) {
+                                val = 0;
+                            }
+                            TPVVarSellIn += Math.round(val);
+                        });
+
+                        var planvendedorvarso = tablasdatos.find('tbody tr[data-field="planvendedorvarso"] td:nth-child(' + i + ')');
+                        $.each(planvendedorvarso, function (r, rv) {
+                            var val = $(rv).attr('data-value');
+                            if (isNaN(val) || val === "" || val == null) {
+                                val = 0;
+                            }
+                            TPVVarSellOut += Math.round(val);
+                        });
+
+                        var salesin = tablasdatos.find('tbody tr[data-field="salesin"] td:nth-child(' + i + ')');
+                        $.each(salesin, function (r, rv) {
+                            var val = $(rv).attr('data-value');
+                            if (isNaN(val) || val === "" || val == null) {
+                                val = 0;
+                            }
+                            TSalesIn += Math.round(val);
+                        });
+
+                        var salesout = tablasdatos.find('tbody tr[data-field="salesout"] td:nth-child(' + i + ')');
+                        $.each(salesout, function (r, rv) {
+                            var val = $(rv).attr('data-value');
+                            if (isNaN(val) || val === "" || val == null) {
+                                val = 0;
+                            }
+                            TSalesOut += Math.round(val);
+                        });
+
+                        var channelinv = tablasdatos.find('tbody tr[data-field="channelinv"] td:nth-child(' + i + ')');
+                        $.each(channelinv, function (r, rv) {
+                            var val = $(rv).attr('data-value');
+                            if (isNaN(val) || val === "" || val == null) {
+                                val = 0;
+                            }
+                            TChannelInv += Math.round(val);
+                        });
+
+                        var sorr = tablasdatos.find('tbody tr[data-field="sorr"] td:nth-child(' + i + ')');
+                        $.each(sorr, function (r, rv) {
+                            var val = $(rv).attr('data-value');
+                            if (isNaN(val) || val === "" || val == null) {
+                                val = 0;
+                            }
+                            TSORR += Math.round(val);
+                        });
+
+                        var doci = tablasdatos.find('tbody tr[data-field="doci"] td:nth-child(' + i + ')');
+                        $.each(doci, function (r, rv) {
+                            var val = $(rv).attr('data-value');
+                            if (isNaN(val) || val === "" || val == null) {
+                                val = 0;
+                            }
+                            TDOCI += Math.round(val);
+                        });
+
+                        TSORR = TSalesOut / indicador;
+                        TDOCI = 30.416 * TChannelInv / TSalesOut;
+
+                        $(t).find('tr[data-field="revenue"] td:nth-child(' + i + ')').text(currency + ' ' + numeral(Math.round(TRevenue)).format('0,0')).attr('data-value', Math.round(TRevenue));
+                        $(t).find('tr[data-field="planoriginalsi"] td:nth-child(' + i + ')').text(numeral(Math.round(TPOSellIn)).format('0,0')).attr('data-value', Math.round(TPOSellIn));
+                        $(t).find('tr[data-field="planoriginalso"] td:nth-child(' + i + ')').text(numeral(Math.round(TPOSellOut)).format('0,0')).attr('data-value', Math.round(TPOSellOut));
+                        $(t).find('tr[data-field="planoriginalvarsi"] td:nth-child(' + i + ')').text(numeral(Math.round(TPOVarSellIn)).format('0,0')).attr('data-value', Math.round(TPOVarSellIn));
+                        $(t).find('tr[data-field="planoriginalvarso"] td:nth-child(' + i + ')').text(numeral(Math.round(TPOVarSellOut)).format('0,0')).attr('data-value', Math.round(TPOVarSellOut));
+                        $(t).find('tr[data-field="planvendedorsi"] td:nth-child(' + i + ')').text(numeral(Math.round(TPVSellIn)).format('0,0')).attr('data-value', Math.round(TPVSellIn));
+                        $(t).find('tr[data-field="planvendedorso"] td:nth-child(' + i + ')').text(numeral(Math.round(TPVSellOut)).format('0,0')).attr('data-value', Math.round(TPVSellOut));
+                        $(t).find('tr[data-field="planvendedorvarsi"] td:nth-child(' + i + ')').text(numeral(Math.round(TPVVarSellIn)).format('0,0')).attr('data-value', Math.round(TPVVarSellIn));
+                        $(t).find('tr[data-field="planvendedorvarso"] td:nth-child(' + i + ')').text(numeral(Math.round(TPVVarSellOut)).format('0,0')).attr('data-value', Math.round(TPVVarSellOut));
+                        $(t).find('tr[data-field="salesin"] td:nth-child(' + i + ')').text(numeral(Math.round(TSalesIn)).format('0,0')).attr('data-value', Math.round(TSalesIn));
+                        $(t).find('tr[data-field="salesout"] td:nth-child(' + i + ')').text(numeral(Math.round(TSalesOut)).format('0,0')).attr('data-value', Math.round(TSalesOut));
+                        $(t).find('tr[data-field="channelinv"] td:nth-child(' + i + ')').text(numeral(Math.round(TChannelInv)).format('0,0')).attr('data-value', Math.round(TChannelInv));
+                        $(t).find('tr[data-field="sorr"] td:nth-child(' + i + ')').text(numeral(Math.round(TSORR)).format('0,0')).attr('data-value', Math.round(TSORR));
+                        $(t).find('tr[data-field="doci"] td:nth-child(' + i + ')').text(numeral(Math.round(TDOCI)).format('0,0')).attr('data-value', Math.round(TDOCI));
+
+                        TRevenue = 0;
+                        TPOSellIn = 0;
+                        TPOSellOut = 0;
+                        TPOVarSellIn = 0;
+                        TPOVarSellOut = 0;
+                        TPVSellIn = 0;
+                        TPVSellOut = 0;
+                        TPVVarSellIn = 0;
+                        TPVVarSellOut = 0;
+                        TSalesIn = 0;
+                        TSalesOut = 0;
+                        TChannelInv = 0;
+                        TSORR = 0;
+                        TDOCI = 0;
+                    }
+                });
+            }
+
+            $('#fcformslist').on('input', '.inputSaleInOut', function () {
+                $(this).parents('.formsiso-content').find('.form-opciones').show();
+                $('#confirmar').prop('disabled', true);
+                var table = $(this).parents('table');
+                refreshDataTable(table);
+                var i = parseInt($(this).parents('td').index()) + 1;
+                refreshRevenues(i);
+            });
+
+            $("#fcformslist").on("keypress keyup blur", ".onlyinteger", function (event) {
+                $(this).val($(this).val().replace(/[^\d].+/, ""));
+                if ((event.which < 48 || event.which > 57)) {
+                    event.preventDefault();
+                }
+            });
+
+            $('#fcformslist').on('click', '.max-detail-rows', function (event) {
+                event.preventDefault();
+                var i = $(this).find('i');
+                if (i.hasClass('fa-plus')) {
+                    $(this).parents('form').find('.table-salesinout').find('tr.detail-row').show();
+                    i.removeClass('fa-plus').addClass('fa-minus').addClass('text-danger');
+                } else {
+                    $(this).parents('form').find('.table-salesinout').find('tr.detail-row').hide();
+                    i.removeClass('fa-minus').addClass('fa-plus').removeClass('text-danger');
+                }
+            });
+
+            $('#fcformslist').on('click', '.max-detail-cols', function (event) {
+                event.preventDefault();
+                var i = $(this).find('i');
+                if (i.hasClass('fa-plus')) {
+                    $(this).parents('form').find('.table-salesinout').find('.fchddncol').show();
+                    i.removeClass('fa-plus').addClass('fa-minus').addClass('text-danger');
+                } else {
+                    $(this).parents('form').find('.table-salesinout').find('.fchddncol').hide();
+                    i.removeClass('fa-minus').addClass('fa-plus').removeClass('text-danger');
+                }
+            });
+
+            $('#ddlcuenta').on('change', function () {
+                $('#canalerror').hide();
+                $('#cuentaerror').hide();
+            });
+
+            $('.chkCategoria').on('change', function () {
+
+                var cntChecked = 0;
+                var id = [];
+
+                for (var i = 0; i < $('.chkCategoria').length; i++) {
+                    if ($('.chkCategoria')[i].checked) {
+                        id.push($('.chkCategoria')[i].value);
+                        cntChecked++;
+                    }
+                }
+
+                if (cntChecked == 0) {
+                    for (var i = 0; i < $('.chkCategoria').length; i++) {
+                            id.push($('.chkCategoria')[i].value);
+                    }
+                }
+
+                $.ajax({
+                    url: '@Url.Action("GetProductosFC", "Forecasting")',
+                    dataType: 'json',
+                    data: { lstCategorias: id },
+                    method: 'POST',
+                    beforeSend: function () {
+                        $('.lstProductoItem').remove();
+                        $('#btnAceptar').prop('disabled', true);
+                    },
+                    success: function (result) {
+                        if (result) {
+                            for (var i = 0; i < result.length; i++) {
+                                $('#lstProducto').append('<li class="lstProductoItem"><label style="color:' + (result[i].HasInv ? '#000000' : '#CCCCCC') + ' "><input class="chkProducto" type="checkbox" name="lstProductos" value="' + result[i].Value + '" data-name="' + result[i].Text + '" />  ' + (i+1) + ') ' + result[i].Text + '</label></li>');
+                            }
+                        }
+                    },
+                    error: function (err) {
+                        console.log(err);
+                    },
+                    complete: function () {
+                        $('#btnAceptar').prop('disabled', false);
+                    }
+                });
+            });
+
+            $('.chkCanal').on('change', function () {
+
+                var Canales = [];
+                
+                for (var i = 0; i < $('.chkCanal').length; i++) {
+                    if ($('.chkCanal')[i].checked) {
+                        Canales.push($('.chkCanal')[i].value);
+                    }
+                }
+
+                if (Canales.length == 0) {
+                    Canales.push(0);
+                }
+
+                $.ajax({
+                    url: '@Url.Action("GetCuentasFC", "Forecasting")',
+                    dataType: 'json',
+                    data: { Canales: Canales },
+                    method: 'POST',
+                    beforeSend: function () {
+                        $('.lstCuentaItem').remove();
+                        $('#btnAceptar').prop('disabled', true);
+                        $('#canalerror').hide();
+                        $('#cuentaerror').hide();
+                    },
+                    success: function (result) {
+                        if (result && result.length > 0) {
+                            for (var i = 0; i < result.length; i++) {
+                                $('#lstCuenta').append('<label class="lstCuentaItem"><input class="chkCuenta" style="padding: 10px;" type="checkbox" name="lstCadenas" value="' + result[i].Value + '" data-name="' + result[i].Text + '" />' + result[i].Text + '</label>');
+                            }
+                        }
+                    },
+                    error: function (err) {
+                        console.log(err);
+                    },
+                    complete: function () {
+                        $('#btnAceptar').prop('disabled', false);
+                    }
+                });
+            });
+        });
+
+        function setfixedcolstableheighttodatatable() {
+            var tablasdatos = $('#fcformslist').find('.table-salesinout');
+            var detalle = $('#mostrardetalles').hasClass('btn-warning');
+            var confirmforms = $('#fcformslist').find('.hdnconfirmado[value="true"]');
+            var confirm = false;
+            if (confirmforms.length > 0) {
+                confirm = true;
+            } else {
+                confirm = false;
+            }
+
+            $.each(tablasdatos, function (i, v) {
+                if (detalle) {
+                    if (confirm) {
+                        $(v).parent().find('.table-salesinout-fixed').height('325px');
+                        $(v).parent().find('.table-salesinout').height('325px');
+                    } else {
+                        $(v).parent().find('.table-salesinout-fixed').height('329px');
+                        $(v).parent().find('.table-salesinout').height('329px');
+                    }
+                } else {
+                    if (confirm) {
+                        $(v).parent().find('.table-salesinout-fixed').height('163px');
+                        $(v).parent().find('.table-salesinout').height('163px');
+                    } else {
+                        $(v).parent().find('.table-salesinout-fixed').height('167px');
+                        $(v).parent().find('.table-salesinout').height('167px');
+                    }
+                }
+            });
+        }
+
+        function refreshDataTable(table) {
+
+            $('.noSalesOut').hide();
+
+            var currency = table.attr('data-currency');
+            for (var i = 14; i < 32; i++) {
+                var salesin = 0;
+                var salesout = 0;
+
+                salesin = parseFloat(table.find('tr[data-field="salesin"] td:nth-child(' + i + ') input').val());
+                if (isNaN(salesin) || salesin === "" || salesin == null) {
+                    salesin = 0;
+                }
+
+                salesout = parseFloat(table.find('tr[data-field="salesout"] td:nth-child(' + i + ') input').val());
+                if (isNaN(salesout) || salesout === "" || salesout == null) {
+                    salesout = 0;
+                }
+
+                var planoriginalsi = parseFloat(table.find('tr[data-field="planoriginalsi"] td:nth-child(' + i + ')').attr('data-value'));
+                if (isNaN(planoriginalsi) || planoriginalsi === "" || planoriginalsi == null) {
+                    planoriginalsi = 0;
+                }
+
+                var planoriginalso = parseFloat(table.find('tr[data-field="planoriginalso"] td:nth-child(' + i + ')').attr('data-value'));
+                if (isNaN(planoriginalso) || planoriginalso === "" || planoriginalso == null) {
+                    planoriginalso = 0;
+                }
+
+                var planvendedorsi = parseFloat(table.find('tr[data-field="planvendedorsi"] td:nth-child(' + i + ')').attr('data-value'));
+                if (isNaN(planvendedorsi) || planvendedorsi === "" || planvendedorsi == null) {
+                    planvendedorsi = 0;
+                }
+
+                var planvendedorso = parseFloat(table.find('tr[data-field="planvendedorso"] td:nth-child(' + i + ')').attr('data-value'));
+                if (isNaN(planvendedorso) || planvendedorso === "" || planvendedorso == null) {
+                    planvendedorso = 0;
+                }
+
+                /*
+                var wholesaleprice = parseFloat(table.find('tr[data-field="wholesaleprice"] td:nth-child(' + i + ')').attr('data-value').toString().replace(',','.'));
+                if (isNaN(wholesaleprice) || wholesaleprice === "" || wholesaleprice == null) {
+                    wholesaleprice = 0;
+                }
+                */
+
+                var planoriginalvarsi = salesin - planoriginalsi;
+                var planoriginalvarso = salesout - planoriginalso;
+                var planvendedorvarsi = salesin - planvendedorsi;
+                var planvendedorvarso = salesout - planvendedorso;
+                /*
+                var revenue = wholesaleprice * salesin;
+                if (isNaN(revenue) || revenue === "" || revenue == null) {
+                    revenue = 0;
+                } else {
+                    revenue = Math.round(revenue);
+                }
+
+                table.find('tr[data-field="revenue"] td:nth-child(' + i + ')').text(currency + ' ' + numeral(revenue).format('0,0')).attr('data-value', revenue);
+                */
+
+                if (planoriginalvarsi != 0 || planoriginalvarso != 0) {
+                    table.find('tr[data-field="salesin"] td:nth-child(' + i + ') input').addClass('bg-yellow');
+                    table.find('tr[data-field="salesout"] td:nth-child(' + i + ') input').addClass('bg-yellow');
+                } else {
+                    table.find('tr[data-field="salesin"] td:nth-child(' + i + ') input').removeClass('bg-yellow');
+                    table.find('tr[data-field="salesout"] td:nth-child(' + i + ') input').removeClass('bg-yellow');
+                }
+
+                if (planoriginalvarsi >= 0) {
+                    table.find('tr[data-field="planoriginalvarsi"] td:nth-child(' + i + ')').text(numeral(planoriginalvarsi).format('0,0')).removeClass('text-danger').attr('data-value', planoriginalvarsi);
+                } else {
+                    table.find('tr[data-field="planoriginalvarsi"] td:nth-child(' + i + ')').text(numeral(planoriginalvarsi).format('0,0')).addClass('text-danger').attr('data-value', planoriginalvarsi);
+                }
+
+                if (planoriginalvarso >= 0) {
+                    table.find('tr[data-field="planoriginalvarso"] td:nth-child(' + i + ')').text(numeral(planoriginalvarso).format('0,0')).removeClass('text-danger').attr('data-value', planoriginalvarso);
+                } else {
+                    table.find('tr[data-field="planoriginalvarso"] td:nth-child(' + i + ')').text(numeral(planoriginalvarso).format('0,0')).addClass('text-danger').attr('data-value', planoriginalvarso);
+                }
+
+                if (planvendedorvarsi >= 0) {
+                    table.find('tr[data-field="planvendedorvarsi"] td:nth-child(' + i + ')').text(numeral(planvendedorvarsi).format('0,0')).removeClass('text-danger').attr('data-value', planvendedorvarsi);
+                } else {
+                    table.find('tr[data-field="planvendedorvarsi"] td:nth-child(' + i + ')').text(numeral(planvendedorvarsi).format('0,0')).addClass('text-danger').attr('data-value', planvendedorvarsi);
+                }
+
+                if (planvendedorvarso >= 0) {
+                    table.find('tr[data-field="planvendedorvarso"] td:nth-child(' + i + ')').text(numeral(planvendedorvarso).format('0,0')).removeClass('text-danger').attr('data-value', planvendedorvarso);
+                } else {
+                    table.find('tr[data-field="planvendedorvarso"] td:nth-child(' + i + ')').text(numeral(planvendedorvarso).format('0,0')).addClass('text-danger').attr('data-value', planvendedorvarso);
+                }
+
+                table.find('tr[data-field="salesin"] td:nth-child(' + i + ')').attr('data-value', salesin);
+                table.find('tr[data-field="salesout"] td:nth-child(' + i + ')').attr('data-value', salesout);
+
+                var previndex = i - 1;
+                var prevchannelinv = 0;
+
+                prevchannelinv = previndex == 13 ? parseFloat(table.find('tr[data-field="channelinv"] td:nth-child(' + previndex + ') input').val()) : parseFloat(table.find('tr[data-field="channelinv"] td:nth-child(' + previndex + ')').attr('data-value'));
+
+                if (isNaN(prevchannelinv) || prevchannelinv === "" || prevchannelinv == null) {
+                    prevchannelinv = 0;
+                }
+
+                var channelinv = prevchannelinv + salesin - salesout;
+                if (channelinv >= 0) {
+                    var td = table.find('tr[data-field="channelinv"] td:nth-child(' + i + ')');
+                    table.find('tr[data-field="channelinv"] td:nth-child(' + i + ')').attr('data-value', Math.round(channelinv));
+                    table.find('tr[data-field="channelinv"] td:nth-child(' + i + ')').removeClass('text-danger').find('span').text(numeral(parseFloat(Math.round(channelinv))).format('0,0'));
+                    table.find('tr[data-field="channelinv"] td:nth-child(' + i + ')')[0].style["background-color"] = '#d9d9d9'
+                } else {
+                    table.find('tr[data-field="channelinv"] td:nth-child(' + i + ')')[0].style["background-color"] = '#ff7e79'
+                    table.find('tr[data-field="channelinv"] td:nth-child(' + i + ')').attr('data-value', Math.round(channelinv)).addClass('text-danger').find('span').text(numeral(parseFloat(Math.round(channelinv))).format('0,0'));
+                }
+
+                var indicadormes = table.find('thead tr th:nth-child(' + i + ')').attr('data-indicador');
+                if (indicadormes > 0) {
+                    var sorr = salesout / indicadormes;
+                    if (sorr >= 0) {
+                        table.find('tr[data-field="sorr"] td:nth-child(' + i + ')').attr('data-value', parseFloat(Math.round(sorr))).removeClass('text-danger').find('span').text(numeral(parseFloat(Math.round(sorr))).format('0,0'));
+                    } else {
+                        table.find('tr[data-field="sorr"] td:nth-child(' + i + ')').attr('data-value', parseFloat(Math.round(sorr))).addClass('text-danger').find('span').text(numeral(parseFloat(Math.round(sorr))).format('0,0'));
+                    }
+                } else {
+                    table.find('tr[data-field="sorr"] td:nth-child(' + i + ')').removeClass('text-danger').attr('data-value', '').find('span').text('');
+                }
+
+                var lastYearSalesOut = parseFloat(table.find('tr[data-field="salesout"] td:nth-child(' + (i - 12) + ')')[0].attributes["data-value"].value);
+                var newYoY = lastYearSalesOut !== null && lastYearSalesOut !== 0 ? ((salesout / lastYearSalesOut) - 1) * 100 : 0;
+                table.find('tr[data-field="yoy"] td:nth-child(' + i + ')').attr('data-value', parseFloat(Math.round(newYoY))).find('span').text(numeral(parseFloat(Math.round(newYoY))).format('0') + ' %');
+
+                var doci = 0;
+                var prevdoci = 0;
+                var prevsaleout = 0;
+
+                if (previndex == 13) {
+                    prevsalesout = table.find('tr[data-field="salesout"] td:nth-child(' + previndex + ')').attr('data-value');
+                    if (prevsalesout > 0) {
+                        prevdoci = (prevchannelinv / prevsalesout) * parseFloat('30.416');
+                    }
+                }
+
+                if (salesout > 0) {
+                    doci = (channelinv / salesout) * parseFloat('30.416');
+                }
+
+
+                doci = Math.round(doci);
+                prevdoci = Math.round(prevdoci);
+
+                if (previndex == 13) {
+                    var prevlimitedoci = parseFloat(table.find('tr[data-field="doci"] td:nth-child(' + previndex + ')').attr('data-limite-doci'));
+                }
+
+                var limitedoci = parseFloat(table.find('tr[data-field="doci"] td:nth-child(' + i  + ')').attr('data-limite-doci'));
+
+                if (prevdoci >= 0) {
+                    if (previndex == 13) {
+                        if (prevdoci > prevlimitedoci) {
+                            table.find('tr[data-field="doci"] td:nth-child(' + previndex + ')').css('color', '#000000').css('background-color', '#ff7e79').css('font-weight', '700');
+                            table.find('tr[data-field="doci"] td:nth-child(' + previndex + ')').attr('data-value', parseFloat(Math.round(doci))).removeClass('text-danger').find('span').text(numeral(parseFloat(Math.round(prevdoci))).format('0,0'));
+                        } else {
+                            table.find('tr[data-field="doci"] td:nth-child(' + previndex + ')').css('background-color', '#a6a6a6').css('font-weight', '400');
+                            table.find('tr[data-field="doci"] td:nth-child(' + previndex + ')').attr('data-value', parseFloat(Math.round(doci))).removeClass('text-danger').find('span').text(numeral(parseFloat(Math.round(prevdoci))).format('0,0'));
+                        }
+                    }
+                } else {
+                    table.find('tr[data-field="doci"] td:nth-child(' + previndex + ')').css('background-color', '#a6a6a6').css('font-weight', '400');
+                    table.find('tr[data-field="doci"] td:nth-child(' + previndex + ')').attr('data-value', parseFloat(Math.round(doci))).addClass('text-danger').find('span').text(numeral(parseFloat(Math.round(prevdoci))).format('0,0'));
+                }
+
+                if (doci >= 0) {
+                    if (doci > limitedoci) {
+                        table.find('tr[data-field="doci"] td:nth-child(' + i + ')').css('color', '#000000').css('background-color', '#ff7e79').css('font-weight', '700');
+                        table.find('tr[data-field="doci"] td:nth-child(' + i + ')').attr('data-value', parseFloat(Math.round(doci))).removeClass('text-danger').find('span').text(numeral(parseFloat(Math.round(doci))).format('0,0'));
+                    } else {
+                        table.find('tr[data-field="doci"] td:nth-child(' + i + ')').css('background-color', '#a6a6a6').css('font-weight', '400');
+                        table.find('tr[data-field="doci"] td:nth-child(' + i + ')').attr('data-value', parseFloat(Math.round(doci))).removeClass('text-danger').find('span').text(numeral(parseFloat(Math.round(doci))).format('0,0'));
+                    }
+                } else {
+                    table.find('tr[data-field="doci"] td:nth-child(' + i + ')').css('background-color', '#a6a6a6').css('font-weight', '400');
+                    table.find('tr[data-field="doci"] td:nth-child(' + i + ')').attr('data-value', parseFloat(Math.round(doci))).addClass('text-danger').find('span').text(numeral(parseFloat(Math.round(doci))).format('0,0'));
+                }
+
+                table.find('tr[data-field="channelinv"] td:nth-child(' + i + ')').find('input').val(Math.round(channelinv));
+                table.find('tr[data-field="doci"] td:nth-child(' + i + ')').find('input').val(Math.round(doci));
+                table.find('tr[data-field="sorr"] td:nth-child(' + i + ')').find('input').val(Math.round(sorr));
+
+            }
+
+            var month = $(table).find('thead th:nth-child(14)').attr('data-month');
+            var idxi = 2;
+            if (month < 5) {
+                idxi = 6 - parseInt(month);
+            } else {
+                idxi = 18 - parseInt(month);
+            }
+
+            var idxf = parseInt(idxi) + 11;
+
+            //var FYRevenue = 0;
+            //var FYWholeSalePrice = 0;
+            var FYPOSellIn = 0;
+            var FYPOSellOut = 0;
+            var FYPOVarSellIn = 0;
+            var FYPOVarSellOut = 0;
+            var FYPVSellIn = 0;
+            var FYPVSellOut = 0;
+            var FYPVVarSellIn = 0;
+            var FYPVVarSellOut = 0;
+            var FYSalesIn = 0;
+            var FYSalesOut = 0;
+            var FYChannelInv = 0;
+            var FYSORR = 0;
+            var FYDOCI = 0;
+
+            for (var i = idxi; i <= idxf; i++) {
+                var salesin = Math.round(table.find('tr[data-field="salesin"] td:nth-child(' + i + ')').attr('data-value'));
+                if (isNaN(salesin) || salesin === "" || salesin == null) {
+                    salesin = 0;
+                }
+
+                var salesout = Math.round(table.find('tr[data-field="salesout"] td:nth-child(' + i + ')').attr('data-value'));
+                if (isNaN(salesout) || salesout === "" || salesout == null) {
+                    salesout = 0;
+                }
+
+                /*
+                var revenue = Math.round(table.find('tr[data-field="revenue"] td:nth-child(' + i + ')').attr('data-value'));
+                if (isNaN(revenue) || revenue === "" || revenue == null) {
+                    revenue = 0;
+                }
+
+                var wholesaleprice = Math.round(table.find('tr[data-field="wholesaleprice"] td:nth-child(' + i + ')').attr('data-value'));
+                if (isNaN(wholesaleprice) || wholesaleprice === "" || wholesaleprice == null) {
+                    wholesaleprice = 0;
+                }
+                */
+
+                var planoriginalsi = Math.round(table.find('tr[data-field="planoriginalsi"] td:nth-child(' + i + ')').attr('data-value'));
+                if (isNaN(planoriginalsi) || planoriginalsi === "" || planoriginalsi == null) {
+                    planoriginalsi = 0;
+                }
+
+                var planoriginalso = Math.round(table.find('tr[data-field="planoriginalso"] td:nth-child(' + i + ')').attr('data-value'));
+                if (isNaN(planoriginalso) || planoriginalso === "" || planoriginalso == null) {
+                    planoriginalso = 0;
+                }
+
+                var planoriginalvarsi = Math.round(table.find('tr[data-field="planoriginalvarsi"] td:nth-child(' + i + ')').attr('data-value'));
+                if (isNaN(planoriginalvarsi) || planoriginalvarsi === "" || planoriginalvarsi == null) {
+                    planoriginalvarsi = 0;
+                }
+
+                var planoriginalvarso = Math.round(table.find('tr[data-field="planoriginalvarso"] td:nth-child(' + i + ')').attr('data-value'));
+                if (isNaN(planoriginalvarso) || planoriginalvarso === "" || planoriginalvarso == null) {
+                    planoriginalvarso = 0;
+                }
+
+                var planvendedorsi = Math.round(table.find('tr[data-field="planvendedorsi"] td:nth-child(' + i + ')').attr('data-value'));
+                if (isNaN(planvendedorsi) || planvendedorsi === "" || planvendedorsi == null) {
+                    planvendedorsi = 0;
+                }
+
+                var planvendedorso = Math.round(table.find('tr[data-field="planvendedorso"] td:nth-child(' + i + ')').attr('data-value'));
+                if (isNaN(planvendedorso) || planvendedorso === "" || planvendedorso == null) {
+                    planvendedorso = 0;
+                }
+
+                var planvendedorvarsi = Math.round(table.find('tr[data-field="planvendedorvarsi"] td:nth-child(' + i + ')').attr('data-value'));
+                if (isNaN(planvendedorvarsi) || planvendedorvarsi === "" || planvendedorvarsi == null) {
+                    planvendedorvarsi = 0;
+                }
+
+                var planvendedorvarso = Math.round(table.find('tr[data-field="planvendedorvarso"] td:nth-child(' + i + ')').attr('data-value'));
+                if (isNaN(planvendedorvarso) || planvendedorvarso === "" || planvendedorvarso == null) {
+                    planvendedorvarso = 0;
+                }
+
+                var channelinv = Math.round(table.find('tr[data-field="channelinv"] td:nth-child(' + i + ')').attr('data-value'));
+                if (isNaN(channelinv) || channelinv === "" || channelinv == null) {
+                    channelinv = 0;
+                }
+
+                var sorr = Math.round(table.find('tr[data-field="sorr"] td:nth-child(' + i + ')').attr('data-value'));
+                if (isNaN(sorr) || sorr === "" || sorr == null) {
+                    sorr = 0;
+                }
+
+                var doci = Math.round(table.find('tr[data-field="doci"] td:nth-child(' + i + ')').attr('data-value'));
+                if (isNaN(doci) || doci === "" || doci == null) {
+                    doci = 0;
+                }
+
+
+                //FYRevenue += parseFloat(revenue);
+                //FYWholeSalePrice += parseFloat(wholesaleprice);
+                FYPOSellIn += parseFloat(planoriginalsi);
+                FYPOSellOut += parseFloat(planoriginalso);
+                FYPOVarSellIn += parseFloat(planoriginalvarsi);
+                FYPOVarSellOut += parseFloat(planoriginalvarso);
+                FYPVSellIn += parseFloat(planvendedorsi);
+                FYPVSellOut += parseFloat(planvendedorso);
+                FYPVVarSellIn += parseFloat(planvendedorvarsi);
+                FYPVVarSellOut += parseFloat(planvendedorvarso);
+                FYSalesIn += parseFloat(salesin);
+                FYSalesOut += parseFloat(salesout);
+                FYChannelInv += parseFloat(channelinv);
+                FYSORR += parseFloat(sorr);
+                FYDOCI += parseFloat(doci);
+            }
+
+            //table.find('tr[data-field="revenue"] td:nth-child(32)').text(currency + ' ' + numeral(Math.round(FYRevenue)).format('0,0')).attr('data-value', Math.round(FYRevenue));
+            table.find('tr[data-field="planoriginalsi"] td:nth-child(32)').text(numeral(Math.round(FYPOSellIn)).format('0,0')).attr('data-value', Math.round(FYPOSellIn));
+            table.find('tr[data-field="planoriginalso"] td:nth-child(32)').text(numeral(Math.round(FYPOSellOut)).format('0,0')).attr('data-value', Math.round(FYPOSellOut));
+            table.find('tr[data-field="planoriginalvarsi"] td:nth-child(32)').text(numeral(Math.round(FYPOVarSellIn)).format('0,0')).attr('data-value', Math.round(FYPOVarSellIn));
+            table.find('tr[data-field="planoriginalvarso"] td:nth-child(32)').text(numeral(Math.round(FYPOVarSellOut)).format('0,0')).attr('data-value', Math.round(FYPOVarSellOut));
+            table.find('tr[data-field="planvendedorsi"] td:nth-child(32)').text(numeral(Math.round(FYPVSellIn)).format('0,0')).attr('data-value', Math.round(FYPVSellIn));
+            table.find('tr[data-field="planvendedorso"] td:nth-child(32)').text(numeral(Math.round(FYPVSellOut)).format('0,0')).attr('data-value', Math.round(FYPVSellOut));
+            table.find('tr[data-field="planvendedorvarsi"] td:nth-child(32)').text(numeral(Math.round(FYPVVarSellIn)).format('0,0')).attr('data-value', Math.round(FYPVVarSellIn));
+            table.find('tr[data-field="planvendedorvarso"] td:nth-child(32)').text(numeral(Math.round(FYPVVarSellOut)).format('0,0')).attr('data-value', Math.round(FYPVVarSellOut));
+            table.find('tr[data-field="salesin"] td:nth-child(32)').text(numeral(Math.round(FYSalesIn)).format('0,0')).attr('data-value', Math.round(FYSalesIn));
+            table.find('tr[data-field="salesout"] td:nth-child(32)').text(numeral(Math.round(FYSalesOut)).format('0,0')).attr('data-value', Math.round(FYSalesOut));
+            table.find('tr[data-field="channelinv"] td:nth-child(32)').text(numeral(Math.round(FYChannelInv/12)).format('0,0')).attr('data-value', Math.round(FYChannelInv/12));
+            table.find('tr[data-field="sorr"] td:nth-child(32)').text(numeral(Math.round(FYSORR/12)).format('0,0')).attr('data-value', Math.round(FYSORR/12));
+            table.find('tr[data-field="doci"] td:nth-child(32)').text(numeral(Math.round(FYDOCI/12)).format('0,0')).attr('data-value', Math.round(FYDOCI/12));
+        }
+
+        function beginSearch() {
+            $('#btnAceptar').prop('disabled', true);
+        }
+
+        function completeSearch() {
+            $('#btnAceptar').prop('disabled', false);
+
+            var confirm = $('#fcformslist').find('.hdnconfirmado[value="true"]');
+            if (confirm.length > 0) {
+                $('#confirmar').hide();
+            } else {
+                $('#confirmar').show();
+            }
+
+            $('.psi-content-forms').scroll(function () {
+                $('.psi-table-fixedcols').css({
+                    'left': $(this).scrollLeft()
+                });
+
+                $('.revenuetotal').css({
+                    'left': 10 - $(this).scrollLeft()
+                });
+
+                $('.btnguardar').css({
+                    'left': $(this).scrollLeft() + 15
+                });
+                $('.revenuediv').css({
+                    'top': $(this).scrollTop() + 10
+                });
+            });
+
+            $('#modaltotales .modal-body').scroll(function () {
+                $('.psi-table-fixedcols-total').css({
+                    'left': $(this).scrollLeft()
+                });
+            });
+
+            setfixedcolstableheighttodatatable();
+        }
+
+        function successSearch(result) {
+            if (!result) {
+                alert("@Reporting.Resources.Forecasting.no_se_encontraron_formularios");
+                return false;
+            }
+            //ward
+            var cntChecked = 0;
+
+            for (var i = 0; i < $('.chkCanal').length; i++) {
+                if ($('.chkCanal')[i].checked) {
+                    cntChecked++;
+                    if (cntChecked > 1) {
+                        $('#lblCanales').text('Varios');
+                        break;
+                    }
+                }
+            }
+
+            if (cntChecked == 1) {
+                for (var i = 0; i < $('.chkCanal').length; i++) {
+                    if ($('.chkCanal')[i].checked) {
+                        $('#lblCanales').text($('.chkCanal')[i].attributes["data-name"].value);
+                        break;
+                    }
+                }
+            }
+
+            cntChecked = 0;
+
+            for (var i = 0; i < $('.chkCategoria').length; i++) {
+                if ($('.chkCategoria')[i].checked) {
+                    cntChecked++;
+                    if (cntChecked > 1) {
+                        $('#lblcategoria').text('Varios');
+                        break;
+                    }
+                }
+            }
+
+            if (cntChecked == 1) {
+                for (var i = 0; i < $('.chkCategoria').length; i++) {
+                    if ($('.chkCategoria')[i].checked) {
+                        $('#lblcategoria').text($('.chkCategoria')[i].attributes["data-name"].value);
+                        break;
+                    }
+                }
+            }
+
+            cntChecked = 0;
+
+            for (var i = 0; i < $('.chkCuenta').length; i++) {
+                if ($('.chkCuenta')[i].checked) {
+                    cntChecked++;
+                    if (cntChecked > 1) {
+                        $('#lblcuenta').text('Varios');
+                        $('#confirmidcadena').val("0");
+                        break;
+                    }
+                }
+            }
+
+            if (cntChecked == 1) {
+                for (var i = 0; i < $('.chkCuenta').length; i++) {
+                    if ($('.chkCuenta')[i].checked) {
+                        $('#lblcuenta').text($('.chkCuenta')[i].attributes["data-name"].value);
+                        $('#confirmidcadena').val($('.chkCuenta')[i].attributes["value"].value);
+                        break;
+                    }
+                }
+            }
+
+            cntChecked = 0;
+
+            for (var i = 0; i < $('.chkProducto').length; i++) {
+                if ($('.chkProducto')[i].checked) {
+                    cntChecked++;
+                    if (cntChecked > 1) {
+                        $('#lblproducto').text('Varios');
+                        break;
+                    }
+                }
+            }
+
+            if (cntChecked == 1) {
+                for (var i = 0; i < $('.chkProducto').length; i++) {
+                    if ($('.chkProducto')[i].checked) {
+                        $('#lblproducto').text($('.chkProducto')[i].attributes["data-name"].value);
+                        break;
+                    }
+                }
+            }
+
+            $('#optionsmenu').fadeOut(function () {
+                $('#forecasting').show();
+                if (window.location.toString().slice(-1) != '#') {
+                    window.location += '#';
+                }
+            });
+
+            var cantrows = $('.panel-facturacion table.revenuetotal tbody tr').length;
+            if (cantrows > 1) {
+                //$('.panel-facturacion').height('85px');
+                $('.center-psi').css('padding-top', '210px');
+            } else {
+                //$('.panel-facturacion').height('50px');
+                $('.center-psi').css('padding-top', '210px');
+            }
+
+        }
+
+        function failureSearch() {
+            alert('@Reporting.Resources.Forecasting.no_se_pudieron_cargar_formularios');
+        }
+
+        function beginFormPost(event) {
+            $(this).find('.chinvneg').hide();
+            $(this).find('.noSalesOut').hide();
+            $(this).find('.errormessage').hide();
+            $(this).find(':submit').prop('disabled', true);
+            var cancel = false;
+            var chinvs = $(this).find('.table-salesinout').find('tr[data-field="channelinv"] td[data-no-negative="true"]');
+
+            if ($(this).find('.table-salesinout').find('.lastmonthso').find('input')[0].value == 0 && $(this).find('.table-salesinout').find('.lastmonthcinv').find('span')[0].innerHTML != 0) {
+                $(this).find(':submit').prop('disabled', false);
+                $(this).find('.noSalesOut').show();
+                return false;
+            }
+
+            $.each(chinvs, function (i, v) {
+                if (parseFloat($(v).text()) < 0) {
+                    cancel = true;
+                    return false;
+                }
+            });
+
+            if (cancel) {
+                $(this).find(':submit').prop('disabled', false);
+                $(this).find('.chinvneg').show();
+                return false;
+            } else {
+                $(this).find('.loadingformpost').show();
+            }
+        }
+
+        function successFormPost(result) {
+            $(this).find('.form-opciones').hide();
+
+            if (result == 'false') {
+                $(this).find('.errormessage').show();
+            }
+        }
+
+        function failureFormPost() {
+            $(this).find('.errormessage').show();
+        }
+
+        function completeFormPost() {
+            $(this).find(':submit').prop('disabled', false);
+            $(this).find('.loadingformpost').hide();
+
+            if (ChangesNotSaved()) {
+                $('#confirmar').prop('disabled', true);
+            } else {
+                $('#confirmar').prop('disabled', false);
+            }
+        }
+
+        function ChangesNotSaved() {
+            var v = $('#fcformslist').find('.form-opciones:visible').length;
+            return v && v > 0;
+        }
+
+        $('#confirmar').on('click', function () {
+            $('#modalconfirmar').modal('show');
+        });
+
+        $('#modalconfirmarcerrar').on('click', function () {
+            $('#modalconfirmar').modal('hide');
+            return false;
+        });
+
+        function beginConfirmar() {
+            if ($('#txtobservaciones').val() === '') {
+                $('#observacioneserror').show();
+                return false;
+            }
+
+            $('#observacioneserror').hide();
+            $('#confirmfcpsi').prop('disabled', true);
+        }
+
+        function successConfirmar(result) {
+            console.log(result);
+
+            $('#observacioneserror').hide();
+            $('#confirmfcpsi').prop('disabled', false);
+            $('#modalconfirmar').modal('hide');
+            $('#confirmar').hide();
+            $('#fcformslist').find('.hdnconfirmado').val(true);
+            tableToReadOnly();
+        }
+
+        function failureConfirmar(error) {
+            $('#observacioneserror').hide();
+            $('#confirmfcpsi').prop('disabled', false);
+            console.log(error);
+        }
+
+        function completeConfirmar() {
+            $('#txtobservaciones').val('');
+        }
+
+        function tableToReadOnly() {
+            $('#fcformslist').find('input.inputSaleInOut').each(function (i, v) {
+                var value = $(v).val();
+                $(v).parents('td').empty().addClass('text-center').text(value);
+            });
+            $('#fcformslist').find('.form-opciones').remove();
+
+            setfixedcolstableheighttodatatable();
+        }
+
+        $('#txtobservaciones').on('input', function () {
+            $('#observacioneserror').hide();
+        });
+
+        function refreshRevenues(i) {
+            var revenue = 0;
+            var si = 0;
+            var so = 0;
+            var table = $('.revenuetotal');
+            var currency = table.attr('data-currency');
+            //var revcells = $('.sisodatos').find('tbody tr[data-field="revenue"] td:nth-child(' + i + ')');
+            /*
+            $.each(revcells, function (x, y) {
+                var val = Math.round($(y).attr('data-value'));
+                if (isNaN(val) || val === "" || val == null) {
+                    val = 0;
+                }
+                revenue += parseFloat(val);
+            });
+            table.find('tbody tr[data-field="total"] td:nth-child(' + i + ')').text(currency + ' ' + numeral(Math.round(revenue)).format('0,0')).removeClass('text-danger').attr('data-value', Math.round(revenue));
+            */
+
+            var sicells = $('.sisodatos').find('tbody tr[data-field="salesin"] td:nth-child(' + i + ')');
+            $.each(sicells, function (x, y) {
+                var val = Math.round($(y).attr('data-value'));
+                if (isNaN(val) || val === "" || val == null) {
+                    val = 0;
+                }
+                si += parseFloat(val);
+            });
+            table.find('tbody tr[data-field="totalsi"] td:nth-child(' + i + ')').text(numeral(Math.round(si)).format('0,0')).removeClass('text-danger').attr('data-value', Math.round(si));
+
+            var socells = $('.sisodatos').find('tbody tr[data-field="salesout"] td:nth-child(' + i + ')');
+            $.each(socells, function (x, y) {
+                var val = Math.round($(y).attr('data-value'));
+                if (isNaN(val) || val === "" || val == null) {
+                    val = 0;
+                }
+                so += parseFloat(val);
+            });
+            table.find('tbody tr[data-field="totalso"] td:nth-child(' + i + ')').text(numeral(Math.round(so)).format('0,0')).removeClass('text-danger').attr('data-value', Math.round(so));
+
+            var month = $(table).find('thead th:nth-child(14)').attr('data-month');
+            var idxi = 2;
+            if (month < 4) {
+                idxi = 5 - parseInt(month);
+            } else {
+                idxi = 17 - parseInt(month);
+            }
+
+            var idxf = parseInt(idxi) + 13;
+
+            var revenuerows = $('#fcformslist').find('.revenuetotal tbody tr');
+            $.each(revenuerows, function (x, y) {
+                var total = 0;
+
+                for (var i = idxi; i < idxf; i++) {
+                    var val = Math.round($(y).find('td:nth-child(' + i + ')').attr('data-value'));
+                    if (isNaN(val) || val === "" || val == null) {
+                        val = 0;
+                    }
+                    total += parseFloat(val);
+                }
+
+                //$(y).find('td:nth-child(32)').text(currency + ' ' + numeral(Math.round(total)).format('0,0')).attr('data-value', Math.round(total));
+                $(y).find('td:nth-child(32)').text(numeral(Math.round(total)).format('0,0')).attr('data-value', Math.round(total));
+            });
+        }
+    </script>
+}

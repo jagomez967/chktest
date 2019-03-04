@@ -1,0 +1,82 @@
+﻿@using Reporting.ViewModels
+@model ProductGapDetailViewModel
+
+@using (Html.BeginForm("CreateRequestForm", "PriceRequest", FormMethod.Post, new { @class = "PriceRequest-Form" }))
+{
+    @Html.HiddenFor(m => m.ProductId)
+    <div class="row" style="margin-top:20px">
+        <div class="container-fluid container-inside-row panel-default" style="border-left-color:@Model.Color;">
+            <div class="col-xs-10">
+                <div class="row">
+                    <div class="col-xs-2">
+                        <div class="row" style="height: 4.17vw;">
+                            <img src="data:image/png;base64,@(Model.Image)"
+                                 alt="@(Model.ProductId)"
+                                 class="img-gap-retail" />
+                        </div>
+                        <div class="row subtitle-gap" style="margin-bottom: -1.093vw; margin-top:  1.093vw;">@Model.ProductName</div>
+                    </div>
+                    <div class="col-xs-2">
+                        <div class="row title-gap"> @string.Format("{0:n}%", Model.PriceGap)</div>
+                        <div class="row subtitle-gap"> @Reporting.Resources.PriceRequest.PriceGap.ToUpper() </div>
+                    </div>
+                    <div class="col-xs-2">
+                        <div class="row title-gap"> @string.Format("{0:n0}", Model.SellIn)</div>
+                        <div class="row subtitle-gap"> @Reporting.Resources.PriceRequest.SellIn.ToUpper() </div>
+                    </div>
+                    <div class="col-xs-2">
+                        <div class="row title-gap"> @string.Format("{0:n0}", Model.Inventory) </div>
+                        <div class="row subtitle-gap"> @Reporting.Resources.PriceRequest.Inventory.ToUpper() </div>
+                    </div>
+                    <div class="col-xs-2">
+                        <div class="row title-gap"> @Model.TotalCompetitors </div>
+                        <div class="row subtitle-gap"> @Reporting.Resources.PriceRequest.Competitors.ToUpper() </div>
+                    </div>
+                    <div class="col-xs-2">
+                        <div class="row title-gap"> @Model.TotalStores </div>
+                        <div class="row subtitle-gap"> @Reporting.Resources.PriceRequest.Stores.ToUpper() </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xs-2">
+                <div class="row">
+                    <div class="col-xs-6 button-gap-col">
+                        <div class="row collapsed" data-toggle="collapse" data-target="#demo_@(@Model.ProductId)">
+                            <div class="btn bg-info button-gap gap-detail-show">@Reporting.Resources.PriceRequest.ShowDetail</div>
+                            <div class="btn bg-info button-gap gap-detail-hide">@Reporting.Resources.PriceRequest.HideDetail</div>
+                        </div>
+                        <div class="row">
+                            <input type="submit" class="btn bg-success button-gap btn-price-request" value="@Reporting.Resources.PriceRequest.PriceRequestBTN">
+                            @Html.HiddenFor(m => m.ProductId)
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="demo_@(@Model.ProductId)" class="collapse">
+        @for (int cmp = 0; cmp < Model.Competitors.Count(); cmp++)
+        {
+            <div class="row row-pr-header">
+                <div class="col-xs-4">
+
+                </div>
+                <div class="col-xs-8">
+                    <div class="col-xs-2">@Reporting.Resources.PriceRequest.Inventory</div>
+                    <div class="col-xs-2">@Model.ProductName</div>
+                    <div class="col-xs-2">@Model.Competitors[cmp].ProductName</div>
+                    <div class="col-xs-2">@Reporting.Resources.PriceRequest.GAP.ToUpper()</div>
+                    <div class="col-xs-2">@Reporting.Resources.PriceRequest.Request</div>
+                </div>
+            </div>
+
+            for (int acc = 0; acc < Model.Competitors[cmp].Accounts.Count(); acc++)
+            {
+                @Html.EditorFor(m => m.Competitors[cmp].Accounts[acc])
+                @Html.HiddenFor(m => m.Competitors[cmp].ProductId)
+            }
+            <hr>
+        }
+    </div>
+}

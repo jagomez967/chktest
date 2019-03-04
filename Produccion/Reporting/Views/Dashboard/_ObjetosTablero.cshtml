@@ -1,0 +1,45 @@
+﻿@using Reporting.ViewModels
+@model ObjetosDeTableroViewModel
+
+@foreach (ObjetoViewModel o in Model.Objetos)
+{
+    <div class="@o.Size">
+        <input type="hidden" id="@("titulo-"+o.Id)" value="@o.TextoHeader" />
+        <input type="hidden" id="@("flgStackLabels"+o.Id)" value="@o.stackLabels" class="flgStackLabels" data-obj-id="@o.Id" />
+        <input type="hidden" id="@("flgDataLabels"+o.Id)" value="@o.dataLabels.ToString().ToLower()" class="flgDataLabels" data-obj-id="@o.Id" />
+        <div class="panel panel-default">
+            <div class="dropdown exportar pull-right">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true">
+                    <i class="fa fa-external-link"></i>
+                </a>
+                <ul class="dropdown-menu" aria-labelledby="dLabel">
+                    <li><a class="expandirObjeto" data-tipo-obj="@o.Tipo" data-obj-id="@o.Id" href="#"><i class="fa fa-expand"></i> Ampliar</a></li>
+                    <li><a class="descargarTablaDatos" data-tipo-obj="@o.Tipo" data-obj-id="@o.Id" href="#"><i class="fa fa-download"></i> Descargar datos</a></li>
+                    @if (o.Tipo != 9)
+                    {
+                        <li><a class="descargarImagen" data-tipo-obj="@o.Tipo" data-obj-id="@o.Id" href="#"><i class="fa fa-file-image-o"></i> Descargar imagen</a></li>
+                    }
+                    @if (o.Tipo != 9 && o.Tipo != 2 && o.Tipo != 11)
+                    {
+                        <li><a class="configurarObjeto" data-tipo-obj="@o.Tipo" data-obj-id="@o.Id" href="#"><i class="fa fa-cogs"></i> Configurar Gráfico</a></li>
+                    }
+                </ul>
+            </div>
+
+            <div class="panel-body">
+                <div id="@("loading-"+o.Id)" class="Objloading" style="display:none;">
+                    <img src="~/images/ajax-loader.gif" />
+                </div>
+                <div id="@("nodata-"+o.Id)" class="sindatos" style="display:none;">
+                    <img src="~/images/sindatos.png">
+                    <p>No se encontraron datos para este gráfico</p>
+                </div>
+                <div id="@("grafico-"+o.Id)" data-id="@o.Id" style="height:230px;" class="ObjGrafico"></div>
+                <div id="testGrafico"></div>
+            </div>
+            <div class="panel-footer clearfix">
+                <span id="@("descr-"+o.Id)"><em>@o.TextoFooter</em></span>
+            </div>
+        </div>
+    </div>
+}

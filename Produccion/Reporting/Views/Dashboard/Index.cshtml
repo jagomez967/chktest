@@ -1,0 +1,732 @@
+﻿@model int
+
+@{
+    ViewBag.Title = "Dashboard";
+}
+
+@Html.Hidden("TableroId", Model)
+
+@section styles{
+    <link href="~/Content/jquery.circliful.css" rel="stylesheet" />
+    <style>
+        #metricas {
+            padding-top: 20px;
+        }
+
+        .nivelMetrica {
+            display: none;
+        }
+    </style>
+}
+
+<div id="filtros"></div>
+<div id="tabs"></div>
+
+<div class="container-fluid tab-content tab-content-reporting">
+    <div id="objetos"></div>
+</div>
+
+<div class="modal fade" id="big-preview-objeto" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div id="big-preview-dialog" class="modal-dialog" role="document" style="width:80%">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title"><span id="previewTitulo">Preview Objeto</span></h4>
+            </div>
+            <div id="objeto-preview-body" class="modal-body"></div>
+            <div class="modal-footer"></div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="configurar-objeto" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div id="modal-configurar-objeto" class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-title" id="myModalLabel">Configurar gráfico</div>
+            </div>
+            <div id="configurar-objeto-body" class="modal-body">
+                <p id="configurar-objeto-titulo" class="nombre-grafico"></p>
+                <div class="row">
+                    <div class="col-xs-5">
+                        <div class="form-group">
+                            <label class="checkbox-inline">
+                                <input type="hidden" id="configurar-objeto-objId" value="" />
+                                <input type="checkbox" id="configurar-objeto-datalabel"> Mostrar valores por columna
+                            </label>
+                        </div>
+                    </div>
+                    <div class="col-xs-5">
+                        <div class="form-group formu">
+                            <select id="configurar-objeto-stacklabel">
+                                <option value="0">No utiliza</option>
+                                <option value="1">Promedio</option>
+                                <option value="2">Suma</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <a href="#" class="pull-left link-cancelar" data-dismiss="modal"><i class="fa fa-angle-left"></i>&nbsp; Volver sin modificar</a>
+                <button type="button" id="btnGuardarConfiguracion" class="btn btn-accion">Guardar Configuración</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script src="~/Scripts/filtroReporting.js"></script>
+    <script src="~/Scripts/tabsReporting.js"></script>
+    <script src="~/Scripts/circliful.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            var tabInicial = $('input:hidden#TableroId').val();
+
+            $('#tabs').tabsReporting({
+                urlGetTabs: '@Url.Action("GetTabs", "Dashboard")',
+                showCollapseButton: 'true',
+                callbackTabClick: TabClick,
+                tabInicial: tabInicial
+            });
+
+            $('#filtros').filtroReporting({
+                callbackBuscar: realizarBusqueda,
+                onLoadBuscar: 'true',
+                urlGetFiltros: '@Url.Action("GetFiltrosJson", "Dashboard")',
+                callbackResizeContenidoOnCollapseClick: resizeCharts
+            });
+        });
+
+        $(window).resize(function () {
+            resizeCharts();
+        });
+
+        function realizarBusqueda() {
+            var id = $('input:hidden#TableroId').val();
+            renderObjetos(id);
+        }
+
+        $('body').on('click', '.metrica', function () {
+
+            var id = $(this).data('id');
+            var nivel = $(this).closest('.nivelMetrica').data('nivel');
+
+            $('.nivelMetrica').filter(function () {
+                return $(this).data('nivel') > nivel;
+            }).hide();
+
+            $('.metrica').filter(function () {
+                return $(this).closest('.nivelMetrica').data('nivel') > nivel && $(this).data('parent') != id;
+            }).hide();
+
+            $('.metrica[data-parent="' + id + '"]').closest('.nivelMetrica').show();
+            $('.metrica[data-parent="' + id + '"]').show();
+        });
+
+        function resizeCharts() {
+            $('div.ObjGrafico').each(function () {
+                var div = $(this).closest('.panel-default');
+                divWidth = div.width();
+                var finalWidth = divWidth - 12;
+                $(this).width(finalWidth);
+                try { $(this).highcharts().reflow(); } catch (e) { }
+            });
+        }
+
+        //$(".droptabs").droptabs();
+
+        function TabClick(id) {
+            $('input:hidden#TableroId').val(id);
+            renderObjetos(id);
+        };
+
+        function renderObjetos(id) {
+            $('#objetos').empty();
+            $.ajax({
+                url: "@Url.Action("GetObjetos", "Dashboard")",
+                data: { TableroId: id },
+                cache: false,
+                type: "POST",
+                dataType: "html",
+                success: function (data, textStatus, XMLHttpRequest) {
+                    $("#objetos").html(data);
+                    renderCharts(id);
+                }
+            });
+        };
+
+        function renderCharts(TableroId) {
+            var filtros = _filtrosAplicados;
+            $('div.ObjGrafico').each(function () {
+                try { $(this).highcharts().destroy(); } catch (e) { }
+                $(this).empty();
+                $(this).hide();
+                var objId = $(this).data('id');
+                actualizarGrafico(TableroId, objId, filtros);
+            });
+        };
+
+        function actualizarGrafico(TableroId, ObjetoId, filtros) {
+            var divLoading = '#loading-' + ObjetoId;
+            var divNodata = '#nodata-' + ObjetoId;
+            var divGrafico = '#grafico-' + ObjetoId;
+
+            $(divLoading).show();
+            $(divNodata).hide();
+            $(divGrafico).empty();
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("GetDataGraficoJson", "Dashboard")',
+                contentType: "application/json; charset=utf-8",
+                data: JSON.stringify({
+                    Filtros: filtros,
+                    ObjetoId: ObjetoId
+                }),
+                success: function (result) {
+                    $(divLoading).hide();
+
+                    if (result.Valores.length > 0) {
+                        $(divNodata).hide();
+                        $(divGrafico).show();
+
+                        var stackLabel = $('input[type=hidden]#flgStackLabels' + ObjetoId).val();
+                        var dataLabel = $('input[type=hidden]#flgDataLabels' + ObjetoId).val();
+
+                        renderChart(divGrafico, result, stackLabel, dataLabel);
+                    }
+                    else {
+                        $(divGrafico).hide();
+                        $(divNodata).show();
+                    }
+                },
+                error: function (xhr, status, error) {
+                    $(divLoading).hide();
+                    $(divGrafico).hide();
+                    $(divNodata).show();
+                    console.log('Oh no: ' + ObjetoId);
+                }
+            });
+        };
+
+        function renderChart(divName, data, stackLabel, dataLabel) {
+            switch (data.Tipo) {
+                case 1:
+                    renderChartTipo1(divName, data, stackLabel, dataLabel);
+                    break;
+                case 2:
+                    renderChartTipo2(divName, data, stackLabel, dataLabel);
+                    break;
+                case 3:
+                    renderChartTipo3(divName, data, stackLabel, dataLabel);
+                    break;
+                case 5:
+                    renderChartTipo5(divName, data, stackLabel, dataLabel);
+                    break;
+                case 6:
+                    renderChartTipo6(divName, data, stackLabel, dataLabel);
+                    break;
+                case 7:
+                    renderChartTipo7(divName, data, stackLabel, dataLabel);
+                    break;
+                case 8:
+                    renderChartTipo8(divName, data, stackLabel, dataLabel);
+                    break;
+                case 9:
+                    renderChartTipo9(divName, data, stackLabel, dataLabel);
+                    break;
+                case 10:
+                    renderChartTipo10(divName, data, stackLabel, dataLabel);
+                    break;
+                case 11:
+                    renderChartTipo11(divName, data, stackLabel, dataLabel);
+                    break;
+                case 12:
+                    renderChartTipo12(divName, data, stackLabel, dataLabel);
+                    break;
+                case 13:
+                    renderChartTipo13(divName, data, stackLabel, dataLabel);
+                    break;
+            }
+        };
+
+        $('#objetos').on('click', '.expandirObjeto', function () {
+            var objId = $(this).data('obj-id');
+            var tipoObj = $(this).data('tipo-obj');
+
+            $('#objeto-preview-body').empty();
+
+            if (tipoObj == 9) {
+                var gridFrom = $('#grafico-' + objId).data("kendoGrid");
+                var columns = gridFrom.columns;
+                var newDs = new kendo.data.DataSource();
+                newDs.data(gridFrom.dataSource.data());
+                var grid2 = $("#objeto-preview-body").kendoGrid({
+                    dataSource: newDs,
+                    editable: false,
+                    pageable: {
+                        refresh: false,
+                        pageSizes: true,
+                        buttonCount: 4
+                    },
+                    sortable: true,
+                    columns: columns
+                }).data("kendoGrid");
+                grid2.dataSource.pageSize(7);
+                grid2.refresh();
+                $('#big-preview-objeto').modal('show');
+                return false;
+            }
+
+            var multiplicador = 0.75;
+            var chart = $('#grafico-' + objId).highcharts();
+            var options = chart.options;
+            var pwidth = $(window).width();
+            var descrGrf = $('span#descr-' + objId).text();
+            $('span#previewTitulo').text(descrGrf);
+
+            var popupChart = new Highcharts.Chart(Highcharts.merge(options, {
+                chart: {
+                    renderTo: 'objeto-preview-body',
+                    width: pwidth * multiplicador
+                }
+            }));
+
+            switch (tipoObj) {
+                case 1:
+                    for (var i = 0; i < popupChart.series.length; i++) {
+                        popupChart.series[i].update({
+                            dataLabels: {
+                                rotation: -90,
+                                inside: false,
+                                enabled: true,
+                                y: -3,
+                                style: {
+                                    fontSize: 18,
+                                    color: (Highcharts.theme && Highcharts.theme.textColor) || 'gray'
+                                }
+                            }
+                        });
+                    }
+                    popupChart.legend.itemStyle.fontSize = 9;
+                    popupChart.legend.maxHeight = 800;
+                    break;
+                case 2:
+                case 11:
+                    popupChart.options.plotOptions.pie.dataLabels.style.fontSize = 10;
+                    popupChart.legend.itemStyle.fontSize = 9;
+                    popupChart.legend.maxHeight = 800;
+                    break;
+                case 3:
+                case 5:
+                    for (var i = 0; i < popupChart.series.length; i++) {
+                        if (popupChart.series[i].type == 'spline') {
+                            popupChart.series[i].update({
+                                dataLabels: {
+                                    rotation: 0,
+                                    inside: false,
+                                    enabled: false,
+                                    y: -3,
+                                    style: {
+                                        fontSize: 14,
+                                        color: (Highcharts.theme && Highcharts.theme.textColor) || 'gray'
+                                    }
+                                }
+                            });
+                        } else {
+                            popupChart.series[i].update({
+                                dataLabels: {
+                                    rotation: 0,
+                                    inside: false,
+                                    enabled: true,
+                                    y: -3,
+                                    style: {
+                                        fontSize: 14,
+                                        color: (Highcharts.theme && Highcharts.theme.textColor) || 'gray'
+                                    }
+                                }
+                            });
+                        }
+                    }
+                    break;
+                case 6:
+                case 7:
+                case 8:
+                    popupChart.yAxis[0].update({
+                        stackLabels: {
+                            enabled: true,
+                            rotation: -90,
+                            y: -17,
+                            style: {
+                                fontSize: 11,
+                                color: (Highcharts.theme && Highcharts.theme.textColor) || 'gray'
+                            }
+                        }
+                    });
+                    break;
+            }
+
+            $('#big-preview-objeto').modal('show');
+            return false;
+        });
+
+        $('#objetos').on('click', '.descargarTablaDatos', function () {
+            var objId = $(this).data('obj-id');
+            var tipoObj = $(this).data('tipo-obj');
+
+            switch (tipoObj) {
+                case 1:
+                    exportColumnChartDataToCsv(objId);
+                    break;
+                case 2:
+                    exportPieChartDataToCsv(objId);
+                    break;
+                case 3:
+                    exportColumnChartDataToCsv(objId);
+                    break;
+                case 5:
+                    exportColumnChartDataToCsv(objId);
+                    break;
+                case 6:
+                    exportColumnDrilldownChartDataToCsv(objId);
+                    break;
+                case 7:
+                    exportColumnDrilldownChartDataToCsv(objId);
+                    break;
+                case 8:
+                    exportColumnChartDataToCsv(objId);
+                    break;
+                case 9:
+                    exportDataTabla(objId);
+                    break;
+                case 10:
+                    exportColumnChartDataToCsv(objId);
+                    break;
+                case 11:
+                    exportPieChartDataToCsv(objId);
+                    break;
+            }
+            return false;
+        });
+
+        function exportDataTabla(objId) {
+            var titulo = $('input#titulo-' + objId).val().replace(/ /g, '');
+            var filtros = _filtrosAplicados;
+
+            var link = document.createElement("a");
+            link.href = "DownloadDataFromObjeto?jsonFiltros=" + JSON.stringify(filtros) + "&ObjetoId=" + objId + "&fileName=" + titulo;
+            link.style = "visibility:hidden";
+            link.download = titulo + '.csv';
+            link.onclick = 'return false;';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+
+        function exportPieChartDataToCsv(objId) {
+            var chart = $('#grafico-' + objId).highcharts();
+            var titulo = $('input#titulo-' + objId).val();
+
+            var data = [];
+            $.each(chart.series, function (key, val) {
+                $.each(val.data, function (i, n) {
+                    var itm = {};
+                    itm.name = n.name;
+                    itm.percentage = n.percentage.toFixed(1).replace('.', ',');
+                    data.push(itm);
+                });
+            });
+            JSONToCSVConvertor(JSON.parse(JSON.stringify(data)), titulo, true);
+        }
+
+        function exportColumnChartDataToCsv(objId) {
+
+            var chart = $('#grafico-' + objId).highcharts();
+
+            var titulo = $('input#titulo-' + objId).val();
+            var data = [];
+
+            var cabecera = [];
+            cabecera.push("");
+            $.each(chart.series, function (key, serie) {
+                cabecera.push(serie.name);
+            });
+
+            data.push(cabecera);
+
+            $.each(chart.xAxis[0].categories, function (i, cat) {
+                var fila = [];
+                fila.push(cat);
+
+                $.each(chart.series, function (key, serie) {
+                    fila.push(serie.data[i].y.toFixed(1).replace('.', ','));
+                });
+
+                data.push(fila);
+            });
+
+            JSONToCSVConvertor(JSON.parse(JSON.stringify(data)), titulo, false);
+        }
+
+        function exportColumnDrilldownChartDataToCsv(objId) {
+
+            var chart = $('#grafico-' + objId).highcharts();
+
+            var titulo = $('input#titulo-' + objId).val();
+            var data = [];
+
+            var cabecera = [];
+            cabecera.push("");
+            $.each(chart.series, function (key, serie) {
+                cabecera.push(serie.name);
+            });
+
+            data.push(cabecera);
+
+            $.each(chart.xAxis[0].names, function (i, name) {
+                var fila = [];
+                fila.push(name);
+
+                $.each(chart.series, function (key, serie) {
+                    fila.push(serie.data[i].y.toFixed(1).replace('.', ','));
+                });
+
+                data.push(fila);
+            });
+
+            JSONToCSVConvertor(JSON.parse(JSON.stringify(data)), titulo, false);
+        }
+
+        function JSONToCSVConvertor(JSONData, ReportTitle, ShowLabel) {
+            var arrData = typeof JSONData != 'object' ? JSON.parse(JSONData) : JSONData;
+            var CSV = '';
+            CSV += ReportTitle + '\r\n\n';
+            if (ShowLabel) {
+                var row = "";
+                for (var index in arrData[0]) {
+                    row += index + ';';
+                }
+
+                row = row.slice(0, -1);
+                CSV += row + '\r\n';
+            }
+
+            for (var i = 0; i < arrData.length; i++) {
+                var row = "";
+                for (var index in arrData[i]) {
+                    row += '"' + arrData[i][index] + '";';
+                }
+                row.slice(0, row.length - 1);
+                CSV += row + '\r\n';
+            }
+
+            if (CSV == '') {
+                alert("Invalid data");
+                return;
+            }
+
+            var fileName = "";
+            fileName += ReportTitle.replace(/ /g, "_");
+
+            var uri = 'data:text/csv;charset=utf-8,' + escape(CSV);
+
+            var link = document.createElement("a");
+            link.href = uri;
+
+            link.style = "visibility:hidden";
+            link.download = fileName + ".csv";
+
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+
+        $('#objetos').on('click', '.descargarImagen', function () {
+            var objId = $(this).data('obj-id');
+            var tipoObj = $(this).data('tipo-obj');
+            var titulo = $('input#titulo-' + objId).val();
+
+            $('#objeto-preview-body').empty();
+
+            if (tipoObj != 9) {
+                multiplicador = 1.2;
+                if (tipoObj == 2 || tipoObj == 11) {
+                    multiplicador = 0.65;
+                }
+                var pwidth = $(window).width();
+                var pheight = $(window).height();
+                var chart = $('#grafico-' + objId).highcharts();
+                var options = chart.options;
+                var pwidth = $(window).width();
+                var pheight = $(window).height();
+                var descrGrf = $('span#descr-' + objId).text();
+                $('span#previewTitulo').text(descrGrf);
+
+                var popupChart = new Highcharts.Chart(Highcharts.merge(options, {
+                    chart: {
+                        renderTo: 'objeto-preview-body',
+                        width: pwidth * multiplicador,
+                        height: pheight * multiplicador
+                    },
+                    legend: {
+                        maxHeight: 800,
+                        itemStyle: {
+                            fontSize: 14
+                        }
+                    }
+                }));
+
+                switch (tipoObj) {
+                    case 1:
+                        for (var i = 0; i < popupChart.series.length; i++) {
+                            popupChart.series[i].update({
+                                dataLabels: {
+                                    rotation: 0,
+                                    inside: false,
+                                    enabled: true,
+                                    y: -3,
+                                    style: {
+                                        fontSize: 18,
+                                        color: (Highcharts.theme && Highcharts.theme.textColor) || 'gray'
+                                    }
+                                }
+                            });
+                        }
+                        break;
+                    case 2:
+                    case 11:
+                        popupChart.options.plotOptions.pie.dataLabels.style.fontSize = 10;
+                        popupChart.legend.itemStyle.fontSize = 8;
+                        break;
+                    case 3:
+                    case 5:
+                        for (var i = 0; i < popupChart.series.length; i++) {
+                            if (popupChart.series[i].type == 'spline') {
+                                popupChart.series[i].update({
+                                    dataLabels: {
+                                        rotation: 0,
+                                        inside: false,
+                                        enabled: false,
+                                        y: -3,
+                                        style: {
+                                            fontSize: 18,
+                                            color: (Highcharts.theme && Highcharts.theme.textColor) || 'gray'
+                                        }
+                                    }
+                                });
+                            } else {
+                                popupChart.series[i].update({
+                                    dataLabels: {
+                                        rotation: 0,
+                                        inside: false,
+                                        enabled: true,
+                                        y: -3,
+                                        style: {
+                                            fontSize: 18,
+                                            color: (Highcharts.theme && Highcharts.theme.textColor) || 'gray'
+                                        }
+                                    }
+                                });
+                            }
+                        }
+                        break;
+                    case 6:
+                    case 7:
+                    case 8:
+                        popupChart.yAxis[0].update({
+                            stackLabels: {
+                                enabled: true,
+                                rotation: 0,
+                                y: -3,
+                                style: {
+                                    fontSize: 14,
+                                    color: (Highcharts.theme && Highcharts.theme.textColor) || 'gray'
+                                }
+                            }
+                        });
+                        break;
+                }
+
+                save_chart($('#objeto-preview-body').highcharts(), titulo);
+            }
+
+            return false;
+        });
+
+        $('#objetos').on('click', '.configurarObjeto', function () {
+            var objId = $(this).data('obj-id');
+            var titulo = $('input#titulo-' + objId).val();
+            $('#configurar-objeto-objId').val(objId);
+            $('p#configurar-objeto-titulo').text(titulo);
+            var dataLabel = $('input:hidden#flgDataLabels' + objId).val();
+            var stackLabel = $('input:hidden#flgStackLabels' + objId).val();
+            $('input:hidden#configurar-objeto-objId').val(objId);
+            $('input:checkbox#configurar-objeto-datalabel').prop('checked', dataLabel == 'true');
+            $('select#configurar-objeto-stacklabel option[value="' + stackLabel + '"]').attr('selected', 'selected');
+            $('#configurar-objeto').modal('show');
+            return false;
+        });
+
+        $('button#btnGuardarConfiguracion').on('click', function () {
+            var tableroId = $('input:hidden#TableroId').val();
+            var objId = $('input:hidden#configurar-objeto-objId').val();
+            var selDataLabel = $('input:checkbox#configurar-objeto-datalabel').prop('checked');
+            var selStackLabel = $('select#configurar-objeto-stacklabel').val();
+            var filtros = _filtrosAplicados;
+
+            $.ajax({
+                url: "@Url.Action("setConfiguracionDeObjeto", "Dashboard")",
+                data: { tableroId: tableroId, objetoId: objId, dataLabel: selDataLabel, stackLabel: selStackLabel },
+                cache: false,
+                type: "POST",
+                async: false,
+                dataType: "html",
+                success: function () {
+                    $('input[type=hidden]#flgStackLabels' + objId).val(selStackLabel);
+                    $('input[type=hidden]#flgDataLabels' + objId).val(selDataLabel);
+                    actualizarGrafico(tableroId, objId, filtros);
+                },
+                error: function (xhr, status, error) {
+                    console.log('Oh no');
+                }
+            });
+
+            $('#configurar-objeto').modal('hide');
+
+        });
+
+        EXPORT_WIDTH = 2500;
+
+        function save_chart(chart, filename) {
+            var render_width = EXPORT_WIDTH;
+            var render_height = render_width * chart.chartHeight / chart.chartWidth
+            var svg = chart.getSVG({
+                exporting: {
+                    sourceWidth: chart.chartWidth,
+                    sourceHeight: chart.chartHeight
+                }
+            });
+            var canvas = document.createElement('canvas');
+            canvas.height = render_height;
+            canvas.width = render_width;
+            var image = new Image;
+            $(image).on('load', function () {
+                canvas.getContext('2d').drawImage(this, 0, 0, render_width, render_height);
+                var data = canvas.toDataURL("image/png")
+                download(data, filename + '.png');
+            });
+
+            image.src = 'data:image/svg+xml;utf-8,' + svg;
+        }
+
+        function download(data, filename) {
+            var a = document.createElement('a');
+            a.download = filename;
+            a.href = data
+            document.body.appendChild(a);
+            a.click();
+            a.remove();
+        }
+</script>
+}

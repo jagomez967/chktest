@@ -1,0 +1,42 @@
+﻿@using Reporting.ViewModels
+@model SalesInFormsVM
+
+<div class="container-fluid panel panel-default panel-facturacion">
+    @Html.Partial("_psifacturacion", Model.Revenue)
+</div>
+<div class="center-psi">
+    <div class="container-fluid panel panel-default salesinout-box scrollable-content psi-content-forms">
+            @foreach (var m in Model.Forms.Where(m => !m.IsTotal))
+            {
+                @Html.Partial("_SalesInOut", m)
+            }
+    </div>
+</div>
+
+<div class="modal fade modal-totales" id="modaltotales" tabindex="-1" role="dialog" aria-labelledby="modaltotales-label" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header" stlye="padding-bottom:0;">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">@Reporting.Resources.Forecasting.confirmar_mes</h4>
+                <div class="modal-totales-botones" style="margin-top:5px;">
+                    <a id="mostrarhistoricototal" href="#" class="btn btn-default"><i class="fa fa-history" style="padding:0;"></i></a>
+                    <a id="mostrardetallestotal" href="#" class="btn btn-default"><i class="fa fa-info-circle" style="padding:0;"></i></a>
+                    @if (Model.ShowFuture)
+                    {
+                        <a id = "mostrarfuturototal" href = "#" class="btn btn-default"><i class="fa fa-repeat" style="padding:0;"></i></a>
+                    }
+                </div>
+            </div>
+            <div class="modal-body">
+                <div class="modal-totales-tablas">
+                    @foreach (var t in Model.Totales)
+                    {
+                        @Html.Partial("_psitotal", t)
+                    }
+                </div>
+            </div>
+            <div class="modal-footer"></div>
+        </div>
+    </div>
+</div>

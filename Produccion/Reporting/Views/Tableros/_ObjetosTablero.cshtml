@@ -1,0 +1,57 @@
+﻿@using Reporting.ViewModels
+@model ObjetosDeTableroViewModel
+
+@foreach (ObjetoViewModel o in Model.Objetos)
+{
+
+    <div class="objetoTablero @o.Size" data-id="@o.Id" data-tipoobj="@o.Tipo" data-flgstack="@o.stackLabels" data-flgdata="@o.dataLabels" data-size="@o.SizePage">
+        <div class="panel panel-default">
+            <div class="objeto-panel-heading" style="@(o.Tipo==23 || o.Tipo==24 || o.Tipo==27 || o.Tipo==28 || o.Tipo==29 || o.Tipo==32 ? "display:none;":"display:block;")">
+                <span class="titulo"><strong>@o.TextoFooter</strong></span>
+                @if ((o.Tipo != 16) && (o.Tipo != 18))
+                {
+                    <div class="dropdown exportar pull-right">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true">
+                            <i class="fa fa-external-link"></i>
+                        </a>
+
+                        <ul class="dropdown-menu" aria-labelledby="dLabel">
+                            @if (o.Tipo != 12)
+                            {
+                                <li><a class="expandirObjeto" href="#"><i class="fa fa-expand"></i> @Reporting.Resources.Tableros.ampliar</a></li>
+                            }
+                            @if (o.Tipo != 15 && o.Tipo != 19)
+                            {
+                                <li><a class="descargarTablaDatos" href="#"><i class="fa fa-download"></i> @Reporting.Resources.Tableros.descargarDatos</a></li>
+                            }
+                            @if (o.Tipo != 9 && o.Tipo != 12 && o.Tipo != 15 && o.Tipo != 20 && o.Tipo != 30)
+                            {
+                                <li><a class="descargarImagen" href="#"><i class="fa fa-file-image-o"></i> @Reporting.Resources.Tableros.descargarImagen</a></li>
+                            }
+                        </ul>
+                    </div>
+                }
+            </div>
+            <div class="panel-body @o.altura">
+                <div class="Objloading">
+                    <img src="@Url.Content("~/images/ajax-loader.gif")" />
+                </div>
+                <div class="ObjSinDatos">
+
+                    <img src="~/images/sindatos.png">
+
+
+                    <p>@Reporting.Resources.Tableros.noDataFoundGrafico</p>
+
+                </div>
+                <div class="ObjGrafico @o.altura"></div>
+                @if (o.Descripcion != "") {
+                <div class="ObjToolTip">
+                    <i class="fa fa-info-circle fa-2x"></i>
+                    <p class="gTooltip">@o.Descripcion</p>
+                </div>
+                }
+            </div>
+        </div>
+    </div>
+}

@@ -1,0 +1,61 @@
+﻿@using Reporting.ViewModels
+@model List<PriceRequestHistory>
+
+<table class="table" style="font-family: avenir next medium;">
+    <tr>
+        <th scope="col">@Reporting.Resources.PriceRequest.Date</th>
+        <th scope="col">@Reporting.Resources.PriceRequest.UserName</th>
+        <th scope="col">@Reporting.Resources.PriceRequest.ActualState</th>
+        <th scope="col">@Reporting.Resources.PriceRequest.Commentary</th>
+    </tr>
+    <tbody>
+        @foreach (PriceRequestHistory request in Model)
+        {
+            <tr class="@(request.State.Id < 0 ? "pr-redboldtext": "")">
+                <td scope="row">@request.Date</td>
+                <td>@request.User</td>
+                <td>
+                    @Math.Abs(request.State.Id) -@{
+                        switch (request.State.Id)
+                        {
+                            case -4:
+                                @Reporting.Resources.PriceRequest.PR_RejectedByManager
+                                break;
+                            case -3:
+                                @Reporting.Resources.PriceRequest.PR_DownloadError
+                                break;
+                            case -2:
+                                @Reporting.Resources.PriceRequest.PR_RejectedByAdmin
+                                break;
+                            case -1:
+                                @Reporting.Resources.PriceRequest.PR_InitialError
+                                break;
+                            case 0:
+                                @Reporting.Resources.PriceRequest.PR_InitialStatus
+                                break;
+                            case 1:
+                                @Reporting.Resources.PriceRequest.PR_Generated
+                                break;
+                            case 2:
+                                @Reporting.Resources.PriceRequest.PR_Revision
+                                break;
+                            case 3:
+                                @Reporting.Resources.PriceRequest.PR_Downloaded
+                                break;
+                            case 4:
+                                @Reporting.Resources.PriceRequest.PR_Approved
+                                break;
+                            default:
+                                @Reporting.Resources.PriceRequest.PR_NoState
+                                break;
+                        }
+                    }
+                </td>
+                <td>@request.Commentary</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+
+

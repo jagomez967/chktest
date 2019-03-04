@@ -1,0 +1,128 @@
+﻿@using Reporting.ViewModels
+@model ConfRolVM
+
+@{
+    ViewBag.Title = Reporting.Resources.Configuracion.lblCrearRolTitulo;
+}
+
+@section styles
+{
+    <style>
+        .btn-table-row {
+            padding: 5px;
+        }
+
+            .btn-table-row i {
+                padding: 0;
+            }
+    </style>
+}
+
+@Html.Partial("_SideMenu")
+
+<div class="titulo-pagina-fotos">
+    <a class="ecualiza-fotos always-visible animated slideInLeft" id="tabShowHide" href="#"></a>
+</div>
+
+<div class="container-fluid panel panel-default formulario-abm">
+
+    @if (ViewBag.Success != null)
+    {
+        <div class="alert alert-success" role="alert">
+            <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
+            @Reporting.Resources.Configuracion.lblDatosGuardaronExitosamente
+        </div>
+    }
+
+    @if (ViewBag.Error != null)
+    {
+        <div class="alert alert-danger" role="alert">
+            <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+            @Reporting.Resources.Configuracion.errGuardarDatosNuevoRol
+            @if (ViewBag.ErrorMessage != null)
+            {
+                <p>@ViewBag.ErrorMessage</p>
+            }
+            <p>@Html.ValidationMessage("Err_Imagen_FileType")</p>
+            <p>@Html.ValidationMessage("Err_Imagen_FileSize")</p>
+        </div>
+    }
+
+    <h1>@Reporting.Resources.Configuracion.lblCrearRolTitulo2</h1>
+    <hr />
+    @using (Html.BeginForm("CrearRol", "Configuracion", FormMethod.Post))
+    {
+        @Html.AntiForgeryToken()
+        @Html.HiddenFor(m => m.Id)
+
+        <div class="row">
+            <div class="col-xs-12 col-sm-6">
+                <div class="form-group">
+                    @Html.LabelFor(m => m.Nombre, htmlAttributes: new { @class = "control-label" })
+                    @Html.EditorFor(model => model.Nombre, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Nombre, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>
+
+        <hr />
+
+        <div class="row">
+            <div class="col-xs-12 col-sm-6">
+                <div class="form-group">
+                    <label>@Reporting.Resources.Configuracion.lblPermisos</label>
+                    <table id="tabla-permisos" class="table table-responsive table-bordered table-hover">
+                        <thead>
+                            <tr>
+                                <th>@Reporting.Resources.Configuracion.lblPermiso</th>
+                                <th>@Reporting.Resources.Configuracion.lblSeleccionado</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var permiso in Model.Permisos)
+                            {
+                                <tr>
+                                    <td>
+                                        @permiso.Nombre
+                                    </td>
+                                    <td>
+                                        @Html.Hidden(string.Format("Permisos[{0}].Id", Model.Permisos.IndexOf(permiso)), permiso.Id)
+                                        @Html.Hidden(string.Format("Permisos[{0}].Nombre", Model.Permisos.IndexOf(permiso)), permiso.Nombre)
+                                        @Html.CheckBox(string.Format("Permisos[{0}].Seleccionado", Model.Permisos.IndexOf(permiso)), permiso.Seleccionado, htmlAttributes: new { @class = "permisocheck" })
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <hr />
+        <div class="form-group">
+            <input type="submit" value="@Reporting.Resources.Configuracion.btnCrearRolLabel" class="btn btn-primary" />
+        </div>
+    }
+</div>
+
+
+
+@section scripts{
+    <script>
+        $(document).ready(function () {
+            $('body').on('click', '#tabShowHide', function () {
+                var val = $('body, .slide-menu').css('left') === '200px' ? '0px' : '200px';
+                var _padding = $('body, .slide-menu').css('left') != '200px' ? '200px' : '0px';
+                $('body, .slide-menu').css('left', val);
+                $("body").css('padding-right', _padding);
+            });
+
+            $('.permisocheck').bootstrapSwitch({
+                size: 'mini',
+                onText: "@Reporting.Resources.Configuracion.lblOnOffLabelYes",
+                offText: "@Reporting.Resources.Configuracion.lblOnOffLabelNo"
+            });
+        });
+    </script>
+}
+

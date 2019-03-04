@@ -1,0 +1,138 @@
+﻿@using Reporting.ViewModels
+@model GeoInfoPdvVM
+
+
+<div class="header-description">
+    <h1 class="section-header-title">
+        @Model.Name @(Model.BusinessName != string.Empty ? " - " + Model.BusinessName : "")
+    </h1>
+    @if (Model.Categorie != string.Empty)
+    {
+        <h2 class="section-header-subtitle">
+            <span class="section-header-subtitle-badge">
+                @Model.Categorie
+            </span>
+        </h2>
+    }
+    <div class="section-header-description-container">
+        <div class="section-rating-line">
+            @Model.Direction
+        </div>
+        <div class="section-rating-line">
+            <i>@Model.Chain</i>
+        </div>
+    </div>
+</div>
+
+<div class="section-divider section-divider-bottom-line" style="height:8px"></div>
+<div class="section-divider" style="height:15px"></div>
+
+@* DATOS DE CONTACTO *@
+@if (Model.PostalCode != string.Empty)
+{
+    <div class="section-info section-info-hoverable">
+        <div class="section-info-action-hoverable">
+            <div class="section-info-line">
+                <div class="section-info-icon"><i class="fa fa-map-pin"></i></div>
+                <span class="section-info-text">@Reporting.Resources.Mapas.PostalCodeAbbr: @Model.PostalCode</span>
+            </div>
+        </div>
+    </div>
+}
+<div class="section-info section-info-hoverable">
+    <div class="section-info-action-hoverable">
+        <div class="section-info-line">
+            <div class="section-info-icon"><i class="fa fa-phone"></i></div>
+            <span class="section-info-text">@Model.Phone</span>
+        </div>
+    </div>
+</div>
+@if (Model.Contact != string.Empty)
+{
+    <div class="section-info section-info-hoverable">
+        <div class="section-info-action-hoverable">
+            <div class="section-info-line">
+                <div class="section-info-icon"><i class="fa fa-user"></i></div>
+                <span class="section-info-text">@Model.Contact</span>
+            </div>
+        </div>
+    </div>
+}
+
+<div class="section-info section-info-hoverable">
+    <div class="section-info-action-hoverable">
+        <div class="section-info-line">
+            <div class="section-info-icon"><i class="fa fa-envelope"></i></div>
+            <span class="section-info-text">@Model.Email</span>
+        </div>
+    </div>
+</div>
+
+<div class="section-divider section-divider-bottom-line" style="height:8px"></div>
+<div class="section-divider" style="height:15px"></div>
+@*Aca Info de Checkpos... Ultimo reporte, ehm.... xD*@
+@if (Model.LastReportDate != string.Empty)
+{
+    <div class="section-last-report">
+        <span class="section-info-text"><i><b>@Reporting.Resources.Mapas.lblLastReportCharged:</b>@Model.LastReportDate.Substring(0,10)</i></span>
+        <br />
+        <span class="section-info-text"><i><b>@Reporting.Resources.Mapas.lblUser:</b> @Model.LastReportUser</i></span>
+    </div>
+}
+else
+{
+    <div class="section-last-report">
+        <span class="section-info-text"><i style="color:gray;"> @Reporting.Resources.Mapas.lblNoReportsCharged </i></span>
+    </div>
+}
+
+<div class="section-divider section-divider-bottom-line" style="height:8px"></div>
+<div class="section-divider" style="height:15px"></div>
+@*Seccion Info de Fotografias. Cargo dos o tres ultimas del reporte y las muestro aca*@
+<div class="section-photo-reports">
+    <div id="loadingPhotosPDV" style="display:none;">
+        <strong>@Reporting.Resources.Mapas.lblLoadingPhotos</strong>
+    </div>
+    <div id="PhotoListPDV_" class="photoListPDV"></div>
+</div>
+
+@*Si existen reportes cargados muestro un timeline con los ultimos*@
+@if (Model.LastReportDate != string.Empty)
+{
+    <div class="section-divider section-divider-bottom-line" style="height:8px"></div>
+    <div class="section-divider" style="height:15px"></div>
+
+    <div class="section-timeline-reports">
+        <div id="timelinePhotosPDV_" class="timelinePhotosPDV"></div>
+    </div>
+}
+    <script>
+        GetImagesFromPDV = () =>
+            $.ajax({
+                url: "@Url.Action("GetLastImagesFromPDV", "Geo")",
+                type: "POST",
+                dataType: "html",
+                data: { idPuntoDeVenta: @Model.IdPDV.ToString()},
+                beforeSend: () => $('#loadingPhotosPDV').show(),
+                success: (data) => $(".photoListPDV").html(data),
+                complete: () => $('#loadingPhotosPDV').hide()
+            });
+ 
+        GetLastReportsFromPDV = () => 
+            $.ajax({
+                url: "@Url.Action("GetLastReportsFromPDV", "Geo")",
+                type: "POST",
+                dataType: "html",
+                data: { idPuntoDeVenta: @Model.IdPDV},
+                success: (data) => $(".timelinePhotosPDV").html(data),
+            });
+
+        $(document).ready( () => {
+            //Pendiente, algun dia podriamos agregar la info de GOOGLE PLACES
+            //GetPlaceInfo('ChIJN1t_tDeuEmsRUsoyG83frY4');
+            GetImagesFromPDV();
+            if ($('#timelinePhotosPDV_').length > 0) {
+                GetLastReportsFromPDV();
+            }
+        });        
+    </script>

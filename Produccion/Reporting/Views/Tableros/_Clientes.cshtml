@@ -1,0 +1,23 @@
+﻿@using Reporting.ViewModels
+@model IEnumerable<ItemViewModelCountry>
+
+<div class="radiosClientes">
+    <ul>
+        @foreach (ItemViewModelCountry itm in Model)
+        {
+            <li>
+                <input type="radio" id="@itm.IdItem" name="IdCliente" value="@itm.IdItem" @(itm.Selected ? "checked=\"checked\"" : "") />
+                @if (itm.Descripcion == "LATINOAMERICA")
+                {
+                    <img src="@Url.Content("~/images/Flags/LATAM.png")" class="client-flag">
+                }
+                else if(!string.IsNullOrEmpty(itm.CountryCode))
+                {
+                    <img src="@Url.Content("~/images/Flags/"+itm.CountryCode+".svg")" class="client-flag">
+                }
+                <label for="@itm.IdItem">@itm.Descripcion</label>
+            </li>
+
+        }
+    </ul>
+</div>

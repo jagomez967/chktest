@@ -1,0 +1,112 @@
+﻿@using Reporting.ViewModels
+@model ListadoEventosVM
+
+@{
+    ViewBag.Title = Reporting.Resources.Calendario.lblListadoEventosTitulo;
+}
+
+<div class="container-fluid panel panel-default configurarTablero">
+    <a href="@Url.Action("Index","Calendario")">@Reporting.Resources.Calendario.lblListadoEventosCancelarYVolver</a>
+    <h1>@Reporting.Resources.Calendario.lblListadoEventosTitulo2</h1>
+    <hr />
+    <div class="row">
+        <div class="col-xs-12 col-sm-6">
+            <div class="form-group">
+                @Html.DropDownListFor(m => m.IdUsuario, new SelectList(Model.Usuarios, "Value", "Text", "0"), htmlAttributes: new { @class = "form-control ddlusuarios" })
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-6 col-sm-3">
+            <p>@Reporting.Resources.Calendario.FechaDesde <input type="text" id="fechaDesdeInput" /></p>
+        </div>
+        <div class="col-xs-6 col-sm-3">
+            <p>@Reporting.Resources.Calendario.FechaHasta <input type="text" id="fechaHastaInput" /></p>
+        </div>
+
+    </div>
+    <hr />
+    <span id="loadingtabla" style="display:none;">@Reporting.Resources.Calendario.lblCargandoEventos</span>
+    <div id="table_wrapper"></div>
+</div>
+
+@section scripts{
+@Scripts.Render("~/bundles/unobstrusive")
+    <script>
+        $(document).ready(() => {
+            $(() => $("#fechaDesdeInput").datepicker());
+        $(() => $("#fechaHastaInput").datepicker());
+
+            $('.ddlusuarios').select2({
+                placeholder: '@Reporting.Resources.Calendario.placeholderDdlUsuarios',
+                width: '100%'
+            });
+
+            GetAllEventos();
+
+            function GetAllEventos() {
+                let idusuario = $('.ddlusuarios').val();
+                let fechaDesde =$('#fechaDesdeInput').val();
+                let fechaHasta = $('#fechaHastaInput').val();
+
+                $.ajax({
+                    url: '@Url.Action("GetEventsListado", "Calendario")',
+                    dataType: 'html',
+                    data: {
+                        idUsuario: idusuario,
+                        fechaDesde: fechaDesde,
+                        fechaHasta: fechaHasta
+                    },
+                    method: 'POST',
+                    beforeSend: () => {
+                        $('#loadingtabla').show();
+                        $('#table_wrapper').hide();
+                    },
+                    success: (html) =>{
+                        if (html) {
+                            $('#table_wrapper').html(html);
+                        }
+                    },
+                    complete: () => {
+                        $('#loadingtabla').hide();
+                        $('#table_wrapper').show();
+                    }
+                });
+            }
+
+            $("#table_wrapper").on('click', '#btnExportar', function (e) {
+                e.preventDefault();
+                let idusuario = $('.ddlusuarios').val();
+                let fechaDesde = $('#fechaDesdeInput').val();
+                let fechaHasta = $('#fechaHastaInput').val();
+                let filename = 'ListadoEventos.xlsx';
+
+                $.ajax({
+                    url:'@Url.Action("DownloadCalendar", "Calendario")',
+                    method: 'POST',
+                    data:{
+                        idUsuario: idusuario,
+                        fechaDesde: fechaDesde,
+                        fechaHasta: fechaHasta
+                    },
+                    success: function (result) {
+                        if (result.length <= 0) {
+                            return;
+                        }
+
+                        const dl = document.createElement("a");
+                        dl.href = "@Url.Action("DownloadFileByToken", "Datos")" + "?token=" + result;
+                        dl.download = filename;
+                        dl.style = "visibility:hidden;";
+                        dl.onclick = 'return false;';
+                        document.body.appendChild(dl);
+                        dl.click();
+                        document.body.removeChild(dl);
+                    }
+                });
+            });
+
+            $('.ddlusuarios, #fechaDesdeInput, #fechaHastaInput').on('change', () => GetAllEventos());
+        });
+    </script>
+}

@@ -1,0 +1,102 @@
+﻿@using Reporting.ViewModels
+@model List<ConfFiltroVM>
+
+@{
+    ViewBag.Title = Reporting.Resources.Configuracion.lblTituloAsignacionFiltros;
+}
+
+@Html.Partial("_SideMenu")
+
+<div class="titulo-pagina-fotos">
+    <a class="ecualiza-fotos always-visible animated slideInLeft" id="tabShowHide" href="#"></a>
+</div>
+
+<div class="container-fluid panel panel-default configurarTablero">
+    <h1>@Reporting.Resources.Configuracion.lblAsignacionFiltrosTitulo2</h1>
+    <h5>@Reporting.Resources.Configuracion.lblAsignacionFiltrosSubTitulo</h5>
+    <hr />
+
+    <div class="form-group">
+        @Html.TextBox("search-filtro", string.Empty, htmlAttributes: new { @id = "search-filtro", @placeholder = Reporting.Resources.Configuracion.placeholderSearchNombreFiltro, @class = "form-control", @style = "width:400px;" })
+    </div>
+
+    <hr />
+    <div id="div-tabla-filtros">
+        <table class="table table-responsive table-hover table-bordered">
+            <thead>
+                <tr>
+                    <th>@Reporting.Resources.Configuracion.lblTablaColNombre</th>
+                    <th style="width:40%;">@Reporting.Resources.Configuracion.lblTablaColAsignado</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var f in Model)
+                {
+                    <tr data-filtro-id="@f.Id">
+                        <td>
+                            <span style="display:block;">@f.Nombre</span>
+                            @if (!string.IsNullOrEmpty(f.NombreAsignadoPorUsuario))
+                            {
+                                <span style="display:block;padding-left:20px;">
+                                    <small><em>@f.NombreAsignadoPorUsuario</em></small>
+                                </span>
+                            }
+                        </td>
+                        <td>
+                            @Html.CheckBox(string.Format("filtro_t{0}", f.Id), f.Asignado, htmlAttributes: new { @class = "filtroselected" })
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+@section scripts{
+    @Scripts.Render("~/bundles/unobstrusive")
+    <script>
+    $(document).ready(function () {
+        $('body').on('click', '#tabShowHide', function () {
+            var val = $('body, .slide-menu').css('left') === '200px' ? '0px' : '200px';
+            var _padding = $('body, .slide-menu').css('left') != '200px' ? '200px' : '0px';
+            $('body, .slide-menu').css('left', val);
+            $("body").css('padding-right', _padding);
+        });
+
+        $('#div-tabla-filtros').find('.filtroselected').bootstrapSwitch({
+            size: 'mini',
+            onText: "@Reporting.Resources.Configuracion.lblOnOffLabelYes",
+                offText: "@Reporting.Resources.Configuracion.lblOnOffLabelNo"
+            });
+
+            $('#modal-editar-nombre').on('click', '#btn-modal-cancelar', function () {
+                $('#modal-editar-nombre').modal('hide');
+            });
+
+            $('#div-tabla-filtros').on('switchChange.bootstrapSwitch', '.filtroselected', function (event, state) {
+                var filtroid = $(this).closest('tr').attr('data-filtro-id');
+
+                $.ajax({
+                    url: '@Url.Action("AdmFiltroCliente", "Configuracion")',
+                dataType: 'json',
+                data: { filtroid: filtroid, activo: state },
+                method: 'POST',
+                success: function (result) {
+                    if (!result) {
+                        return false;
+                    }
+                },
+                error: function () {
+                    console.log('Error Inesperado al cambiar asignacion de filtro');
+                }
+            });
+        });
+
+        $('#search-filtro').on('keyup', function () {
+            var str = $(this).val();
+            $('#div-tabla-filtros').find('tr').hide();
+            $('#div-tabla-filtros').find('tr:icontains("' + str + '")').show();
+        });
+    });
+    </script>
+}

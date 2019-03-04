@@ -1,0 +1,43 @@
+﻿@{
+    ViewBag.Title = Reporting.Resources.Configuracion.lblConfiguracionIndexTitulo;
+}
+
+@section styles
+{
+    <style>
+        .filtros > li:hover {
+            border-left: 3px solid orange;
+        }
+
+        .filtros li.collapsed.expanded {
+            border-left: 3px solid orange !important;
+        }
+
+        .filtrochecks {
+            display: block !important;
+        }
+    </style>
+}
+
+@Html.Partial("_SideMenu")
+
+<div class="titulo-pagina-fotos">
+    <a class="ecualiza-fotos always-visible animated slideInLeft" id="tabShowHide" href="#"></a>
+</div>
+
+<div class="container-fluid panel panel-default configurarTablero">
+    
+</div>
+
+@section scripts{
+    <script>
+        $(document).ready(function () {
+            $('body').on('click', '#tabShowHide', function () {
+                var val = $('body, .slide-menu').css('left') === '200px' ? '0px' : '200px';
+                var _padding = $('body, .slide-menu').css('left') != '200px' ? '200px' : '0px';
+                $('body, .slide-menu').css('left', val);
+                $("body").css('padding-right', _padding);
+            });
+        });
+    </script>
+}

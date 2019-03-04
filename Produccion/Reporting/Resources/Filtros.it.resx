@@ -1,0 +1,219 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="fltBanco" xml:space="preserve">
+    <value>banca</value>
+  </data>
+  <data name="fltCadenas" xml:space="preserve">
+    <value>catene</value>
+  </data>
+  <data name="fltCategoria" xml:space="preserve">
+    <value>Categoria</value>
+  </data>
+  <data name="fltCategoriaProducto" xml:space="preserve">
+    <value>Categoria di prodotto</value>
+  </data>
+  <data name="fltClientes" xml:space="preserve">
+    <value>clienti</value>
+  </data>
+  <data name="fltCompetenciaPrimaria" xml:space="preserve">
+    <value>Competenza elementare</value>
+  </data>
+  <data name="fltFamilia" xml:space="preserve">
+    <value>Prodotti per la famiglia</value>
+  </data>
+  <data name="fltFechaReporte" xml:space="preserve">
+    <value>Data Rapporto</value>
+  </data>
+  <data name="fltJefeGestion" xml:space="preserve">
+    <value>Chief Management</value>
+  </data>
+  <data name="fltJefeZonal" xml:space="preserve">
+    <value>Boss Zonal</value>
+  </data>
+  <data name="fltLocalidades" xml:space="preserve">
+    <value>posizioni</value>
+  </data>
+  <data name="fltMarcaPropiedad" xml:space="preserve">
+    <value>Marchio di propietà</value>
+  </data>
+  <data name="fltMarcas" xml:space="preserve">
+    <value>marche</value>
+  </data>
+  <data name="fltPais" xml:space="preserve">
+    <value>Country</value>
+  </data>
+  <data name="fltPop" xml:space="preserve">
+    <value>Pop</value>
+  </data>
+  <data name="fltProductos" xml:space="preserve">
+    <value>produrre</value>
+  </data>
+  <data name="fltProvincias" xml:space="preserve">
+    <value>province</value>
+  </data>
+  <data name="fltPuntosDeVenta" xml:space="preserve">
+    <value>Punti di vendita</value>
+  </data>
+  <data name="fltRTM" xml:space="preserve">
+    <value>Tipo RTM (rep)</value>
+  </data>
+  <data name="fltSubCategoria" xml:space="preserve">
+    <value>SubCategoria</value>
+  </data>
+  <data name="fltSucursal" xml:space="preserve">
+    <value>Filiale</value>
+  </data>
+  <data name="fltTags" xml:space="preserve">
+    <value>tag</value>
+  </data>
+  <data name="fltTipoDeRTM" xml:space="preserve">
+    <value>Tipo RTM</value>
+  </data>
+  <data name="fltTipoEntrega" xml:space="preserve">
+    <value>Tipo de entrega</value>
+  </data>
+  <data name="fltTipoPDV" xml:space="preserve">
+    <value>Tipo di punto di vendita</value>
+  </data>
+  <data name="fltTipoSucursal" xml:space="preserve">
+    <value>Tipo di ramo</value>
+  </data>
+  <data name="fltUsuarios" xml:space="preserve">
+    <value>utenti</value>
+  </data>
+  <data name="fltVendedores" xml:space="preserve">
+    <value>fornitori</value>
+  </data>
+  <data name="fltZonas" xml:space="preserve">
+    <value>aree</value>
+  </data>
+  <data name="lblEliminarFiltros" xml:space="preserve">
+    <value>Rimuovi i filtri</value>
+  </data>
+  <data name="lblFiltrosAplicados" xml:space="preserve">
+    <value>Filtri applicati</value>
+  </data>
+  <data name="lblMesActual" xml:space="preserve">
+    <value>Mese corrente</value>
+  </data>
+  <data name="linkAplicarFiltro" xml:space="preserve">
+    <value>Applica i filtri</value>
+  </data>
+</root>

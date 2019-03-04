@@ -1,0 +1,221 @@
+/************************************************* ESTILOS GENERALES *****/
+::scrollbar
+{
+  width: 10px;  /* for vertical scrollbars */
+  height: 10px; /* for horizontal scrollbars */
+}
+
+::scrollbar-track
+{
+  background: #fafafa;
+}
+
+::scrollbar-thumb
+{
+  background: #aaa;
+}
+
+::-webkit-scrollbar
+{
+  width: 10px;  /* for vertical scrollbars */
+  height: 10px; /* for horizontal scrollbars */
+}
+
+::-webkit-scrollbar-track
+{
+  background: #fafafa;
+}
+
+::-webkit-scrollbar-thumb
+{
+  background: #aaa;
+}
+
+::selection {
+    background: #EBEFF5;
+    color: #9BA9AD;
+    text-shadow: none;
+}
+
+::-moz-selection {
+    background: #EBEFF5;
+    color: #9BA9AD;
+    text-shadow: none;
+}
+
+::-webkit-selection {
+    background: #EBEFF5;
+    color: #9BA9AD;
+    text-shadow: none;
+}
+
+*{
+	margin:0;
+	padding:0;
+}
+
+body{
+	font-family: 'Source Sans Pro', sans-serif;
+	font-weight:400;
+	font-size:100%;
+	color: #44575D;
+	padding: 10px;
+	background-color: #F8F8F8;
+}
+
+a:focus,
+input:focus,
+select:focus,
+textarea:focus,
+button:focus {
+	outline: none;
+}
+
+.logo{
+	width:150px;
+	display:inline;
+	margin-right:10px;
+	margin-right: -2px;
+}
+
+h1{
+	font-size:1.3em;
+	font-weight:400;
+	display:inline;
+    position: relative;
+    top: -17px;
+}
+
+.fecha, .id, .otro-dato{
+	font-weight:bold;
+	padding-right:5px;
+}
+
+
+ul.listafotos {
+	list-style: none;
+	font-size: 0px;
+	margin-left: -2.5%; /* should match li left margin */
+    margin-top: 15px;
+}
+
+ul.listafotos li {
+	display: inline-block;
+	padding: 10px;
+	margin: 0 0 2.5% 2.5%;
+	background: #fff;
+	border: 1px solid #ddd;
+	font-size: 16px;
+	font-size: 1rem;
+	vertical-align: top;
+	box-shadow: 0 0 5px #ddd;
+	box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+}
+
+ul.listafotos li img {
+	max-width: 100%;
+	height: auto;
+	margin: 0 0 10px;
+}
+
+ul.listafotos li h3 {
+	margin: 0 0 5px;
+}
+
+ul.listafotos li p, ul.listafotos li span {
+	font-size: .9em;
+	line-height: 1.5em;
+}
+
+/* class for 2 columns */
+ul.listafotos.columas2 li {
+	width: 47.5%; /* this value + 2.5 should = 50% */
+}
+
+/* class for 3 columns */
+ul.listafotos.columas3 li {
+	width: 30.83%; /* this value + 2.5 should = 33% */
+}
+
+/* class for 4 columns */
+ul.listafotos.columas4 li {
+	width: 22.5%; /* this value + 2.5 should = 25% */
+}
+ 
+input.typeahead {
+    display: block;
+    margin: 0;
+    width: 21%;
+    height: 18px;
+    padding: 0 0 5px 16px;
+    border-radius: 0;
+    margin: 0px 5px 4px;
+    background: url(../cssjs/lupa.png) no-repeat;
+    font-size: 0.95em;
+    font-style: italic;
+    font-weight: 700;
+    color: #44575D;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+    box-shadow: none;
+    -webkit-border-radius: none;
+    -moz-border-radius: none;
+    -ms-border-radius: none;
+    -o-border-radius: none;
+    border-radius: none;
+    border: none;
+    border-bottom: 1px solid #eee;
+    -webkit-transition: border 0.3s;
+    -moz-transition: border 0.3s;
+    -o-transition: border 0.3s;
+    transition: border 0.3s;
+}
+
+
+
+
+/********************************************************************************* MEDIA QUERIES */
+
+@media screen and (max-width: 768px) {
+
+
+	
+}
+
+@media screen and (max-width: 500px) {
+
+	.logo{
+		display:block;
+	}
+
+	h1{
+		font-size: 1.3em;
+		font-weight: 400;
+		padding-bottom: 15px;
+		margin: 30px 0 15px;
+		border-bottom: 1px solid #333;
+		display: block;	
+	}
+	
+}
+
+
+
+
+
+@media (max-width: 480px) {
+
+	ul.listafotos {
+		margin-left: 0;
+	}
+	ul.listafotos li {
+		width: 100% !important; /* over-ride all li styles */
+		margin: 0 0 20px;
+	}
+}
+

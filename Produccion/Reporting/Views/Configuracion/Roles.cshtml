@@ -1,0 +1,81 @@
+﻿@using Reporting.ViewModels
+@model List<ConfRolVM>
+
+@{
+    ViewBag.Title = Reporting.Resources.Configuracion.lblRolesTitulo;
+}
+
+@section styles
+{
+    <style>
+        .btn-table-row {
+            padding: 5px;
+        }
+
+            .btn-table-row i {
+                padding: 0;
+            }
+    </style>
+}
+
+@Html.Partial("_SideMenu")
+
+<div class="titulo-pagina-fotos">
+    <a class="ecualiza-fotos always-visible animated slideInLeft" id="tabShowHide" href="#"></a>
+</div>
+
+<div class="container-fluid panel panel-default configurarTablero">
+    <h1>@Reporting.Resources.Configuracion.lblRolesTitulo2</h1>
+    <h5>@Reporting.Resources.Configuracion.lblRolesSubTitulo</h5>
+    <hr />
+
+    <div class="form-group">
+        <p>
+            <a href="@Url.Action("CrearRol","Configuracion")" class="btn btn-primary">@Reporting.Resources.Configuracion.btnCrearNuevoRolLabel</a>
+        </p>
+    </div>
+
+    <hr />
+    <div id="div-tabla-roles">
+        <p>
+            @Html.TextBox("search-roles", string.Empty, htmlAttributes: new { @id = "search-roles", @placeholder = Reporting.Resources.Configuracion.placeholderRolesBuscar, @class = "form-control", @style = "width:400px;" })
+        </p>
+        <table class="table table-responsive table-hover table-bordered">
+            <thead>
+                <tr>
+                    <th>@Reporting.Resources.Configuracion.lblRolesTablaColNombre</th>
+                    <th style="width:30px;"></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var u in Model)
+                {
+                    <tr>
+                        <td>@u.Nombre</td>
+                        <td><a href="@Url.Action("EditarRol", "Configuracion", new { Id=u.Id})" class="btn btn-info pull-right btn-table-row"><i class="fa fa-pencil fa-2x"></i></a></td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+@section scripts{
+    <script>
+        $(document).ready(function () {
+            $('body').on('click', '#tabShowHide', function () {
+                var val = $('body, .slide-menu').css('left') === '200px' ? '0px' : '200px';
+                var _padding = $('body, .slide-menu').css('left') != '200px' ? '200px' : '0px';
+                $('body, .slide-menu').css('left', val);
+                $("body").css('padding-right', _padding);
+            });
+
+            $('#search-roles').on('keyup', function () {
+                var str = $(this).val();
+                $('#div-tabla-roles tbody tr').hide();
+                $('#div-tabla-roles tbody tr:icontains("' + str + '")').show();
+            });
+        });
+    </script>
+}
+

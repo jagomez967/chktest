@@ -1,0 +1,15 @@
+﻿
+
+@model string
+
+@if (Model != string.Empty)
+{
+    <div class="section-image-container">
+        <img src="@Model"
+             style="position: relative; top: -1px; left: 0px; width: 130px; height: 107px; display: block;" aria-hidden="true">
+    </div>
+}
+else
+{
+    <span>@Reporting.Resources.Mapas.NotSignature</span>
+}

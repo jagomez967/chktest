@@ -1,0 +1,346 @@
+﻿@using Reporting.ViewModels
+@model RequestDownPriceTable
+
+
+@if (Model.ListItem.Count > 0)
+{
+    <div id="prconfirmados" style="display:block">
+        <div class="row prconf">
+            <div class="col-sm-12">
+                <table class="table">
+                    <colgroup>
+                        @if (Model.IsAdmin)
+                        {
+                            <col style="width:15%;" />
+                            <col style="width:15%;" />
+                            <col style="width:15%;" />
+                            <col style="width:15%;" />
+                            <col style="width:15%;" />
+                            <col style="width:15%;" />
+                            <col style="width:20%;" />
+                        }
+                        else
+                        {
+                            <col style="width:15%;" />
+                            <col style="width:15%;" />
+                            <col style="width:15%;" />
+                            <col style="width:15%;" />
+                            <col style="width:20%;" />
+                            <col style="width:20%;" />
+                        }
+                    </colgroup>
+                    <thead>
+                        <tr>
+                            @if (Model.IsAdmin)
+                            {
+                                <th>@Reporting.Resources.PriceRequest.Country</th>
+                                <th>@Reporting.Resources.PriceRequest.UserName</th>
+
+                            }
+                            else
+                            {
+                                <th>@Reporting.Resources.PriceRequest.Product</th>
+                                <th>@Reporting.Resources.PriceRequest.Accounts</th>
+                            }
+
+                            <th>@Reporting.Resources.PriceRequest.ModificationDate</th>
+                            <th class="text-center">@Reporting.Resources.PriceRequest.LastState</th>
+                            <th class="text-center">@Reporting.Resources.PriceRequest.Action</th>
+                            @if (Model.IsAdmin)
+                            {
+                                <th class="text-center">@Reporting.Resources.PriceRequest.ChangeState</th>
+                            }
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (RequestDownPriceItem r in Model.ListItem)
+                        {                            
+                            <tr>
+                                @if (Model.IsAdmin)
+                                {
+                                    <td>@r.Country</td>
+                                    <td>@r.UserName</td>
+                                }
+                                else
+                                {
+                                    <td>@r.ProductName</td>
+                                    <td>
+                                        <ul>
+                                            @foreach (string accountName in r.AccountList)
+                                            {
+                                                <li>@accountName</li>
+                                            }
+                                        </ul>
+                                    </td>
+                                }
+
+                                <td><em>@r.Date</em></td>
+                                <td>
+                                    @*Estados*@
+                                    <ul class="PriceRequestProgressbar">
+                                        @for (var i = 1; i < 5; i++)
+                                        {
+                                            <li class="@(r.Status.Id + 1 > i ? "active" : "") @(((r.Status.Id -1) * -1) > i ? "pr-rejected" : "")">
+                                            </li>
+                                        }
+                                    </ul>
+                                    <p class="text-center">
+                                        <i>
+                                            @{
+                                                switch (r.Status.Id)
+                                                {
+                                                    case -4:
+                                                        @Reporting.Resources.PriceRequest.PR_RejectedByManager
+                                                        break;
+                                                    case -3:
+                                                        @Reporting.Resources.PriceRequest.PR_DownloadError
+                                                        break;
+                                                    case -2:
+                                                        @Reporting.Resources.PriceRequest.PR_RejectedByAdmin
+                                                        break;
+                                                    case -1:
+                                                        @Reporting.Resources.PriceRequest.PR_InitialError
+                                                        break;
+                                                    case 0:
+                                                        @Reporting.Resources.PriceRequest.PR_InitialStatus
+                                                        break;
+                                                    case 1:
+                                                        @Reporting.Resources.PriceRequest.PR_Generated
+                                                        <i class="text-info fa fa-info-circle" title="@(Reporting.Resources.PriceRequest.NextAlertIn)@(r.DateNextAlert)"></i>
+                                                        break;
+                                                    case 2:
+                                                        @Reporting.Resources.PriceRequest.PR_Revision
+                                                        break;
+                                                    case 3:
+                                                        @Reporting.Resources.PriceRequest.PR_Downloaded
+                                                        break;
+                                                    case 4:
+                                                        @Reporting.Resources.PriceRequest.PR_Approved
+                                                        break;
+                                                    default:
+                                                        @Reporting.Resources.PriceRequest.PR_NoState
+                                                        break;
+                                                }
+                                            }
+                                        </i>
+                                    </p>
+                                </td>
+                                <td style="padding-left: 2%;padding-right: 2%;">
+                                    @if (r.Status.Id < 2)
+                                    {
+                                        if (Model.IsPm)
+                                        {
+                                            <a class="editpr btn btn-block btn-xs btn-default @(r.Status.Id < 2 ? "" : "disabled")" onclick="editRequest('@r.GUID','true','false');">
+                                                <i class="fa fa-pencil"></i>
+                                                @Reporting.Resources.PriceRequest.EditRequest
+                                            </a>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <a class="viewpr btn btn-block btn-xs btn-default" onclick="editRequest('@r.GUID','false','false');">
+                                            <i class="fa fa-eye"></i>
+                                            @Reporting.Resources.PriceRequest.ViewRequest
+                                        </a>
+                                    }
+                                    <a class="historypr btn btn-block btn-xs btn-default" onclick="historyPR('@r.GUID');">
+                                        <i class="fa fa-history"></i>
+                                        @Reporting.Resources.PriceRequest.History
+                                    </a>
+                                    <a class="deletepr btn btn-block btn-xs btn-default"  onclick="deletePR('@r.GUID');">
+                                        <i class="fa fa-close"></i>
+                                        @Reporting.Resources.PriceRequest.DeleteRequest
+                                    </a>
+                                </td>
+                                @if (Model.IsAdmin)
+                                {
+
+                                    <td style="padding-left: 2%;padding-right: 2%;">
+                                        @{
+                                            switch (r.Status.Id)
+                                            {
+                                                case 0:
+
+                                                    break;
+                                                case 1:
+                                                    <a class="viewpr btn btn-block btn-xs btn-warning" onclick="editRequest('@r.GUID','false','true');">
+                                                        <i class="fa fa-eye"></i>
+                                                        @Reporting.Resources.PriceRequest.ViewRequest
+                                                    </a>
+                                                    break;
+                                                case 2:
+                                                    <a class="dowloadpr btn btn-block btn-xs btn-primary" onclick="downloadPR('@r.GUID');">
+                                                        <i class="fa fa-download"></i>
+                                                        @Reporting.Resources.PriceRequest.DownloadRequest
+                                                    </a>
+                                                    break;
+                                                case 3:
+                                                    <a class="approvepr btn btn-block btn-xs btn-success" onclick="approvePR('@r.GUID')">
+                                                        <i class="fa fa-check-circle"></i>
+                                                        @Reporting.Resources.PriceRequest.ApproveRequest
+                                                    </a>
+                                                    <a class="rejectpr btn btn-block btn-xs btn-danger" onclick="rejectPR('@r.GUID')">
+                                                        <i class="fa fa-times-circle"></i>
+                                                        @Reporting.Resources.PriceRequest.RejectRequest
+                                                    </a>
+                                                    break;
+                                                default:
+                                                    break;
+                                            }
+                                        }
+                                    </td>
+                                }
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+}
+else
+{
+    <div> @Reporting.Resources.PriceRequest.NoPriceRequestFound</div>
+}
+
+<script>    
+
+    editRequest = (id, edit, waitApprobal) =>         
+        location.href = `@Url.Action("EditRequestForm", "PriceRequest")?GUID=${id}&Editable=${edit}&WaitApprobal=${waitApprobal}`;     
+    
+    historyPR = (id) =>
+        $.ajax({
+            url: '@Url.Action("GetPrHistory","PriceRequest")',
+            dataType: 'html',
+            method: 'POST',
+            data: { GUID: id },
+            beforeSend: () =>
+                swal({
+                    title: "@Reporting.Resources.PriceRequest.AdminPriceRequest_",
+                    text: "@Reporting.Resources.PriceRequest.LoadingHistory",
+                    showConfirmButton: false,
+                    allowOutsideClick: false,
+                    button: false
+                }),
+            success: html => {
+                if (html) {
+                    swal.close();
+                    $('#modalHistoryPR').find('#modaltitle-cuenta').text('');
+                    $('#PRHistoryData').html(html);
+                    $('#modalHistoryPR').modal('show');
+                }
+            },
+            error: err =>
+                swal("@Reporting.Resources.PriceRequest.AdminPriceRequest_",
+                    "@Reporting.Resources.PriceRequest.ErrorOnLoadHistory",
+                    "error")
+        });
+    
+    deletePR = (id) => {
+        $('#selected-pr-to-delete').val(id);
+        $('#modalDeletePR').modal('show');
+    }
+
+    downloadPR = (id) =>
+        $.ajax({
+            url: '@Url.Action("GetTokenPriceRequest", "PriceRequest")',
+            dataType: 'html',
+            type: 'POST',
+            data: { GUID: id },
+            success: result => {
+                if (result.length <= 0) {
+                    swal("@Reporting.Resources.PriceRequest.AdminPriceRequest_ (TOKEN)",
+                        "@Reporting.Resources.PriceRequest.ErrorOnDownload",
+                        "error");
+                    return;
+                }
+
+                const link = document.createElement("a");
+                link.href = "@Url.Action("DownloadFileByToken", "PriceRequest")" + "?token=" + result;
+                link.style = "visibility:hidden";
+                link.download = result + '.zip';
+                link.onclick = 'return false;';
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+            },
+            error: err =>
+                swal("@Reporting.Resources.PriceRequest.AdminPriceRequest_",
+                    "@Reporting.Resources.PriceRequest.ErrorOnDownload",
+                    "error")
+        });
+
+    approvePR = (id) =>
+        $.ajax({
+            url: '@Url.Action("AprobeAndClosePR", "PriceRequest")',
+            dataType: 'html',
+            method: 'POST',
+            data: { GUID: id },
+            beforeSend: () =>
+                swal({
+                    title: "@Reporting.Resources.PriceRequest.Checking",
+                    text: "@Reporting.Resources.PriceRequest.PleaseWait",
+                    showConfirmButton: false,
+                    allowOutsideClick: false,
+                    button: false
+                }),
+            success: status => {
+                if (status) {
+                    swal("@Reporting.Resources.PriceRequest.AdminPriceRequest_",
+                        "@Reporting.Resources.PriceRequest.RequestApproved",
+                        "success");
+                }
+            },
+            error: err =>
+                swal("@Reporting.Resources.PriceRequest.AdminPriceRequest_",
+                    "@Reporting.Resources.PriceRequest.ErrorOnAprroveRequest",
+                    "error")
+        });
+
+    rejectPR = (id) => {            
+        $("#pr-hd-sec-reject").val(id);
+        $("#txt-input-pricerequest-sec-reject").text("");
+        $('#modalCommentaryRejectSecPR').modal('show');
+    }
+
+    $('#PRRejectSecbButton').on('click', ({ currentTarget: el }) => {
+    const id = $("#pr-hd-sec-reject").val();
+    const message = $("#txt-input-pricerequest-sec-reject").text();
+
+    if (!id) {
+        return;
+    }  
+
+    $('#modalCommentaryRejectSecPR').modal('hide');
+
+        $.ajax({
+        url: '@Url.Action("RejectAndClosePR", "PriceRequest")',
+        dataType: 'html',
+        method: 'POST',
+        beforeSend: () => 
+            swal({
+                title: "@Reporting.Resources.PriceRequest.Checking",
+                text: "@Reporting.Resources.PriceRequest.PleaseWait",
+                showConfirmButton: false,
+                allowOutsideClick: false,
+                button: false
+            }),
+        data: {  GUID: id,
+                 message: message},
+        success: status => {
+            if (status) {
+                swal("@Reporting.Resources.PriceRequest.AdminPriceRequest_",
+                    "@Reporting.Resources.PriceRequest.RequestRejected",
+                    "success");
+            }
+        },
+        error: err => 
+                swal("@Reporting.Resources.PriceRequest.AdminPriceRequest_",
+                "@Reporting.Resources.PriceRequest.ErrorOnRejectPR",
+                "success")
+        })
+
+        $("#pr-hd-sec-reject").val("");
+    });
+    
+    </script>

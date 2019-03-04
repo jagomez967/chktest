@@ -1,0 +1,182 @@
+﻿/* SIDEBAR */
+
+#sidebar-wrapper{
+    z-index:1;
+    position:fixed;
+    width:0;
+    height:100%;
+    overflow-x:hidden;
+    background:#232a2f;
+    opacity:0.9;
+}
+
+
+#sidebar-wrapper-inner{
+    position:absolute;
+    bottom:200px;
+    left:0;
+    right:0;
+    top:0;
+    overflow-x:hidden;
+}
+
+
+#side-wrapper-inner-bottom{
+    padding:10px;
+    width:100%;
+    position:absolute;
+    height:200px;
+    bottom:0;
+}
+
+#side-wrapper-inner-bottom a{
+    margin-top:3px;
+    padding:5px;
+    width:100%;
+    border-radius: 0;
+    text-align:left;
+}
+
+#side-wrapper-inner-bottom a i{
+    padding-right:10px;
+}
+
+/* MAIN CONTENT */
+#page-content-wrapper{
+    width:100%;
+    position:absolute;
+    padding-left:15px;
+    background:#f3f3f4;
+
+}
+
+/* COMPORTAMIENTO SIDEBAR */
+#wrapper.menuDisplayed #sidebar-wrapper{
+    width:200px;
+}
+
+#wrapper.menuDisplayed #page-content-wrapper{
+    padding-left:215px;
+}
+
+/* SIDEBAR STYLING */
+.sidebar-nav{
+    padding:0;
+    list-style:none;
+}
+
+.sidebar-nav li{
+    text-indent:20px;
+    line-height:40px;
+}
+
+.sidebar-nav li a{
+    display:block;
+    text-decoration:none;
+    color:#ddd;
+}
+
+.sidebar-nav li a:hover{
+    background:#16a085;
+}
+
+/* BOTON MENU TOGGLE */
+#menu-toggle{
+    text-decoration:none;
+    background:#2c3e50;
+    opacity:0.9;
+    padding:7px;
+    color:#ddd;
+    position:fixed;
+    z-index:2000;
+}
+
+#menu-toggle:hover{
+    background:#16a085;
+}
+
+.metismenu-primer-nivel{
+    padding:0;
+    list-style:none;
+    padding-left:15px;
+    background:#2c3e50;
+    color:#ddd;
+}
+
+.metismenu-primer-nivel li{
+    text-indent:0;
+    line-height:15px;
+}
+
+#sidebar-wrapper-bottom{
+    background:#22313f;
+    padding:20px;
+}
+
+.btn-sidebar-bottom{
+    width:100%;
+    margin:5px;
+}
+
+.filtro-item-checkbox{
+    text-decoration:none;
+    color:#ddd;
+    font-weight: normal !important;
+}
+
+.droptabs{
+    margin-right:20px;
+    margin-left:30px;
+}
+
+.droptabs li>a{
+    padding:3px;
+    margin:0;
+}
+
+.panel-heading{
+    padding:6px;
+}
+
+.panel-footer{
+    padding:6px;
+    background:#ffffff;
+}
+
+.panel-footer p{
+    padding:0;
+    margin:0;
+    line-height:6px;
+}
+
+.panel-body{
+    padding:6px;
+}
+
+.panel-header-buttons i{
+    padding-left:6px;
+}
+
+.Objloading{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-top: -32px;
+    margin-left: -16px;
+    width: 32px;
+    height: 32px;
+    z-index:3000;
+}
+
+div[class^='col-']{
+    padding-left:15px;
+    padding-right:0;
+}
+
+#divObjetos{
+    padding-right:30px;
+}
+
+.btn-filtro{
+    width:100%;
+}

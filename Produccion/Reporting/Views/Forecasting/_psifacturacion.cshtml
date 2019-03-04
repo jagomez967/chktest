@@ -1,0 +1,81 @@
+﻿@model Reporting.ViewModels.RevenueTotal
+
+<div class="formsiso-content-facturacion revenuediv">
+    <div class="psi-table-fixedcols-facturacion">
+        <table class="table-salesinout-fixed-facturacion" data-istotal="true">
+            <thead style="border:2px solid black;">
+                <tr>
+                    <th style="background-color:#595959;color:#ffffff;text-transform:uppercase;font-weight:400;border-right:2px solid black;" data-value="Total">Total</th>
+                </tr>
+            </thead>
+            <tbody style="border:2px solid black;">
+                @foreach (var row in Model.Rows.OrderBy(r => r.OrdenFila))
+                {
+                    <tr>
+                        <td style="background-color:#c6e0b4;">Sell-IN</td>
+                    </tr>
+                        <tr>
+                            <td style="background-color:#c6e0b4;">Sell-OUT</td>
+                    </tr>
+                    
+                }
+            </tbody>
+        </table>
+    </div>
+    <table class="table-salesinout-facturacion revenuetotal" data-table-title="@Model.Titulo" data-currency="$">
+        <thead style="border:2px solid black;">
+            <tr>
+                <th style="background-color:#595959;color:#ffffff;text-transform:uppercase;font-weight:400;border-right:2px solid black;" data-value="Totales">Totales</th>
+                @foreach (var f in Model.Meses)
+                {
+                    var hdn = (f.Month < DateTime.Now.Month && f.Year == DateTime.Now.Year) || f.Year < DateTime.Now.Year;
+                    bool isFuture = (f > DateTime.Now.AddYears(1).AddMonths(-1) && f <= DateTime.Now.AddYears(1).AddMonths(6));
+                    var indicador = Model.Indicadores.First(i => i.Mes == f.Month).Indicador;
+                    <th class="@(hdn?"fchddncol":"") @(isFuture?" futurecol":"")" style="@(hdn||isFuture?"display:none;background-color: #ffe699;color:#000000;font-weight:400;":"background-color:#595959;color:#ffffff;text-transform:uppercase;font-weight:400;")" data-month="@f.Month" data-year="@f.Year" data-indicador="@indicador" data-value="@string.Format("{0} ({1})",f.ToString("MM-yyyy").Replace(".", "").ToUpper(),indicador)">@f.ToString("MMM").Replace(".", "").ToUpper()<sub>@indicador</sub></th>
+                }
+                <th style="background-color:#595959;color:#ffffff;text-transform:uppercase;font-weight:400;" data-value="@string.Format("Total FY {0}", DateTime.Now.ToString("yy"))">@string.Format("Total FY {0}", DateTime.Now.ToString("yy"))</th>
+            </tr>
+        </thead>
+        <tbody style="border:2px solid black;">
+            @foreach (var row in Model.Rows.OrderBy(r => r.OrdenFila))
+            {
+                @*var FYRevenue = row.Meses.Where(s => s.Fecha >= new DateTime(DateTime.Now.Year, 3, 1) && s.Fecha < new DateTime(DateTime.Now.Year, 3, 1).AddMonths(12)).Sum(s => s.Valor);*@
+                var FYSalesIn = row.Meses.Where(s => s.Fecha >= new DateTime(DateTime.Now.Year, 4, 1) && s.Fecha < new DateTime(DateTime.Now.Year, 4, 1).AddMonths(12)).Sum(s => s.SalesIn);
+                var FYSalesOut = row.Meses.Where(s => s.Fecha >= new DateTime(DateTime.Now.Year, 4, 1) && s.Fecha < new DateTime(DateTime.Now.Year, 4, 1).AddMonths(12)).Sum(s => s.SalesOut);
+                @*<tr data-field="total">
+                     <td style="background-color:#c6e0b4;border-right:2px solid black;" data-value="@string.Format("{0} ({1})",row.Nombre,Model.Currency)">@row.Nombre (<strong>@Model.Currency</strong>)</td>
+                     @foreach (var f in Model.Meses)
+                     {
+                         var e = row.Meses.FirstOrDefault(v => v.Fecha.Month == f.Month && v.Fecha.Year == f.Year);
+                         var hdn = (f.Month < DateTime.Now.Month && f.Year == DateTime.Now.Year) || f.Year < DateTime.Now.Year;
+                         <td style="background-color:#c6e0b4; @(hdn?"display:none;":"") @(f.Month%3==0?"border-right:1px dashed black;":"")" data-value="@(e != null ? Math.Round(e.Valor).ToString() : "0")" class="@(hdn?"fchddncol":"")">@(e != null ? string.Format("{0} {1}", "$", Math.Round(e.Valor).ToString("#,##0")) : string.Format("{0} {1}", "$", "0"))</td>
+                     }
+                     <td style="background-color:#c6e0b4;border-left:2px solid black;" data-value="@Math.Round(FYRevenue)">@string.Format("{0} {1}", "$", Math.Round(FYRevenue).ToString("#,##0"))</td>
+                </tr>*@
+                <tr data-field="totalsi">
+                    <td style="background-color:#c6e0b4;border-right:2px solid black;" data-value="SalesIn">SalesIn</td>
+                    @foreach (var f in Model.Meses)
+                    {
+                        var e = row.Meses.FirstOrDefault(v => v.Fecha.Month == f.Month && v.Fecha.Year == f.Year);
+                        var hdn = (f.Month < DateTime.Now.Month && f.Year == DateTime.Now.Year) || f.Year < DateTime.Now.Year;
+                        bool isFuture = (f > DateTime.Now.AddYears(1).AddMonths(-1) && f <= DateTime.Now.AddYears(1).AddMonths(6));
+                        <td style="background-color:#c6e0b4; @(hdn||isFuture?"display:none;":"") @(f.Month%3==0?"border-right:1px dashed black;":"")" data-value="@(e != null ? Math.Round(e.SalesIn) : 0)" class="@(hdn?"fchddncol":"") @(isFuture?" futurecol":"")">@(e != null ? string.Format("{0}", Math.Round(e.SalesIn).ToString("#,##0").Replace(".", ",")) : string.Format("{0}", "0"))</td>
+                    }
+                    <td style="background-color:#c6e0b4;border-left:2px solid black;" data-value="@Math.Round(FYSalesIn)">@string.Format("{0}", Math.Round(FYSalesIn).ToString("#,##0").Replace(".", ","))</td>
+                </tr>
+                <tr data-field="totalso">
+                    <td style="background-color:#c6e0b4;border-right:2px solid black;" data-value="SalesOut">SalesOut</td>
+                    @foreach (var f in Model.Meses)
+                    {
+                        var e = row.Meses.FirstOrDefault(v => v.Fecha.Month == f.Month && v.Fecha.Year == f.Year);
+                        var hdn = (f.Month < DateTime.Now.Month && f.Year == DateTime.Now.Year) || f.Year < DateTime.Now.Year;
+                        bool isFuture = (f > DateTime.Now.AddYears(1).AddMonths(-1) && f <= DateTime.Now.AddYears(1).AddMonths(6));
+                        <td style="background-color:#c6e0b4; @(hdn||isFuture?"display:none;":"") @(f.Month%3==0?"border-right:1px dashed black;":"")" data-value="@(e != null ? Math.Round(e.SalesOut) : 0)" class="@(hdn?"fchddncol":"") @(isFuture?" futurecol":"")">@(e != null ? string.Format("{0}", Math.Round(e.SalesOut).ToString("#,##0").Replace(".", ",")) : string.Format("{0}", "0"))</td>
+                    }
+                    <td style="background-color:#c6e0b4;border-left:2px solid black;" data-value="@Math.Round(FYSalesOut)">@string.Format("{0}", Math.Round(FYSalesOut).ToString("#,##0").Replace(".", ","))</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+

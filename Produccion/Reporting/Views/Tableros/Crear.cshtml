@@ -1,0 +1,373 @@
+﻿@using Reporting.ViewModels;
+@model CrearTableroViewModel
+
+@{
+    ViewBag.Title = Reporting.Resources.Tableros.crearTableroTitulo;
+}
+
+@{
+    List<SelectListItem> listItemsAltura = new List<SelectListItem>();
+
+
+    listItemsAltura.Add(new SelectListItem
+    {
+        Text = "0.3x",
+        Value = "XS"
+    });
+    listItemsAltura.Add(new SelectListItem
+    {
+        Text = "0.6x",
+        Value = "S"
+    });
+
+    listItemsAltura.Add(new SelectListItem
+    {
+        Text = "Standard",
+        Value = "SM"
+    });
+
+    listItemsAltura.Add(new SelectListItem
+    {
+        Text = "1.3x",
+        Value = "M"
+    });
+
+    listItemsAltura.Add(new SelectListItem
+    {
+        Text = "1.6x",
+        Value = "ML"
+    });
+
+    listItemsAltura.Add(new SelectListItem
+    {
+        Text = "2x",
+        Value = "L"
+    });
+
+    listItemsAltura.Add(new SelectListItem
+    {
+        Text = "2.3x",
+        Value = "XL"
+    });
+
+    listItemsAltura.Add(new SelectListItem
+    {
+        Text = "2.6x",
+        Value = "XXL"
+    });
+
+    listItemsAltura.Add(new SelectListItem
+    {
+        Text = "3x",
+        Value = "XXXL"
+    });
+}}
+
+
+
+
+@using (Html.BeginForm("Crear", "Tableros", FormMethod.Post, new { @id = "formCrearTablero" }))
+{
+    @Html.AntiForgeryToken()
+    <div class="container-fluid panel panel-default crear-tablero">
+        <div class="row">
+            <div class="col-xs-12 col-sm-4">
+                <h2>@Reporting.Resources.Tableros.crearTableroTituloPanel</h2>
+                <div class="form-group formu nombre-tablero">
+                    @Html.EditorFor(model => model.Nombre, new { htmlAttributes = new { @id = "nombreTablero", @class = "required", placeholder = "", data_placement = "top", data_trigger = "manual", data_content = Reporting.Resources.Tableros.crearTableroErrNombreVacio } })
+
+                    @Html.LabelFor(model => model.Nombre, Reporting.Resources.Tableros.crearTablerolblNombre)
+
+                </div>
+                <p>@Html.ValidationSummary()</p>
+                <button type="submit" class="btn btn-accion pull-left">@Reporting.Resources.Tableros.crearTableroBtnSave</button>
+            </div>
+            <div class="col-xs-12 col-sm-8">
+                <button type="button" id="btnSeleccionarObjetos" class="btn btn-accion-outline pull-left" data-toggle="modal" data-target="#agregar-graficos"><span class="glyphicon glyphicon-stats"></span>  @Reporting.Resources.Tableros.crearTableroBtnAgregarObjetos</button>
+                <div class="clearfix"></div>
+
+                <div class="modal fade" id="agregar-graficos" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">@Reporting.Resources.Tableros.crearTableroSelObjetosLabel</h5>
+                            </div>
+                            @{var firstCat = Model.Categorias.First().Id;}
+                            <div class="modal-body selector-graficos" style="padding-right:20px;">
+                                <div class="row">
+                                    <div class="col-md-3">
+                                        <a href="#" id="todoninguno-categorias">@Reporting.Resources.Tableros.lblTodoNinguno</a>
+                                        <ul class="list-group crear-tablero-listado-categorias">
+                                            @foreach (var c in Model.Categorias)
+                                            {
+                                                <li class="list-group-item @((firstCat==c.Id) ? "crear-tablero-listado-categorias-active" : "")" data-categoria="@c.Id">
+                                                    @Html.Hidden(string.Format("Categorias[{0}].Id", Model.Categorias.IndexOf(c)), c.Id)
+                                                    @Html.Hidden(string.Format("Categorias[{0}].Nombre", Model.Categorias.IndexOf(c)), c.Nombre)
+                                                    <a style="display:block; text-decoration: none;" href="#">@c.Nombre<span class="badge crear-tablero-badge-sinitems">0</span></a>
+                                                </li>
+                                            }
+                                        </ul>
+                                    </div>
+                                    <div class="col-md-9 crear-tablero-elegir-objetos-tabla">
+                                        <a href="#" class="pull-right" id="todoninguno-objetos">@Reporting.Resources.Tableros.lblTodoNinguno</a>
+                                        <table class="table table-striped table-hover">
+                                            <tbody>
+                                                @foreach (var o in Model.Tipos)
+                                                {
+                                                    <tr data-idobj="@o.Id" data-categoria="@o.IdCategoria" @((o.IdCategoria == firstCat) ? "" : "style=display:none;")>
+                                                        <td>
+                                                            <span>@o.Nombre</span>
+                                                            <span class="pull-right">@Html.CheckBox("familia" + o.Id.ToString())</span>
+                                                        </td>
+                                                    </tr>
+                                                }
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                            <hr />
+                            <div class="modal-footer">
+                                <button type="button" id="btnAgregarObjetos" data-dismiss="modal" class="btn btn-accion-outline">@Reporting.Resources.Tableros.crearTableroVolverLabel</button>
+                                <buttn id="modal-aceptar-seleccion" type="button" class="btn btn-primary">@Reporting.Resources.Tableros.lblSeleccionarObjetos</buttn>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="listado-graficos">
+                    <div class="vacio">
+                        <a href="#" data-toggle="modal" data-target="#agregar-graficos"><p>@Reporting.Resources.Tableros.crearTableroSinObjetos</p></a>
+                    </div>
+                    <div class="con-graficos" style="display:none;">
+                        <table class="table table-striped objetos-seleccionados">
+                            <thead>
+                                <tr>
+                                    <th>@Reporting.Resources.Tableros.crearTableroColOrden</th>
+                                    <th>@Reporting.Resources.Tableros.crearTableroColNombre</th>
+                                    <th>@Reporting.Resources.Tableros.crearTableroColTipo</th>
+                                    <th>@Reporting.Resources.Tableros.crearTableroColSize</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (ObjetoTipoViewModel o in Model.Tipos)
+                                {
+                                    <tr id="@("tr-"+o.Id)" data-id="@o.Id" style="display:none;">
+                                        @Html.Hidden(string.Format("Tipos[{0}].Id", Model.Tipos.IndexOf(o)), o.Id, new { data_id = o.Id, @class = "field-Id" })
+                                        @Html.Hidden(string.Format("Tipos[{0}].Nombre", Model.Tipos.IndexOf(o)), o.Nombre, new { data_id = o.Nombre, @class = "field-Nombre" })
+                                        @Html.Hidden(string.Format("Tipos[{0}].Selected", Model.Tipos.IndexOf(o)), o.Selected, new { data_id = o.Selected, @class = "field-Selected" })
+                                        @Html.Hidden(string.Format("Tipos[{0}].Orden", Model.Tipos.IndexOf(o)), o.Orden, new { data_id = o.Orden, @class = "field-Orden" })
+                                        @Html.Hidden(string.Format("Tipos[{0}].IdCategoria", Model.Tipos.IndexOf(o)), o.IdCategoria, new { data_id = o.IdCategoria, @class = "field-Orden" })
+                                        @Html.Hidden(string.Format("Tipos[{0}].IdFamilia", Model.Tipos.IndexOf(o)), o.IdFamilia, new { data_id = o.IdFamilia, @class = "field-Orden" })
+
+                                        <td class="orden">0</td>
+                                        <td class="nombre">@o.Nombre</td>
+                                        <td class="tipo-grafico" data-id="@o.Id">
+                                            @foreach (TipoGraficosViewModel obj in o.TipoGrafico)
+                                            {
+                                                @Html.Hidden(string.Format("Tipos[{0}].TipoGrafico[{1}].Tipo", Model.Tipos.IndexOf(o), Model.Tipos[Model.Tipos.IndexOf(o)].TipoGrafico.IndexOf(obj)), obj.Tipo)
+                                                @Html.Hidden(string.Format("Tipos[{0}].TipoGrafico[{1}].Tooltip", Model.Tipos.IndexOf(o), Model.Tipos[Model.Tipos.IndexOf(o)].TipoGrafico.IndexOf(obj)), obj.Tooltip)
+
+                                                @Html.RadioButtonFor(m => Model.Tipos[Model.Tipos.IndexOf(o)].TipoGraficoSeleccionado, @obj.Tipo, new { @id = ("radio-" + o.Id + "-" + obj.Tipo), @class = ("btnTipoGrafico tipo" + obj.Tipo), @data_id = @o.Id })<label for="@("radio-" + o.Id + "-" + obj.Tipo)" title="@obj.Tooltip"></label>
+                                            }
+                                        </td>
+                                        <td class="medida" data-id="@o.Id">
+                                            @Html.RadioButtonFor(m => Model.Tipos[Model.Tipos.IndexOf(o)].Size, "XS", new { @id = "radio-XS-" + Model.Tipos[Model.Tipos.IndexOf(o)].Id, @class = "btnSize medida05", @data_id = @o.Id })<label for="@("radio-XS-" + Model.Tipos[Model.Tipos.IndexOf(o)].Id)"></label>
+                                            @Html.RadioButtonFor(m => Model.Tipos[Model.Tipos.IndexOf(o)].Size, "S", new { @id = "radio-S-" + Model.Tipos[Model.Tipos.IndexOf(o)].Id, @class = "btnSize medida1", @data_id = @o.Id })<label for="@("radio-S-" + Model.Tipos[Model.Tipos.IndexOf(o)].Id)"></label>
+                                            @Html.RadioButtonFor(m => Model.Tipos[Model.Tipos.IndexOf(o)].Size, "SM", new { @id = "radio-SM-" + Model.Tipos[Model.Tipos.IndexOf(o)].Id, @class = "btnSize medida15", @data_id = @o.Id })<label for="@("radio-SM-" + Model.Tipos[Model.Tipos.IndexOf(o)].Id)"></label>
+                                            @Html.RadioButtonFor(m => Model.Tipos[Model.Tipos.IndexOf(o)].Size, "M", new { @id = "radio-M-" + Model.Tipos[Model.Tipos.IndexOf(o)].Id, @class = "btnSize medida2", @data_id = @o.Id })<label for="@("radio-M-" + Model.Tipos[Model.Tipos.IndexOf(o)].Id)"></label>
+                                            @Html.RadioButtonFor(m => Model.Tipos[Model.Tipos.IndexOf(o)].Size, "ML", new { @id = "radio-ML-" + Model.Tipos[Model.Tipos.IndexOf(o)].Id, @class = "btnSize medida25", @data_id = @o.Id })<label for="@("radio-ML-" + Model.Tipos[Model.Tipos.IndexOf(o)].Id)"></label>
+                                            @Html.RadioButtonFor(m => Model.Tipos[Model.Tipos.IndexOf(o)].Size, "L", new { @id = "radio-L-" + Model.Tipos[Model.Tipos.IndexOf(o)].Id, @class = "btnSize medida3", @data_id = @o.Id })<label for="@("radio-L-" + Model.Tipos[Model.Tipos.IndexOf(o)].Id)"></label>
+                                        </td>
+                                        <td data-id="@o.Id">
+                                            @{
+                                                int index = listItemsAltura.FindLastIndex(i => i.Value == o.Altura);
+                                                if (index != -1)
+                                                {
+                                                    listItemsAltura[index].Selected = true;
+                                                }
+                                            }
+                                            @Html.DropDownListFor(m => Model.Tipos[Model.Tipos.IndexOf(o)].Altura, listItemsAltura, "-- Altura --")
+                                            @{
+                                                if (index != -1)
+                                                {
+                                                    listItemsAltura[index].Selected = false;
+                                                }
+                                            }
+                                        </td>
+                                        <td>
+                                            <a class="eliminar" href="#" data-toggle="dropdown" aria-expanded="true"><i class="fa fa-trash-o"></i> @Reporting.Resources.Tableros.crearTableroBtnEliminar</a>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                        <div class="col-xs-12">
+                            <div class="explica pull-right">
+                                <p><i class="fa fa-arrows-v"></i> @Reporting.Resources.Tableros.crearTableroDragDropOrderLabel</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@section scripts{
+
+
+    <script>
+        $(document).ready(function () {
+            $('#nombreTablero').focus();
+        });
+
+        $('#modal-aceptar-seleccion').on('click', function () {
+            var checks = $('.crear-tablero-elegir-objetos-tabla').find('input:checkbox:checked');
+            $('.objetos-seleccionados').find('tr').hide();
+            if (checks.length > 0) {
+                $('.con-graficos').show();
+                $('.vacio').hide();
+                checks.each(function () {
+                    var idobj = $(this).parents('tr').data('idobj');
+                    $('.objetos-seleccionados').find('tr[data-id="' + idobj + '"]').show();
+                    $('.objetos-seleccionados').find('tr[data-id="' + idobj + '"]').find('.field-Selected').val(true);
+
+                });
+                setOrder();
+            } else {
+                $('.con-graficos').hide();
+                $('.vacio').show();
+            }
+
+            $('#agregar-graficos').modal('hide');
+        });
+
+        $('.crear-tablero-listado-categorias').on('click', 'li', function () {
+            $(this).parent().find('li').removeClass('crear-tablero-listado-categorias-active');
+            $(this).toggleClass('crear-tablero-listado-categorias-active');
+
+            var cat = $(this).data('categoria');
+            $('.crear-tablero-elegir-objetos-tabla').find('tr').hide();
+            $('.crear-tablero-elegir-objetos-tabla').find('tr[data-categoria="' + cat + '"]').show();
+        });
+
+        $('.crear-tablero-elegir-objetos-tabla').on('change', 'input:checkbox', function () {
+            ActualizarContadoresPorCategoria();
+        });
+
+        function ActualizarContadoresPorCategoria() {
+            $('.crear-tablero-listado-categorias li').each(function () {
+                var categoria = $(this).data('categoria');
+
+                var cantchecks = $('.crear-tablero-elegir-objetos-tabla').find('tr[data-categoria="' + categoria + '"]').find('input:checkbox:checked').length;
+
+                if (cantchecks > 0) {
+                    $('.crear-tablero-listado-categorias').find('li[data-categoria="' + categoria + '"]').find('.badge').removeClass('crear-tablero-badge-sinitems').addClass('crear-tablero-badge-conitems');
+                } else {
+                    $('.crear-tablero-listado-categorias').find('li[data-categoria="' + categoria + '"]').find('.badge').removeClass('crear-tablero-badge-conitems').addClass('crear-tablero-badge-sinitems');
+                }
+
+                $('.crear-tablero-listado-categorias').find('li[data-categoria="' + categoria + '"]').find('.badge').text(cantchecks);
+            });
+        };
+
+        $('table tbody').sortable({
+            helper: fixWidthHelper,
+            stop: function (evt, ui) { setOrder(); }
+        }).disableSelection();
+
+        function setOrder() {
+            var i = 1;
+            $('.objetos-seleccionados tr:visible').each(function () {
+                var objId = $(this).data('id');
+                $(this).find('.field-Orden').val(i);
+                $(this).find('td.orden').text(i);
+                i++;
+            });
+        };
+
+        function fixWidthHelper(e, ui) {
+            ui.children().each(function () {
+                $(this).width($(this).width());
+            });
+
+            return ui;
+        };
+
+        $('#todoninguno-categorias').on('click', function () {
+            var self = $(this);
+            self.toggleClass('seleccionartodo');
+            $('.crear-tablero-elegir-objetos-tabla').find('input:checkbox').each(function () {
+                if (self.hasClass('seleccionartodo')) {
+                    $(this).prop('checked', true);
+                } else {
+                    $(this).prop('checked', false);
+                }
+            });
+            ActualizarContadoresPorCategoria();
+            return false;
+        });
+
+        $('#todoninguno-objetos').on('click', function () {
+            var self = $(this);
+            self.toggleClass('seleccionartodo');
+            $('.crear-tablero-elegir-objetos-tabla').find('input:checkbox:visible').each(function () {
+                if (self.hasClass('seleccionartodo')) {
+                    $(this).prop('checked', true);
+                } else {
+                    $(this).prop('checked', false);
+                }
+            });
+            ActualizarContadoresPorCategoria();
+            return false;
+        });
+
+        $('#formCrearTablero').on('submit', function () {
+            var errors = false;
+            setOrder();
+
+            $("div.validation-summary-errors ul").empty();
+            $("div.validation-summary-valid ul").empty();
+
+            if ($('input#nombreTablero').val() == "") {
+                $("div.validation-summary-errors ul").append('<li>@Reporting.Resources.Tableros.crearTableroErrNombreVacio</li>');
+                $("div.validation-summary-valid ul").append('<li>@Reporting.Resources.Tableros.crearTableroErrNombreVacio</li>');
+                errors = true;
+            }
+
+            if ($('.objetos-seleccionados tr:visible').length == 0) {
+                $("div.validation-summary-errors ul").append('<li>@Reporting.Resources.Tableros.crearTableroErrNoObjectSelected</li>');
+                $("div.validation-summary-valid ul").append('<li>@Reporting.Resources.Tableros.crearTableroErrNoObjectSelected</li>');
+                errors = true;
+            }
+
+            if ($('.objetos-seleccionados tr:visible').length > 0) {
+                if (!($('#nombreTablero').val() == "")) {
+                    $('.btn').prop("disabled", true);
+                }
+            }
+
+            return !errors;
+        });
+
+        $('.eliminar').on('click', function () {
+            var tr = $(this).parents('tr');
+            var idobj = tr.data('id');
+            tr.hide();
+            tr.find('.field-Selected').val(false);
+
+            $('.crear-tablero-elegir-objetos-tabla').find('tr[data-idobj="' + idobj + '"]').find('input:checkbox:checked').prop('checked', false);
+
+            var cantseleccionados = $('.objetos-seleccionados tbody').find('tr:visible').length;
+            if(cantseleccionados==0)
+            {
+                $('.con-graficos').hide();
+                $('.vacio').show();
+            } else {
+                $('.con-graficos').show();
+                $('.vacio').hide();
+            }
+        });
+    </script>
+}

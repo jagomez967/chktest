@@ -1,0 +1,364 @@
+﻿@using Reporting.ViewModels
+@model AlertaVM
+
+@{
+    ViewBag.Title = Reporting.Resources.Alertas.lblVerAlertasTitulo;
+}
+
+@section styles{
+    <style>
+        ul {
+            list-style-type: none;
+        }
+
+        input[type=checkbox]:checked + input[type=hidden] + label {
+            color: darkorange;
+        }
+
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 54px;
+            height: 28px;
+        }
+
+            .switch input {
+                display: none;
+            }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            -webkit-transition: .4s;
+            transition: .4s;
+        }
+
+            .slider:before {
+                position: absolute;
+                content: "";
+                height: 20px;
+                width: 20px;
+                left: 4px;
+                bottom: 4px;
+                background-color: white;
+                -webkit-transition: .4s;
+                transition: .4s;
+            }
+
+        input:checked + input[type=hidden] + .slider {
+            background-color: #2196F3;
+        }
+
+        input:checked + .slider {
+            background-color: #2196F3;
+        }
+
+        input:focus + input[type=hidden] + .slider {
+            box-shadow: 0 0 1px #2196F3;
+        }
+
+        input:checked + input[type=hidden] + .slider:before {
+            -webkit-transform: translateX(26px);
+            -ms-transform: translateX(26px);
+            transform: translateX(26px);
+        }
+
+        input:checked + .slider:before {
+            -webkit-transform: translateX(26px);
+            -ms-transform: translateX(26px);
+            transform: translateX(26px);
+        }
+
+        /* Rounded sliders */
+        .slider.round {
+            border-radius: 34px;
+        }
+
+            .slider.round:before {
+                border-radius: 50%;
+            }
+
+        .hide {
+            display: none;
+        }
+
+        .cadenapdv {
+            max-height: 200px;
+            overflow-y: scroll;
+            overflow-x: hidden;
+        }
+    </style>
+}
+
+
+
+<div class="container-fluid panel panel-default configurarTablero">
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+        <div class="form-horizontal">
+            <div class="form-group">
+                @Html.ActionLink(Reporting.Resources.Alertas.btnVolverALaListaLabel, "Index","Alertas")
+            </div>
+            <hr />
+
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-md-2">
+                        @Html.LabelFor(m => m.Activo)
+                    </div>
+                    <div class="col-md-10">
+                        <label class="switch">
+                            @Html.DisplayFor(model => model.Activo)
+                            <div class="slider round"></div>
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-md-2">
+                        @Html.LabelFor(model => model.Descripcion)
+                    </div>
+                    <div class="col-md-10">
+                        @Html.DisplayFor(model => model.Descripcion)
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-md-2">
+                        @Html.LabelFor(model => model.TipoReporteSeleccionado)
+                    </div>
+                    <div class="col-md-10">
+                        @Html.DisplayFor(m => m.TipoReporteSeleccionado)
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-md-2">
+                        @Html.LabelFor(model => model.AccionTriggerSeleccionada)
+                    </div>
+                    <div class="col-md-10">
+                        @Html.DisplayFor(m => m.AccionTriggerSeleccionada)
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-md-2">
+                        @Html.LabelFor(m => m.Consolidado)
+                    </div>
+                    <div class="col-md-10">
+                        <label class="switch">
+                            @Html.DisplayFor(m => m.Consolidado)
+                            <div class="slider round"></div>
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <div id="divrepeticion" class="@((Model.Consolidado)?"":"hide")">
+                <div class="form-group">
+                    <div class="col-md-2"></div>
+                    <div class="col-md-10">
+
+                        @Html.DisplayFor(model => model.Lunes)
+                        @Html.LabelFor(model => model.Lunes)
+
+                        @Html.DisplayFor(model => model.Martes)
+                        @Html.LabelFor(model => model.Martes)
+
+                        @Html.DisplayFor(model => model.Miercoles)
+                        @Html.LabelFor(model => model.Miercoles)
+
+                        @Html.DisplayFor(model => model.Jueves)
+                        @Html.LabelFor(model => model.Jueves)
+
+                        @Html.DisplayFor(model => model.Viernes)
+                        @Html.LabelFor(model => model.Viernes)
+
+                        @Html.DisplayFor(model => model.Sabado)
+                        @Html.LabelFor(model => model.Sabado)
+
+                        @Html.DisplayFor(model => model.Domingo)
+                        @Html.LabelFor(model => model.Domingo)
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-md-2"></div>
+                    <div class="col-md-10">
+                        @Html.DisplayFor(model => model.Hora)
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-md-2">
+                        @Html.LabelFor(model => model.Destinatarios)
+                    </div>
+                    <div class="col-md-10">
+                        @Html.DisplayFor(model => model.Destinatarios, new { htmlAttributes = new { @class = "form-control" } })
+                    </div>
+                </div>
+            </div>
+
+            <div id="divpuntosdeventa" class="form-group">
+                <div class="row">
+                    <div class="col-md-2">
+                        @Html.LabelFor(model => model.PuntosDeVenta)
+                    </div>
+                    <div class="col-md-10">
+                        <div class="cadenapdv">
+                            <table>
+                                <tbody>
+                                    @foreach (var p in Model.PuntosDeVenta.Where(po => po.Selected))
+                                    {
+                                        <tr class="pdvfila">
+                                            <td>
+                                                <label>@string.Format("{0} - {1} - {2} - {3}", p.ZonaDescr, p.CadenaDescr, p.PuntoDeVentaDescr,p.RazonSocial)</label>
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            @if (Model.Campos.Count > 0)
+            {
+                <div id="camposReporte" class="form-group">
+                    <div class="row">
+                        <div class="col-md-2">
+                            @Html.LabelFor(model => model.Campos)
+                        </div>
+                        <div class="col-md-10">
+                            <div id="ul-campos">
+                                <ul class="tree">
+                                    @foreach (var m in Model.Campos.Select(s => new { s.IdMarca, s.MarcaDescr }).Distinct())
+                                    {
+                                        <li>
+                                            <a href="#"><strong>@m.MarcaDescr</strong></a>
+                                            @if (Model.Campos.Where(x => x.IdMarca == m.IdMarca).Count() > 0)
+                                            {
+                                                <ul>
+                                                    @foreach (var s in Model.Campos.Where(c => c.IdMarca == m.IdMarca).Select(c => new { c.IdSeccion, c.SeccionDescr }).Distinct())
+                                                    {
+                                                        <li>
+                                                            <em>@s.SeccionDescr</em>
+                                                            @if (Model.Campos.Where(x => x.IdMarca == m.IdMarca && x.IdSeccion == s.IdSeccion).Count() > 0)
+                                                            {
+                                                                <ul>
+                                                                    @foreach (var q in Model.Campos.Where(c => c.IdMarca == m.IdMarca && c.IdSeccion == s.IdSeccion && c.Selected))
+                                                                    {
+                                                                        <li>
+                                                                            <label>@q.CampoDescr</label>
+                                                                        </li>
+                                                                    }
+                                                                </ul>
+                                                            }
+                                                        </li>
+                                                    }
+                                                </ul>
+                                            }
+                                        </li>
+                                    }
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+
+
+            @if (Model.Productos.Count > 0)
+            {
+                <div id="productosReporte" class="form-group">
+                    <div class="row">
+                        <div class="col-md-2">
+                            @Html.LabelFor(model => model.Productos)
+                        </div>
+                        <div class="col-md-10">
+                            <div id="ul-productos">
+                                <ul class="tree">
+                                    @foreach (var m in Model.Productos.Select(s => new { s.IdMarca, s.MarcaDescr }).Distinct())
+                                    {
+                                        <li>
+                                            <a href="#"><strong>@m.MarcaDescr</strong></a>
+                                            @if (Model.Productos.Where(x => x.IdMarca == m.IdMarca).Count() > 0)
+                                            {                            
+                                                <ul>
+                                                    @foreach (var q in Model.Productos.Where(c => c.IdMarca == m.IdMarca && c.Selected))
+                                                    {
+                                                        <li>
+                                                            <label>@q.ProductoDescr</label>
+                                                        </li>
+                                                    }
+                                                  </ul>
+                                            }
+                                        </li>
+                                    }
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+
+            @if (Model.Modulos.Count > 0)
+            {
+                <div id="ModulosReporte" class="form-group">
+                    <div class="row">
+                        <div class="col-md-2">
+                            @Html.LabelFor(model => model.Modulos)
+                        </div>
+                        <div class="col-md-10">
+                            <div id="ul-modulos">
+                                <ul class="tree">
+                                    @foreach (var m in Model.Modulos)
+                                    {
+                                        <li>
+                                            <label>@m.leyenda 
+                                            @if (m.esMayor == true)
+                                            { 
+                                                @(" > ");
+                                            }
+                                                @if (m.esMenor == true)
+                                                {
+                                                    @(" < ");
+                                                }
+                                            @if (m.esIgual == true)
+                                            { 
+                                                @(" = ");
+                                            }
+                                            
+                                                @String.Format("{0:0.##}", m.valor)
+                                            </label>
+                                        </li>
+                                    }
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+
+        </div>
+    }
+</div>

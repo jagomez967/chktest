@@ -1,0 +1,50 @@
+﻿@model Reporting.ViewModels.AlertaVM
+
+@{
+    ViewBag.Title = Reporting.Resources.Alertas.lblTituloEliminarAlerta;
+}
+
+<div class="container-fluid panel panel-default configurarTablero">
+    <h2>Reporting.Resources.Alertas.lblTituloEliminarAlerta</h2>
+    <h3>@Reporting.Resources.Alertas.lblSeguroDeseaEliminarLaAlerta</h3>
+    <div>
+        <hr />
+        <dl class="dl-horizontal">
+            <dt>
+                @Html.DisplayNameFor(model => model.Descripcion)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.Descripcion)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.Destinatarios)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.Destinatarios)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.Activo)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.Activo)
+            </dd>
+
+        </dl>
+
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
+
+            <div class="form-actions no-color">
+                <input type="submit" value="Eliminar" class="btn btn-danger" />
+                @Html.ActionLink(Reporting.Resources.Alertas.btnEditarAlertaCancelar, "Index", null, new { @class = "btn btn-info" })
+            </div>
+        }
+    </div>
+</div>
+

@@ -1,0 +1,65 @@
+﻿@using Reporting.Models
+@model LoginViewModel
+@{
+    Layout = null;
+    ViewBag.Title = Reporting.Resources.Account.lblTituloLogin;
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,400italic,700,700italic" rel="stylesheet" type="text/css">
+    <title>@Reporting.Resources.Account.lblLogoLabelCheckposPerformance</title>
+
+    @Styles.Render("~/Content/css")
+
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+            <link href="css/ie8.css" rel="stylesheet">
+            <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+            <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+        <![endif]-->
+
+</head>
+<body>
+    @using (Html.BeginForm("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+    {
+        @Html.AntiForgeryToken()
+        <div id="wrapper" style="text-align: center">
+            <div class="container ingreso" style="display: inline-block;">
+                <div class="row">
+                    <div class="col-sm-4 col-sm-offset-4 col-xs-12">
+                        <div class="logo">
+                            <a href="#">@Reporting.Resources.Account.lblLogoLabelCheckposPerformance</a>
+                        </div>
+                    </div>
+                    <div class="col-sm-4 col-sm-offset-4 col-xs-12">
+                        <div class="panel panel-default">
+                            <div class="panel-body">
+                                <div class="form-group">
+                                    @Html.LabelFor(m => m.Email, new { @class = "sr-only" })
+                                    @Html.TextBoxFor(m => m.Email, new { @class = "form-control required", placeholder = Reporting.Resources.Account.placeholderEmail, data_placement = "top", data_trigger = "manual", autocomplete = "off" })
+                                    @Html.ValidationMessageFor(m => m.Email, "", new { @class = "error animated shake" })
+                                </div>
+                                <div class="form-group">
+                                    @Html.LabelFor(m => m.Password, new { @class = "sr-only" })
+                                    @Html.PasswordFor(m => m.Password, new { @class = "form-control required", placeholder = Reporting.Resources.Account.placeholderClave, data_placement = "top", data_trigger = "manual", autocomplete = "off" })
+                                    @Html.ValidationMessageFor(m => m.Password, "", new { @class = "error animated shake" })
+                                </div>
+                            </div>
+                            <div class="panel-footer">
+                                <a class="olvide" href="@Url.Action("ForgotPassword", "Account")">@Reporting.Resources.Account.lblOlvideMiClave</a>
+                                <button type="submit" class="btn btn-accion">@Reporting.Resources.Account.btnLoginLabel</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+    @Scripts.Render("~/bundles/commonjs")
+</body>
+</html>
